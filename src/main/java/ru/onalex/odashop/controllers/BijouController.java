@@ -14,7 +14,7 @@ import ru.onalex.odashop.repositories.TovarRepository;
 import java.util.List;
 
 @Controller
-@RequestMapping("/catalog/bizhuteriya")
+@RequestMapping("/catalog")
 public class BijouController {
     private GrupTovRepository grupTovRepository;
     private TovarRepository tovarRepository;
@@ -35,14 +35,15 @@ public class BijouController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("/bizhuteriya")
     public String getBjGroups(Model model) {
         List<GrupTov> groups = grupTovRepository.findBijou();
         model.addAttribute("groups",groups);
         System.out.println(groups.size());
-        return "bj_groups";
+        return "groups-page";
     }
-    @GetMapping("/{alias}")
+
+    @GetMapping("/bizhuteriya/{alias}")
     public String getBjproducts(
             @PathVariable(name="alias") String alias, Model model) {
         List<Tovar> products = tovarRepository.findTovarByAlias(alias);
@@ -50,6 +51,6 @@ public class BijouController {
         model.addAttribute("products",products);
         model.addAttribute("group_name",groupName);
         System.out.println(products.size());
-        return "bj_products";
+        return "single-group";
     }
 }

@@ -47,25 +47,42 @@
         <div class="container">
             <!-- Page-Bar -->
             <div class="page-bar clearfix">
-
+                <div class="shop-settings">
+                    <a id="list-anchor">
+                        <i class="fas fa-th-list"></i>
+                    </a>
+                    <a id="grid-anchor" class="active">
+                        <i class="fas fa-th"></i>
+                    </a>
+                </div>
             </div>
             <!-- Page-Bar /- -->
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
-                <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${groups}">
+                <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${products}">
                     <div class="item">
                         <div class="image-container">
                             <a class="item-img-wrapper-link" th:href="@{${t.purl}}">
-                                <img class="img-fluid" th:src="'/' + ${t.picPreview}" th:alt="${t.grupName}">
+                                <img class="img-fluid" th:src="'/' + ${t.picPreview}" th:alt="${t.tovName}">
                             </a>
                         </div>
                         <div class="item-content">
                             <div class="what-product-is">
                                 <h6 class="item-title">
-                                    <a th:href="@{${t.purl}}"><span th:text="${t.grupName}"></a>
+                                    <a th:href="@{${t.purl}}"><span th:text="${t.tovName}"></a>
                                 </h6>
+
                             </div>
+                            <div class="price-template">
+                               <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
+<!--                               <div class="item-old-price">-->
+<!--                                   $60.00-->
+<!--                               </div>-->
+                           </div>
                         </div>
+<!--                        <div class="tag new">-->
+<!--                            <span>НОВИНКА</span>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
