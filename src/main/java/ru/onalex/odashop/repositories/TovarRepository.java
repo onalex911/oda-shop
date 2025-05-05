@@ -16,4 +16,8 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
             "ON bg.group_id = t.gruptov " +
             "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
     List<Tovar> findTovarByAlias(String alias);
+
+    @Query(value="SELECT * FROM tovar t WHERE code=:code AND t.ostatok > 0",nativeQuery = true)
+    Tovar findExistTovarByCode(int code);
+
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.entities.Tovar;
+import ru.onalex.odashop.services.*;
 import ru.onalex.odashop.repositories.BJGroupRepository;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
@@ -19,6 +20,7 @@ public class BijouController {
     private GrupTovRepository grupTovRepository;
     private TovarRepository tovarRepository;
     private BJGroupRepository bjGroupRepository;
+    private ProductService productService;
 
     @Autowired
     public void setGrupTovRepository(GrupTovRepository grupTovRepository) {
@@ -32,6 +34,11 @@ public class BijouController {
     @Autowired
     public void setBjGroupRepository(BJGroupRepository bjGroupRepository) {
         this.bjGroupRepository = bjGroupRepository;
+    }
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
 
@@ -52,5 +59,12 @@ public class BijouController {
         model.addAttribute("group_name",groupName);
         System.out.println(products.size());
         return "single-group";
+    }
+    @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
+    public String getBjproduct(
+            @PathVariable(name="group-alias") String groupAlias,
+            @PathVariable(name="prod-alias") String prodAlias,
+            Model model) {
+        return productService.getProductPage(groupAlias,prodAlias,model);
     }
 }
