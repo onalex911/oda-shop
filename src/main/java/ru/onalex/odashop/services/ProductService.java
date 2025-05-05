@@ -35,10 +35,9 @@ public class ProductService {
             System.out.println(prodId);
             model.addAttribute("product", product);
             model.addAttribute("group_name", groupName);
-
             return "single-product";
         }catch (Exception e){
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", "ОШИБКА! " + e.getMessage());
             return "error";
         }
     }
