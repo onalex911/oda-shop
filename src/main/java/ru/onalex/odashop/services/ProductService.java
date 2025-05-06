@@ -57,4 +57,12 @@ public class ProductService {
         }
         return 0;
     }
+
+    public long count(){
+        return tovarRepository.count();
+    }
+
+    public List<Tovar> findAll(){
+        return tovarRepository.findAll();
+    }
 }

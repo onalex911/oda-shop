@@ -2,13 +2,15 @@ package ru.onalex.odashop.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.entities.Tovar;
 
 import java.util.List;
 
-@Repository
+//@Repository
+@RepositoryRestResource(path = "tovar")
 public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     List<Tovar> findByGrupTov(int grupTov);
 
