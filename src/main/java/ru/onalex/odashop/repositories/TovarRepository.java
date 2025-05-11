@@ -14,9 +14,10 @@ import java.util.List;
 public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     List<Tovar> findByGrupTov(int grupTov);
 
-    @Query(value="SELECT t.* FROM tovar t RIGHT JOIN bj_groups bg " +
-            "ON bg.group_id = t.gruptov " +
-            "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
+//    @Query(value="SELECT t.* FROM tovar t RIGHT JOIN bj_groups bg " +
+//            "ON bg.group_id = t.gruptov " +
+//            "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
+    @Query(value="SELECT * FROM tovar t WHERE t.ostatok > 0 AND purl LIKE CONCAT('%/',:alias,'/%')",nativeQuery = true)
     List<Tovar> findTovarByAlias(String alias);
 
     @Query(value="SELECT * FROM tovar t WHERE code=:code AND t.ostatok > 0",nativeQuery = true)

@@ -25,7 +25,7 @@ public class AdminController {
     public String dashboard(Model model) {
         model.addAttribute("userCount", adminUIUserService.count());
         model.addAttribute("productCount", productService.count());
-        return "admin/dashboard";
+        return "admin/index";
     }
 
     @GetMapping("/users")

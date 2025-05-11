@@ -3,37 +3,41 @@ package ru.onalex.odashop.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import ru.onalex.odashop.dtos.GrupTovDTO;
+import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.Tovar;
-import ru.onalex.odashop.repositories.BJGroupRepository;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
 
 import java.util.List;
 
+import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
+
 @Service
 public class ProductService {
 
+    private GrupTovRepository grupTovRepository;
     private TovarRepository tovarRepository;
-    private BJGroupRepository bjGroupRepository;
 
     @Autowired
     public void setTovarRepository(TovarRepository tovarRepository) {
         this.tovarRepository = tovarRepository;
     }
-
     @Autowired
-    public void setBjGroupRepository(BJGroupRepository bjGroupRepository) {
-        this.bjGroupRepository = bjGroupRepository;
+    public void setGrupTovRepository(GrupTovRepository grupTovRepository) {
+        this.grupTovRepository = grupTovRepository;
     }
 
     public String getProductPage(String groupAlias, String prodAlias, Model model){
         try {
             int prodId = getLastNumber(prodAlias);
             Tovar product = tovarRepository.findExistTovarByCode(prodId);
-            String groupName = bjGroupRepository.findByAlias(groupAlias).getGroupNameRu();
+            TovarDTO tovarDTO = TovarDTO.fromEntity(product);
+//            String groupName = GrupTovDTO.fromEntity(grupTovRepository.findByAlias(groupAlias)).getNormalName();
+            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
             System.out.println(groupName);
             System.out.println(prodId);
-            model.addAttribute("product", product);
+            model.addAttribute("product", tovarDTO);
             model.addAttribute("group_name", groupName);
             return "single-product";
         }catch (Exception e){

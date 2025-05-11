@@ -17,21 +17,21 @@
     <!-- Google Fonts for Banners only -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,800" rel="stylesheet">
     <!-- Bootstrap 4 -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <!-- Font Awesome 5 -->
-    <link rel="stylesheet" href="/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.min.css">
     <!-- Ion-Icons 4 -->
-    <link rel="stylesheet" href="/css/ionicons.min.css">
+    <link rel="stylesheet" href="/assets/css/ionicons.min.css">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/animate.min.css">
     <!-- Owl-Carousel -->
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
     <!-- Jquery-Ui-Range-Slider -->
-    <link rel="stylesheet" href="/css/jquery-ui-range-slider.min.css">
+    <link rel="stylesheet" href="/assets/css/jquery-ui-range-slider.min.css">
     <!-- Utility -->
-    <link rel="stylesheet" href="/css/utility.css">
+    <link rel="stylesheet" href="/assets/css/utility.css">
     <!-- Main -->
-    <link rel="stylesheet" href="/css/bundle.css">
+    <link rel="stylesheet" href="/assets/css/bundle.css">
 </head>
 
 <body>
@@ -45,31 +45,46 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <!-- Page-Bar -->
-            <div class="page-bar clearfix">
-                <div class="shop-settings">
-                    <a id="list-anchor">
-                        <i class="fas fa-th-list"></i>
-                    </a>
-                    <a id="grid-anchor" class="active">
-                        <i class="fas fa-th"></i>
-                    </a>
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="v-menu v-close">
+                            <span class="v-title">
+                                <i class="ion ion-md-menu"></i>
+                                Все разделы
+                                <i class="fas fa-angle-down"></i>
+                            </span>
+                        <nav>
+                            <div class="v-wrapper">
+                                <ul class="v-list animated fadeIn">
+                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
+                                        <a th:href="@{${g.purl}}">
+                                            <i class="ion ion-md-folder"></i>
+                                            <span th:text="${g.normalName}">
+<!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h3 th:text="${group_name}"></h3>
                 </div>
             </div>
-            <!-- Page-Bar /- -->
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${products}">
                     <div class="item">
                         <div class="image-container">
                             <a class="item-img-wrapper-link" th:href="@{${t.purl}}">
-                                <img class="img-fluid" th:src="'/' + ${t.picPreview}" th:alt="${t.tovName}">
+                                <img class="img-fluid" th:src="'/assets/' + ${t.picPreview}" th:alt="${t.normalTovName}">
                             </a>
                         </div>
                         <div class="item-content">
                             <div class="what-product-is">
                                 <h6 class="item-title">
-                                    <a th:href="@{${t.purl}}"><span th:text="${t.tovName}"/></a>
+                                    <a th:href="@{${t.purl}}"><span th:text="${t.normalTovName}"/></a>
                                 </h6>
 
                             </div>

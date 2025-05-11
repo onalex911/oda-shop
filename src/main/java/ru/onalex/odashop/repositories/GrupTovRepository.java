@@ -11,9 +11,11 @@ import java.util.List;
 public interface GrupTovRepository extends JpaRepository<GrupTov, Integer> {
     List<GrupTov> findAll();
 
-    @Query(value="SELECT * FROM gruptov WHERE rod='1413'",nativeQuery = true)
+    @Query(value="SELECT * FROM gruptov WHERE blok=0 AND rod='1413'",nativeQuery = true)
     List<GrupTov> findBijou();
 
+    @Query(value="SELECT * FROM gruptov WHERE blok=0 AND purl LIKE CONCAT('%/',:alias)",nativeQuery = true)
+    GrupTov findByAlias(String alias);
 
 
 
