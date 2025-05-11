@@ -1,8 +1,55 @@
 package ru.onalex.odashop.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import ru.onalex.odashop.dtos.GrupTovDTO;
+import ru.onalex.odashop.dtos.TovarDTO;
+import ru.onalex.odashop.entities.GrupTov;
+import ru.onalex.odashop.entities.Tovar;
+import ru.onalex.odashop.repositories.GrupTovRepository;
+import ru.onalex.odashop.repositories.TovarRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static ru.onalex.odashop.dtos.GrupTovDTO.fromEntity;
 
 @Service
 public class GroupService {
+    private final GrupTovRepository grupTovRepository;
+    private final TovarRepository tovarRepository;
+//    private GrupTovDTO grupTovDTO;
 
+    public GroupService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository) {
+        this.grupTovRepository = grupTovRepository;
+        this.tovarRepository = tovarRepository;
+    }
+
+    public String getGroups(Model model){
+        List<GrupTovDTO> groups = grupTovRepository.findBijou()
+                .stream().map(GrupTovDTO::fromEntity).collect(Collectors.toList());
+        model.addAttribute("groups",groups);
+//        System.out.println(groups.size());
+        return "groups-page";
+    }
+
+    public String getGrupTov(String alias, int page, int size, Model model) {
+        Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
+        Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
+
+        GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
+
+        model.addAttribute("products", products);
+        model.addAttribute("group_name", grupTovDTO.getNormalName());
+        model.addAttribute("totalItems", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
+        return "single-group";
+    }
 }

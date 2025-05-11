@@ -5,21 +5,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.onalex.odashop.entities.GrupTov;
-import ru.onalex.odashop.entities.Tovar;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.onalex.odashop.services.*;
-import ru.onalex.odashop.repositories.BJGroupRepository;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/catalog")
 public class BijouController {
     private GrupTovRepository grupTovRepository;
     private TovarRepository tovarRepository;
-    private BJGroupRepository bjGroupRepository;
+    private GroupService groupService;
     private ProductService productService;
 
     @Autowired
@@ -32,33 +28,28 @@ public class BijouController {
     }
 
     @Autowired
-    public void setBjGroupRepository(BJGroupRepository bjGroupRepository) {
-        this.bjGroupRepository = bjGroupRepository;
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
     }
 
     @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
+    public void setGroupService(GroupService groupService) {
+        this.groupService = groupService;
     }
 
 
     @GetMapping("/bizhuteriya")
     public String getBjGroups(Model model) {
-        List<GrupTov> groups = grupTovRepository.findBijou();
-        model.addAttribute("groups",groups);
-        System.out.println(groups.size());
-        return "groups-page";
+        return groupService.getGroups(model);
     }
 
     @GetMapping("/bizhuteriya/{alias}")
     public String getBjproducts(
-            @PathVariable(name="alias") String alias, Model model) {
-        List<Tovar> products = tovarRepository.findTovarByAlias(alias);
-        String groupName = bjGroupRepository.findByAlias(alias).getGroupNameRu();
-        model.addAttribute("products",products);
-        model.addAttribute("group_name",groupName);
-        System.out.println(products.size());
-        return "single-group";
+            @PathVariable(name="alias") String alias,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model) {
+        return groupService.getGrupTov(alias, page, size, model);
     }
     @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
     public String getBjproduct(
@@ -67,4 +58,5 @@ public class BijouController {
             Model model) {
         return productService.getProductPage(groupAlias,prodAlias,model);
     }
+
 }
