@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <h3 th:text="${group_name} + ' (' + ${group_size} + ')'"></h3>
+                    <h3 th:text="${group_name} + ' (' + ${totalItems} + ')'"></h3>
                 </div>
             </div>
             <!-- Row-of-Product-Container -->
@@ -101,6 +101,30 @@
                     </div>
                 </div>
             </div>
+            <!-- Shop-Pagination -->
+            <div class="pagination-area">
+                <div class="pagination-number">
+                    <ul th:if="${totalPages > 1}">
+                        <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
+                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${currentPage - 1}, size=${pageSize})}"
+                               title="Предыдущая">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
+                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${i}, size=${pageSize})}"
+                               th:text="${i + 1}"></a>
+                        </li>
+                        <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
+                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${currentPage + 1}, size=${pageSize})}"
+                               title="Следующая">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Shop-Pagination /- -->
         </div>
     </div>
 </div>

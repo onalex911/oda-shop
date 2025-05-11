@@ -1,5 +1,7 @@
 package ru.onalex.odashop.repositories;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -18,7 +20,8 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
 //            "ON bg.group_id = t.gruptov " +
 //            "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
     @Query(value="SELECT * FROM tovar t WHERE t.ostatok > 0 AND purl LIKE CONCAT('%/',:alias,'/%')",nativeQuery = true)
-    List<Tovar> findTovarByAlias(String alias);
+//    List<Tovar> findTovarByAlias(String alias);
+    Page<Tovar> findTovarByAlias(String alias, Pageable pageable);
 
     @Query(value="SELECT * FROM tovar t WHERE code=:code AND t.ostatok > 0",nativeQuery = true)
     Tovar findExistTovarByCode(int code);

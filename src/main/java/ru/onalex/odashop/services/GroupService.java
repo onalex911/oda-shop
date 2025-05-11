@@ -1,6 +1,8 @@
 package ru.onalex.odashop.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,16 +37,19 @@ public class GroupService {
         return "groups-page";
     }
 
-    public String getGrupTov(String alias, Model model) {
-        List<TovarDTO> products = tovarRepository.findTovarByAlias(alias)
-                .stream()
-                .map(TovarDTO::fromEntity).collect(Collectors.toList());
+    public String getGrupTov(String alias, int page, int size, Model model) {
+        Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
+        Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
+
         GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
-        String groupName = grupTovDTO.getNormalName();
-        model.addAttribute("products",products);
-        model.addAttribute("group_name",groupName);
-        model.addAttribute("group_size", products.size());
-        System.out.println(products.size());
+
+        model.addAttribute("products", products);
+        model.addAttribute("group_name", grupTovDTO.getNormalName());
+        model.addAttribute("totalItems", products.getTotalElements());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
         return "single-group";
     }
 }

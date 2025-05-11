@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.onalex.odashop.services.*;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
@@ -44,8 +45,11 @@ public class BijouController {
 
     @GetMapping("/bizhuteriya/{alias}")
     public String getBjproducts(
-            @PathVariable(name="alias") String alias, Model model) {
-        return groupService.getGrupTov(alias, model);
+            @PathVariable(name="alias") String alias,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            Model model) {
+        return groupService.getGrupTov(alias, page, size, model);
     }
     @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
     public String getBjproduct(
