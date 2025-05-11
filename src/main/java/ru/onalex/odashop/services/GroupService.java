@@ -28,7 +28,8 @@ public class GroupService {
     }
 
     public String getGroups(Model model){
-        List<GrupTov> groups = grupTovRepository.findBijou();
+        List<GrupTovDTO> groups = grupTovRepository.findBijou()
+                .stream().map(GrupTovDTO::fromEntity).collect(Collectors.toList());
         model.addAttribute("groups",groups);
 //        System.out.println(groups.size());
         return "groups-page";
