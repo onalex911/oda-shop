@@ -41,71 +41,77 @@
 
     <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
     <div th:replace="~{fragments/header :: header(${isAuthenticated})}"></div>
-        <!-- Mid-Header /- -->
-        <!-- Responsive-Buttons -->
-        <div class="fixed-responsive-container">
-            <div class="fixed-responsive-wrapper">
-                <button type="button" class="button fas fa-search" id="responsive-search"></button>
-            </div>
-            <div class="fixed-responsive-wrapper">
-                <a href="wishlist.html">
-                    <i class="far fa-heart"></i>
-                    <span class="fixed-item-counter">4</span>
-                </a>
-            </div>
+    <!-- Mid-Header /- -->
+    <!-- Responsive-Buttons -->
+    <div class="fixed-responsive-container">
+        <div class="fixed-responsive-wrapper">
+            <button type="button" class="button fas fa-search" id="responsive-search"></button>
         </div>
-        <!-- Responsive-Buttons /- -->
-       
-        <!-- Bottom-Header -->
-        <div class="full-layer-bottom-header">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-3">
-                        <div class="v-menu v-close">
+        <div class="fixed-responsive-wrapper">
+            <a href="wishlist.html">
+                <i class="far fa-heart"></i>
+                <span class="fixed-item-counter">4</span>
+            </a>
+        </div>
+    </div>
+    <!-- Responsive-Buttons /- -->
+
+    <!-- Bottom-Header -->
+    <div class="full-layer-bottom-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="v-menu v-close">
                             <span class="v-title">
                                 <i class="ion ion-md-menu"></i>
                                 Все разделы
                                 <i class="fas fa-angle-down"></i>
                             </span>
-                            <nav>
-                                <div class="v-wrapper">
-                                    <ul class="v-list animated fadeIn">
-                                        <li class="js-backdrop" th:each="g : ${menuGroups}">
-                                            <a th:href="@{${g.purl}}">
-                                                <i class="ion ion-md-folder"></i>
-                                                <span th:text="${g.grupName}">
+                        <nav>
+                            <div class="v-wrapper">
+                                <ul class="v-list animated fadeIn">
+                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
+                                        <a th:href="@{${g.purl}}">
+                                            <i class="ion ion-md-folder"></i>
+                                            <span th:text="${g.normalName}"></span>
 <!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
                     </div>
-
+                </div>
+                <div class="col-lg-9">
+                    <h3>
+                        <a th:href="@{'/catalog/bizhuteriya/' + ${group_alias}}">
+                            <span th:text="${group_name}"></span>
+                        </a>
+                    </h3>
                 </div>
             </div>
         </div>
-        <!-- Bottom-Header /- -->
+    </div>
+    <!-- Bottom-Header /- -->
     </header>
     <!-- Header /- -->
     <!-- Page Introduction Wrapper -->
-<!--    <div class="page-style-a">-->
-<!--        <div class="container">-->
-<!--            <div class="page-intro">-->
-<!--                <h2>Detail</h2>-->
-<!--                <ul class="bread-crumb">-->
-<!--                    <li class="has-separator">-->
-<!--                        <i class="ion ion-md-home"></i>-->
-<!--                        <a href="home.html">Home</a>-->
-<!--                    </li>-->
-<!--                    <li class="is-marked">-->
-<!--                        <a href="single-product.html">Detail</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div class="page-style-a">-->
+    <!--        <div class="container">-->
+    <!--            <div class="page-intro">-->
+    <!--                <h2>Detail</h2>-->
+    <!--                <ul class="bread-crumb">-->
+    <!--                    <li class="has-separator">-->
+    <!--                        <i class="ion ion-md-home"></i>-->
+    <!--                        <a href="home.html">Home</a>-->
+    <!--                    </li>-->
+    <!--                    <li class="is-marked">-->
+    <!--                        <a href="single-product.html">Detail</a>-->
+    <!--                    </li>-->
+    <!--                </ul>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
     <!-- Page Introduction Wrapper /- -->
     <!-- Single-Product-Full-Width-Page -->
     <div class="page-detail u-s-p-t-80">
@@ -115,28 +121,29 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <!-- Product-zoom-area -->
                     <div class="zoom-area">
-                        <img id="zoom-pro" class="img-fluid" th:src="'/assets/' + ${product.picBig}" th:data-zoom-image="'/' + ${product.picBig}" alt="Zoom Image">
-<!--                        <img id="zoom-pro" class="img-fluid" th:src="${product.picBig}" alt="Zoom Image">-->
-<!--                        <div id="gallery" class="u-s-m-t-10">-->
-<!--                            <a class="active" data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
-<!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
-<!--                            </a>-->
-<!--                        </div>-->
+                        <img id="zoom-pro" class="img-fluid" th:src="'/assets/' + ${product.picBig}"
+                             th:data-zoom-image="'/' + ${product.picBig}" alt="Zoom Image">
+                        <!--                        <img id="zoom-pro" class="img-fluid" th:src="${product.picBig}" alt="Zoom Image">-->
+                        <!--                        <div id="gallery" class="u-s-m-t-10">-->
+                        <!--                            <a class="active" data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                            <a data-image="images/product/product@4x.jpg" data-zoom-image="images/product/product@4x.jpg">-->
+                        <!--                                <img src="images/product/product@2x.jpg" alt="Product">-->
+                        <!--                            </a>-->
+                        <!--                        </div>-->
                     </div>
                     <!-- Product-zoom-area /- -->
                 </div>
@@ -149,95 +156,95 @@
                                     <span th:text="${product.normalTovName}"></span>
                                 </h1>
                             </div>
-<!--                            <ul class="bread-crumb">-->
-<!--                                <li class="has-separator">-->
-<!--                                    <a href="home.html">Home</a>-->
-<!--                                </li>-->
-<!--                                <li class="has-separator">-->
-<!--                                    <a href="shop-v1-root-category.html">Men's Clothing</a>-->
-<!--                                </li>-->
-<!--                                <li class="has-separator">-->
-<!--                                    <a href="shop-v2-sub-category.html">Tops</a>-->
-<!--                                </li>-->
-<!--                                <li class="is-marked">-->
-<!--                                    <a href="shop-v3-sub-sub-category.html">Hoodies</a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                            <div class="product-rating">-->
-<!--                                <div class='star' title="4.5 out of 5 - based on 23 Reviews">-->
-<!--                                    <span style='width:67px'></span>-->
-<!--                                </div>-->
-<!--                                <span>(23)</span>-->
-<!--                            </div>-->
+                            <!--                            <ul class="bread-crumb">-->
+                            <!--                                <li class="has-separator">-->
+                            <!--                                    <a href="home.html">Home</a>-->
+                            <!--                                </li>-->
+                            <!--                                <li class="has-separator">-->
+                            <!--                                    <a href="shop-v1-root-category.html">Men's Clothing</a>-->
+                            <!--                                </li>-->
+                            <!--                                <li class="has-separator">-->
+                            <!--                                    <a href="shop-v2-sub-category.html">Tops</a>-->
+                            <!--                                </li>-->
+                            <!--                                <li class="is-marked">-->
+                            <!--                                    <a href="shop-v3-sub-sub-category.html">Hoodies</a>-->
+                            <!--                                </li>-->
+                            <!--                            </ul>-->
+                            <!--                            <div class="product-rating">-->
+                            <!--                                <div class='star' title="4.5 out of 5 - based on 23 Reviews">-->
+                            <!--                                    <span style='width:67px'></span>-->
+                            <!--                                </div>-->
+                            <!--                                <span>(23)</span>-->
+                            <!--                            </div>-->
                         </div>
-<!--                        <div class="section-2-short-description u-s-p-y-14">-->
-<!--                            <h6 class="information-heading u-s-m-b-8">Description:</h6>-->
-<!--                            <p>This hoodie is full cotton. It includes a muff sewn onto the lower front, and (usually) a drawstring to adjust the hood opening. Throughout the U.S., it is common for middle-school, high-school, and college students to wear this sweatshirts—with or without hoods—that display their respective school names or mascots across the chest, either as part of a uniform or personal preference.-->
-<!--                            </p>-->
-<!--                        </div>-->
+                        <!--                        <div class="section-2-short-description u-s-p-y-14">-->
+                        <!--                            <h6 class="information-heading u-s-m-b-8">Description:</h6>-->
+                        <!--                            <p>This hoodie is full cotton. It includes a muff sewn onto the lower front, and (usually) a drawstring to adjust the hood opening. Throughout the U.S., it is common for middle-school, high-school, and college students to wear this sweatshirts—with or without hoods—that display their respective school names or mascots across the chest, either as part of a uniform or personal preference.-->
+                        <!--                            </p>-->
+                        <!--                        </div>-->
                         <div class="section-3-price-original-discount u-s-p-y-14">
                             <div class="price">
                                 <h4 th:text="${product.cena} + ' руб.'"></h4>
                             </div>
-<!--                            <div class="original-price">-->
-<!--                                <span>Original Price:</span>-->
-<!--                                <span>$60.00</span>-->
-<!--                            </div>-->
-<!--                            <div class="discount-price">-->
-<!--                                <span>Discount:</span>-->
-<!--                                <span>8%</span>-->
-<!--                            </div>-->
-<!--                            <div class="total-save">-->
-<!--                                <span>Save:</span>-->
-<!--                                <span>$5</span>-->
-<!--                            </div>-->
+                            <!--                            <div class="original-price">-->
+                            <!--                                <span>Original Price:</span>-->
+                            <!--                                <span>$60.00</span>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="discount-price">-->
+                            <!--                                <span>Discount:</span>-->
+                            <!--                                <span>8%</span>-->
+                            <!--                            </div>-->
+                            <!--                            <div class="total-save">-->
+                            <!--                                <span>Save:</span>-->
+                            <!--                                <span>$5</span>-->
+                            <!--                            </div>-->
                         </div>
-<!--                        <div class="section-4-sku-information u-s-p-y-14">-->
-<!--                            <h6 class="information-heading u-s-m-b-8">Sku Information:</h6>-->
-<!--                            <div class="availability">-->
-<!--                                <span>Availability:</span>-->
-<!--                                <span>In Stock</span>-->
-<!--                            </div>-->
-<!--                            <div class="left">-->
-<!--                                <span>Only:</span>-->
-<!--                                <span>50 left</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="section-5-product-variants u-s-p-y-14">-->
-<!--                            <h6 class="information-heading u-s-m-b-8">Product Variants:</h6>-->
-<!--                            <div class="color u-s-m-b-11">-->
-<!--                                <span>Available Color:</span>-->
-<!--                                <div class="color-variant select-box-wrapper">-->
-<!--                                    <select class="select-box product-color">-->
-<!--                                        <option value="1">Heather Grey</option>-->
-<!--                                        <option value="3">Black</option>-->
-<!--                                        <option value="5">White</option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="sizes u-s-m-b-11">-->
-<!--                                <span>Available Size:</span>-->
-<!--                                <div class="size-variant select-box-wrapper">-->
-<!--                                    <select class="select-box product-size">-->
-<!--                                        <option value="">Male 2XL</option>-->
-<!--                                        <option value="">Male 3XL</option>-->
-<!--                                        <option value="">Kids 4</option>-->
-<!--                                        <option value="">Kids 6</option>-->
-<!--                                        <option value="">Kids 8</option>-->
-<!--                                        <option value="">Kids 10</option>-->
-<!--                                        <option value="">Kids 12</option>-->
-<!--                                        <option value="">Female Small</option>-->
-<!--                                        <option value="">Male Small</option>-->
-<!--                                        <option value="">Female Medium</option>-->
-<!--                                        <option value="">Male Medium</option>-->
-<!--                                        <option value="">Female Large</option>-->
-<!--                                        <option value="">Male Large</option>-->
-<!--                                        <option value="">Female XL</option>-->
-<!--                                        <option value="">Male XL</option>-->
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <!--                        <div class="section-4-sku-information u-s-p-y-14">-->
+                        <!--                            <h6 class="information-heading u-s-m-b-8">Sku Information:</h6>-->
+                        <!--                            <div class="availability">-->
+                        <!--                                <span>Availability:</span>-->
+                        <!--                                <span>In Stock</span>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="left">-->
+                        <!--                                <span>Only:</span>-->
+                        <!--                                <span>50 left</span>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="section-5-product-variants u-s-p-y-14">-->
+                        <!--                            <h6 class="information-heading u-s-m-b-8">Product Variants:</h6>-->
+                        <!--                            <div class="color u-s-m-b-11">-->
+                        <!--                                <span>Available Color:</span>-->
+                        <!--                                <div class="color-variant select-box-wrapper">-->
+                        <!--                                    <select class="select-box product-color">-->
+                        <!--                                        <option value="1">Heather Grey</option>-->
+                        <!--                                        <option value="3">Black</option>-->
+                        <!--                                        <option value="5">White</option>-->
+                        <!--                                    </select>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                            <div class="sizes u-s-m-b-11">-->
+                        <!--                                <span>Available Size:</span>-->
+                        <!--                                <div class="size-variant select-box-wrapper">-->
+                        <!--                                    <select class="select-box product-size">-->
+                        <!--                                        <option value="">Male 2XL</option>-->
+                        <!--                                        <option value="">Male 3XL</option>-->
+                        <!--                                        <option value="">Kids 4</option>-->
+                        <!--                                        <option value="">Kids 6</option>-->
+                        <!--                                        <option value="">Kids 8</option>-->
+                        <!--                                        <option value="">Kids 10</option>-->
+                        <!--                                        <option value="">Kids 12</option>-->
+                        <!--                                        <option value="">Female Small</option>-->
+                        <!--                                        <option value="">Male Small</option>-->
+                        <!--                                        <option value="">Female Medium</option>-->
+                        <!--                                        <option value="">Male Medium</option>-->
+                        <!--                                        <option value="">Female Large</option>-->
+                        <!--                                        <option value="">Male Large</option>-->
+                        <!--                                        <option value="">Female XL</option>-->
+                        <!--                                        <option value="">Male XL</option>-->
+                        <!--                                    </select>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="section-6-social-media-quantity-actions u-s-p-y-14">
                             <form action="#" class="post-form">
                                 <div class="quick-social-media-wrapper u-s-m-b-22">

@@ -31,14 +31,15 @@ public class ProductService {
     public String getProductPage(String groupAlias, String prodAlias, Model model){
         try {
             int prodId = getLastNumber(prodAlias);
-            Tovar product = tovarRepository.findExistTovarByCode(prodId);
-            TovarDTO tovarDTO = TovarDTO.fromEntity(product);
-//            String groupName = GrupTovDTO.fromEntity(grupTovRepository.findByAlias(groupAlias)).getNormalName();
-            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
+            TovarDTO tovarDTO = TovarDTO.fromEntity(tovarRepository.findExistTovarByCode(prodId));
+            GrupTovDTO grupTovDTO = GrupTovDTO.fromEntity(grupTovRepository.findByAlias(groupAlias));
+            String groupName = grupTovDTO.getNormalName();
+//            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
             System.out.println(groupName);
-            System.out.println(prodId);
+            System.out.println(groupAlias);
             model.addAttribute("product", tovarDTO);
             model.addAttribute("group_name", groupName);
+            model.addAttribute("group_alias", groupAlias);
             return "single-product";
         }catch (Exception e){
             model.addAttribute("errorMessage", "ОШИБКА! " + e.getMessage());

@@ -3502,7 +3502,8 @@ body {
     display: block; }
   /* 7.6 Bottom-Header */
   .full-layer-bottom-header {
-    padding-bottom: 80px; }
+    /* padding-bottom: 80px;  */
+	}
   /* 8.2 Mid-Footer */
   .mid-footer-wrapper {
     padding-bottom: 12px; }
