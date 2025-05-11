@@ -43,6 +43,7 @@ public class GroupService {
         String groupName = grupTovDTO.getNormalName();
         model.addAttribute("products",products);
         model.addAttribute("group_name",groupName);
+        model.addAttribute("group_size", products.size());
         System.out.println(products.size());
         return "single-group";
     }
