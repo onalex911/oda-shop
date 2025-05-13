@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.onalex.odashop.entities.CartItem;
 import ru.onalex.odashop.entities.Tovar;
 import ru.onalex.odashop.repositories.TovarRepository;
 import ru.onalex.odashop.services.CartService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -24,9 +27,16 @@ public class CartController {
 
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
-        model.addAttribute("cartItems", cartService.getCartItems(session));
-        model.addAttribute("total", cartService.getTotal(session));
-        return "cart";
+        List<CartItem> items = cartService.getCartItems(session);
+        double total = cartService.getTotal(session);
+        if (total > 0 && items.size() > 0) {
+            model.addAttribute("cartItems", items);
+            model.addAttribute("total", total);
+            model.addAttribute("title", "Корзина. ");
+            return "cart";
+        }
+        model.addAttribute("title", "Корзина пуста. ");
+        return "cart-empty";
     }
 
     @PostMapping("/add")
