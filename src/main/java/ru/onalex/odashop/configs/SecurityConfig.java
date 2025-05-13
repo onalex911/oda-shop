@@ -1,19 +1,21 @@
 package ru.onalex.odashop.configs;
 
-import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.onalex.odashop.entities.Customer;
+import ru.onalex.odashop.repositories.CustomerRepository;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -24,9 +26,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers("/assets/**", "/static/**", "/public/**", "/resources/**").permitAll()
-                        .requestMatchers("/assets/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/customer/**").authenticated()
+//                        .requestMatchers("/assets/**").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/customer/**").authenticated()
 //                        .requestMatchers("/adminlte/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
@@ -39,13 +41,24 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("securepassword"))
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(admin);
+    public UserDetailsService userDetailsService(CustomerRepository customerRepository) {
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder().encode("securepassword"))
+//                .roles("ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(admin);
+        return username -> {
+            Customer user = customerRepository.findByEmail(username);
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found");
+            }
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword(),
+                    Collections.emptyList()
+            );
+        };
     }
 
     @Bean

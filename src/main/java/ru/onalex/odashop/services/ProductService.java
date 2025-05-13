@@ -35,8 +35,8 @@ public class ProductService {
             GrupTovDTO grupTovDTO = GrupTovDTO.fromEntity(grupTovRepository.findByAlias(groupAlias));
             String groupName = grupTovDTO.getNormalName();
 //            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
-            System.out.println(groupName);
-            System.out.println(groupAlias);
+//            System.out.println(groupName);
+//            System.out.println(groupAlias);
             model.addAttribute("product", tovarDTO);
             model.addAttribute("group_name", groupName);
             model.addAttribute("group_alias", groupAlias);

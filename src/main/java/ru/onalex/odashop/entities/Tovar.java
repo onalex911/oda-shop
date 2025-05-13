@@ -2,8 +2,6 @@ package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 @Entity

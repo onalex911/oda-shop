@@ -40,19 +40,24 @@ public class GroupService {
     }
 
     public String getGrupTov(String alias, int page, int size, Model model) {
-        Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
-        Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
+        try {
+            Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
+            Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
 
-        GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
+            GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
 
-        model.addAttribute("products", products);
-        model.addAttribute("group_name", grupTovDTO.getNormalName());
-        model.addAttribute("totalItems", products.getTotalElements());
-        model.addAttribute("totalPages", products.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("pageSize", size);
-        model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
+            model.addAttribute("products", products);
+            model.addAttribute("group_name", grupTovDTO.getNormalName());
+            model.addAttribute("totalItems", products.getTotalElements());
+            model.addAttribute("totalPages", products.getTotalPages());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("pageSize", size);
+            model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
 
-        return "single-group";
+            return "single-group";
+        }catch (Exception e){
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
     }
 }
