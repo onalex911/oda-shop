@@ -3,7 +3,6 @@ package ru.onalex.odashop.dtos;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.entities.Tovar;
 
 import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
@@ -31,7 +30,7 @@ public class TovarDTO {
 
     public static TovarDTO fromEntity(Tovar tovar) {
         return TovarDTO.builder()
-                .code(tovar.getCode())
+                .code(tovar.getId())
                 .purl(tovar.getPurl())
                 .nomer(tovar.getNomer())
                 .grupTov(tovar.getGrupTov())
