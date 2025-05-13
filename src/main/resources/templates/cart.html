@@ -76,8 +76,8 @@
                                         <tr th:each="item : ${cartItems}">
                                             <td>
                                                 <div class="cart-anchor-image">
-                                        <a href="#">
-                                            <img src="" alt="Product"/>
+                                        <a th:href="@{${item.tovar.purl}}">
+                                            <img alt="Product" th:src="'/assets/' + ${item.tovar.picPreview}"/>
                                             <h6 th:text="${item.tovar.normalTovName}"></h6>
                                         </a>
                                 </div>
@@ -88,7 +88,7 @@
                                 <td>
                                     <div class="cart-quantity">
                                         <div class="quantity">
-                                            <input type="text" class="quantity-text-field" th:value="${item.quantity}">
+                                            <input type="text" class="quantity-text-field" name="quantity" th:value="${item.quantity}">
                                             <a class="plus-a" data-max="1000">&#43;</a>
                                             <a class="minus-a" data-min="1">&#45;</a>
                                         </div>
