@@ -31,7 +31,7 @@ public class TovarDTO {
 
     public static TovarDTO fromEntity(Tovar tovar) {
         return TovarDTO.builder()
-                .code(tovar.getCode())
+                .code(tovar.getId())
                 .purl(tovar.getPurl())
                 .nomer(tovar.getNomer())
                 .grupTov(tovar.getGrupTov())
