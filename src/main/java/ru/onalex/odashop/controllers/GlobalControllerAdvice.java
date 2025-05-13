@@ -28,10 +28,16 @@ public class GlobalControllerAdvice {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         model.addAttribute("isAuthenticated", isAuthenticated);
         model.addAttribute("currentYear", currentYear);
-        // Добавляем список групп товаров
-        List<GrupTovDTO> groups = grupTovRepository.findBijou().stream()
-                .map(GrupTovDTO::fromEntity)
-                .collect(Collectors.toList());
-        model.addAttribute("menuGroups", groups);
+        model.addAttribute("title", "");
+        try {
+            // Добавляем список групп товаров
+            List<GrupTovDTO> groups = grupTovRepository.findBijou().stream()
+                    .map(GrupTovDTO::fromEntity)
+                    .collect(Collectors.toList());
+            model.addAttribute("menuGroups", groups);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

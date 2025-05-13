@@ -37,7 +37,7 @@ public class ServiceUtils {
 
         // 2. Расставляем «ёлочки» вместо маркеров
         String withQuotes = temp.replaceAll("(^|\\s)QUOTE_MARKER", "$1«")
-                .replaceAll("QUOTE_MARKER($|\\s|\\p{Punct})", "»$1");
+                .replaceAll("QUOTE_MARKER($|\\s*|\\p{Punct})", "»$1");
 
         // 3. Важное исправление: убираем оставшиеся обратные слеши
         return withQuotes.replace("\\", "");

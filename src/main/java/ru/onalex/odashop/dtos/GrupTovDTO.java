@@ -12,7 +12,7 @@ import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 @Builder
 public class GrupTovDTO {
 
-    private int code;
+    private int id;
     private String purl;
     private int nomer;
     private int blok;
@@ -26,7 +26,7 @@ public class GrupTovDTO {
 
     public static GrupTovDTO fromEntity(GrupTov grupTov) {
         return GrupTovDTO.builder()
-                .code(grupTov.getCode())
+                .id(grupTov.getId())
                 .purl(grupTov.getPurl())
                 .nomer(grupTov.getNomer())
                 .blok(grupTov.getBlok())
