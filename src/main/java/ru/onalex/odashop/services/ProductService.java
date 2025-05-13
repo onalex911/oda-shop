@@ -40,6 +40,7 @@ public class ProductService {
             model.addAttribute("product", tovarDTO);
             model.addAttribute("group_name", groupName);
             model.addAttribute("group_alias", groupAlias);
+            model.addAttribute("title", tovarDTO.getNormalTovName() + ". " + groupName + ". ");
             return "single-product";
         }catch (Exception e){
             model.addAttribute("errorMessage", "ОШИБКА! " + e.getMessage());

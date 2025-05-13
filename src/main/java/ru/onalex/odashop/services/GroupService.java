@@ -33,6 +33,8 @@ public class GroupService {
         List<GrupTovDTO> groups = grupTovRepository.findBijou()
                 .stream().map(GrupTovDTO::fromEntity).collect(Collectors.toList());
         model.addAttribute("groups",groups);
+        model.addAttribute("title","");
+
 //        System.out.println(groups.size());
         return "groups-page";
     }
@@ -49,6 +51,7 @@ public class GroupService {
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
+        model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
 
         return "single-group";
     }

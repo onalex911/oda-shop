@@ -6,5 +6,5 @@ import ru.onalex.odashop.entities.CartItem;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    void deleteByCartIdAndProductId(Long cartId, Long tovarId);
+    void deleteByCartIdAndTovarId(Long cartId, Long tovarId);
 }

@@ -36,9 +36,11 @@ public class CartService {
         }
     }
 
-    public void removeFromCart(HttpSession session, Long productId) {
+
+    public void removeFromCart(HttpSession session, Long tovarId) {
         List<CartItem> cart = getCartItems(session);
-        cart.removeIf(item -> item.getTovar().getId() == productId);
+        cart.removeIf(item -> item.getTovar().getId() == tovarId);
+
     }
 
     public void clearCart(HttpSession session) {
