@@ -1,23 +1,22 @@
-async function refreshTovar(id) {
-    // alert("refresh " + id);
-    // return;
+async function refreshTovar(id,price) {
 
+    let newQuantity = parseInt(document.getElementById(`q_${id}`).value);
 
-    let response = await fetch(`/cart/delete/${id}`,{
-        method:'DELETE'
+    let response = await fetch(`/cart/refresh/${id}/${newQuantity}`,{
+        method:'POST'
     });
 
     if (response.ok){
-        console.log("Удален " + id);
+        // alert("Обновлен " + id);
         console.log(await response.text())
-        document.querySelector(`tr[data-id='${id}']`).remove();
+        document.querySelector(`#s_${id}`).textContent = formatMoneyValue(newQuantity * parseMoneyValue(price));
     }else{
         console.log("error")
     }
 }
 async function delTovar(id) {
     //сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
-    let sum = parseMoneyValue(document.querySelector(`div#q_${id}`).textContent);
+    let sum = parseMoneyValue(document.getElementById(`s_${id}`).textContent);
 
     let response = await fetch(`/cart/remove/${id}`,{
         method:'DELETE'

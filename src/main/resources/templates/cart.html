@@ -88,7 +88,7 @@
                                 <td>
                                     <div class="cart-quantity">
                                         <div class="quantity">
-                                            <input type="text" class="quantity-text-field" name="quantity" th:value="${item.quantity}">
+                                            <input type="text" th:id="'q_'+${item.tovar.id}" class="quantity-text-field" name="quantity" th:value="${item.quantity}">
                                             <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
                                             <a class="minus-a" data-min="1">&#45;</a>
                                         </div>
@@ -96,12 +96,12 @@
                                 </td>
                                 <td>
                                     <div class="cart-quantity">
-                                        <div class="quantity" th:id="'q_'+${item.tovar.id}" th:text="${item.tovar.cena * item.quantity}"></div>
+                                        <div class="quantity" th:id="'s_'+${item.tovar.id}" th:text="${item.tovar.cena * item.quantity}"></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="action-wrapper">
-                                        <button class="button button-outline-secondary fas fa-sync" th:onclick="'refreshTovar('+${item.tovar.id}+')'"></button>
+                                        <button class="button button-outline-secondary fas fa-sync" th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
                                         <button class="button button-outline-secondary fas fa-trash" th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
                                     </div>
                                 </td>

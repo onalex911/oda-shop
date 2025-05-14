@@ -48,6 +48,17 @@ public class CartController {
     }
 
     @ResponseBody
+    @PostMapping("/refresh/{id}/{quantity}")
+    public void refreshCart(@PathVariable Long id,
+                            @PathVariable int quantity,
+                            HttpSession session) {
+        Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
+        cartService.refreshCart(session, TovarDTO.fromEntity(tovar), quantity);
+//        System.out.println("Refreshed id: " + id + " new quantity: " + quantity);
+//        return "redirect:/cart";
+    }
+
+    @ResponseBody
     @DeleteMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id, HttpSession session) {
         System.out.println("removing: "+id);

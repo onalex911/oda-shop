@@ -42,7 +42,20 @@ public class CartService {
             cart.add(new CartItemDTO(tovar, quantity));
         }
     }
+    public void refreshCart(HttpSession session, TovarDTO tovar, int quantity) {
+        List<CartItemDTO> cart = getCartItems(session);
 
+        // Проверяем, есть ли товар уже в корзине
+        Optional<CartItemDTO> existingItem = cart.stream()
+                .filter(item -> item.getTovar().getId() == tovar.getId())
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            existingItem.get().setQuantity(quantity);
+        } else {
+            cart.add(new CartItemDTO(tovar, quantity));
+        }
+    }
 
     public void removeFromCart(HttpSession session, Long tovarId) {
         List<CartItemDTO> cart = getCartItems(session);
@@ -59,4 +72,5 @@ public class CartService {
                 .mapToDouble(item -> item.getTovar().getCena() * item.getQuantity())
                 .sum();
     }
+
 }
