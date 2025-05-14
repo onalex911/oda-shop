@@ -504,10 +504,10 @@ $(function () {
     /**
      * Check everything including DOM elements and images loaded
      */
-    $(window).on('load',function () {
-        showNewsletterModal();
-       $('.ph-item').removeClass('ph-item');
-    });
+    // $(window).on('load',function () {
+    //     showNewsletterModal();
+    //    $('.ph-item').removeClass('ph-item');
+    // });
 
 })(jQuery, window, document);
 

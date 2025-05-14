@@ -73,7 +73,7 @@
                                         <!--                                                </form>-->
                                         <!--                                            </td>-->
                                         <!--                                        </tr>-->
-                                        <tr th:each="item : ${cartItems}">
+                                        <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
                                             <td>
                                                 <div class="cart-anchor-image">
                                         <a th:href="@{${item.tovar.purl}}">
@@ -89,20 +89,20 @@
                                     <div class="cart-quantity">
                                         <div class="quantity">
                                             <input type="text" class="quantity-text-field" name="quantity" th:value="${item.quantity}">
-                                            <a class="plus-a" data-max="1000">&#43;</a>
+                                            <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
                                             <a class="minus-a" data-min="1">&#45;</a>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="cart-quantity">
-                                        <div class="quantity" th:text="${item.tovar.cena * item.quantity}"></div>
+                                        <div class="quantity" th:id="'q_'+${item.tovar.id}" th:text="${item.tovar.cena * item.quantity}"></div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="action-wrapper">
-                                        <button class="button button-outline-secondary fas fa-sync"></button>
-                                        <button class="button button-outline-secondary fas fa-trash"></button>
+                                        <button class="button button-outline-secondary fas fa-sync" th:onclick="'refreshTovar('+${item.tovar.id}+')'"></button>
+                                        <button class="button button-outline-secondary fas fa-trash" th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
                                     </div>
                                 </td>
                                 </tr>
@@ -184,5 +184,6 @@
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->
 <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script src="/assets/js/cart.js"></script>
 </body>
 </html>
