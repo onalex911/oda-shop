@@ -10,7 +10,7 @@
 <div id="app">
 
     <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
-    <div th:replace="~{fragments/header :: header(${isAuthenticated})}"></div>
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
     <!-- Mid-Header /- -->
     <!-- Responsive-Buttons -->
     <div class="fixed-responsive-container">

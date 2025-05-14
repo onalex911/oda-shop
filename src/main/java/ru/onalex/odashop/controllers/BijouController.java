@@ -59,4 +59,6 @@ public class BijouController {
         return productService.getProductPage(groupAlias,prodAlias,model);
     }
 
+
+
 }

@@ -36,7 +36,7 @@
 </head>
 <body>
 <!-- Header -->
-<header th:fragment="header(isAuthenticated)">
+<header th:fragment="header(isAuthenticated,cartInfo)">
     <!-- Top-Header -->
     <div class="full-layer-outer-header">
         <div class="container clearfix">
@@ -63,7 +63,7 @@
             <nav>
                 <ul class="secondary-nav g-nav">
                     <li>
-                        <a href="contacts.html">Контакты
+                        <a href="/contacts">Контакты
                             <i class="fas fa-handshake-o u-s-m-l-9"></i>
                         </a>
                     </li>
@@ -83,7 +83,7 @@
                                     Избранное</a>
                             </li>
                             <li th:if="${!isAuthenticated}">
-                                <a href="/authenticate">
+                                <a href="/account">
                                     <i class="fas fa-sign-in-alt u-s-m-r-9"></i>
                                     Вход / Регистрация</a>
                             </li>
@@ -146,20 +146,20 @@
                     <nav>
                         <ul class="mid-nav g-nav">
                             <li class="u-d-none-lg">
-                                <a href="home.html">
+                                <a href="/catalog/bizhuteriya">
                                     <i class="ion ion-md-home"></i>
                                 </a>
                             </li>
                             <li class="u-d-none-lg">
-                                <a href="wishlist.html">
+                                <a href="/wishlist">
                                     <i class="far fa-heart"></i>
                                 </a>
                             </li>
                             <li>
-                                <a id="mini-cart-trigger" href="cart.html">
+                                <a id="mini-cart-trigger" href="/cart">
                                     <i class="ion ion-md-basket"></i>
-                                    <span class="item-counter">0</span>
-                                    <span class="item-price">0.00</span>
+                                    <span class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
+                                    <span class="item-price" th:text="${cartInfo.getTotalSum}"></span>
                                 </a>
                             </li>
                         </ul>

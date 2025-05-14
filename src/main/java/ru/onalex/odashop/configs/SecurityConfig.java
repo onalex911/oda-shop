@@ -28,13 +28,14 @@ public class SecurityConfig {
 //                        .requestMatchers("/assets/**", "/static/**", "/public/**", "/resources/**").permitAll()
 //                        .requestMatchers("/assets/**").permitAll()
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/customer/**").authenticated()
+                        .requestMatchers("/customer/**").authenticated()
 //                        .requestMatchers("/adminlte/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
+//                        .loginPage("/login")
+                        .loginPage("/account")
                         .permitAll()
                 )
                 .build();
