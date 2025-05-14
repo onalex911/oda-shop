@@ -48,7 +48,7 @@ public class CartController {
     }
 
     @ResponseBody
-    @PostMapping("/remove/{id}")
+    @DeleteMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id, HttpSession session) {
         System.out.println("removing: "+id);
         cartService.removeFromCart(session, id);

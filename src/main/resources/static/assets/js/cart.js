@@ -20,7 +20,7 @@ async function delTovar(id) {
     let sum = parseMoneyValue(document.querySelector(`div#q_${id}`).textContent);
 
     let response = await fetch(`/cart/remove/${id}`,{
-        method:'POST'
+        method:'DELETE'
     });
 
     if (response.ok){
