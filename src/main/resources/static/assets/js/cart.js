@@ -1,5 +1,25 @@
-async function refreshTovar(id,price) {
 
+async function addTovar(id) {
+    let quantity = parseInt(document.getElementById(`q_${id}`).value);
+    let price = parseMoneyValue(document.getElementById(`p_${id}`).textContent);
+
+    // alert(`Adding /cart/add/${id}/${quantity}`);
+    let response = await fetch(`/cart/add/${id}/${quantity}`,{
+        method:'POST'
+    });
+
+    if (response.ok){
+        let result = await response;
+        // alert(result.text())
+
+        // document.getElementsByClassName('item-counter')[0].innerText = result.amountPos;
+        // document.getElementsByClassName('item-price')[0].innerText = formatMoneyValue(result.totalSum);
+    }else{
+        console.log("error")
+    }
+}
+
+async function refreshTovar(id,price) {
     let newQuantity = parseInt(document.getElementById(`q_${id}`).value);
 
     let response = await fetch(`/cart/refresh/${id}/${newQuantity}`,{
@@ -49,7 +69,7 @@ async function delTovar(id) {
 // Функция для преобразования строки в денежное значение (учитывает возможные разделители)
 function parseMoneyValue(value) {
     // Удаляем все пробелы, заменяем запятые на точки
-    const cleanValue = value.replace(/\s+/g, '').replace(',', '.');
+    const cleanValue = value.replace(/[а-яА-Я\s\.]+/g, '').replace(',', '.');
     return parseFloat(cleanValue);
 }
 

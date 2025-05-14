@@ -9,6 +9,7 @@ import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.CartItem;
 import ru.onalex.odashop.entities.Tovar;
+import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.repositories.TovarRepository;
 import ru.onalex.odashop.services.CartService;
 
@@ -47,7 +48,16 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    @PostMapping("/add/{id}/{quantity}")
     @ResponseBody
+    public CartInfo addToCartQuiet(@PathVariable Long id,
+                                   @PathVariable int quantity,
+                                   HttpSession session) {
+        Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
+        cartService.addToCart(session, TovarDTO.fromEntity(tovar), quantity);
+        return new CartInfo(cartService.getCartItems(session));
+    }
+
     @PostMapping("/refresh/{id}/{quantity}")
     public void refreshCart(@PathVariable Long id,
                             @PathVariable int quantity,
@@ -58,7 +68,7 @@ public class CartController {
 //        return "redirect:/cart";
     }
 
-    @ResponseBody
+
     @DeleteMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id, HttpSession session) {
         System.out.println("removing: "+id);

@@ -88,7 +88,7 @@
                         </div>
                         <div class="section-3-price-original-discount u-s-p-y-14">
                             <div class="price">
-                                <h4 th:text="${product.cena} + ' руб.'"></h4>
+                                <h4 th:id="'p_'+${product.id}" th:text="${product.cena} + ' руб.'"></h4>
                             </div>
                             <!--                            <div class="discount-price">-->
                             <!--                                <span>Discount:</span>-->
@@ -106,18 +106,20 @@
                             </div>
 
                         <div class="section-6-social-media-quantity-actions u-s-p-y-14">
-                            <form action="/cart/add" method="post" class="post-form">
+<!--                            <form action="/cart/add" method="post" class="post-form">-->
+                            <form>
                                 <input type="hidden" name="tovarId" th:value="${product.id}"/>
                                 <div class="quantity-wrapper u-s-m-b-22">
                                     <span>Количество:</span>
                                     <div class="quantity">
-                                        <input type="text" class="quantity-text-field" name="quantity" value="1">
+                                        <input type="text" th:id="'q_'+${product.id}" class="quantity-text-field" name="quantity" value="1">
                                         <a class="plus-a" th:data-max="${product.ostatok}">&#43;</a>
                                         <a class="minus-a" data-min="1">&#45;</a>
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="button button-outline-secondary" type="submit">в Корзину</button>
+<!--                                    <button class="button button-outline-secondary" type="submit">в Корзину</button>-->
+                                    <button class="button button-outline-secondary" th:onclick="'addTovar('+${product.id}+')'">в Корзину</button>
                                     <button class="button button-outline-secondary far fa-heart u-s-m-l-6"></button>
                                     <button class="button button-outline-secondary far fa-envelope u-s-m-l-6"></button>
                                 </div>
@@ -132,5 +134,6 @@
     <!-- Single-Product-Full-Width-Page /- -->
     <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
 </div>
+<script src="/assets/js/cart.js"></script>
 </body>
 </html>

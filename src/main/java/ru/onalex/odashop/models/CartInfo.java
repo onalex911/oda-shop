@@ -18,9 +18,15 @@ public class CartInfo {
     }
 
     public CartInfo(List<CartItemDTO> cart) {
-        this.amountPos = cart.size();
-        this.totalSum = cart.stream()
-                .mapToDouble(item -> item.getTovar().getCena() * item.getQuantity())
-                .sum();
+        if(cart != null) {
+            this.amountPos = cart.size();
+            this.totalSum = cart.stream()
+                    .mapToDouble(item -> item.getTovar().getCena() * item.getQuantity())
+                    .sum();
+
+        }else{
+            this.amountPos = 0;
+            this.totalSum = 0;
+        }
     }
 }
