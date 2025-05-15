@@ -22,6 +22,7 @@ public class TovarDTO {
     private String normalTovName;
     private String picPreview;
     private String picBig;
+    private String realPreview;
     private String realPicBig;
     private int ostatok;
     private double cena;
@@ -40,7 +41,7 @@ public class TovarDTO {
                 .grupTov(tovar.getGrupTov())
                 .tovName(tovar.getTovName())
                 .normalTovName(replaceQuotes(tovar.getTovName()))
-                .picPreview(ASSETS + tovar.getPicPreview())
+                .picPreview(tovar.getPicPreview())
                 .picBig(tovar.getPicBig())
                 .ostatok(tovar.getOstatok())
                 .cena(tovar.getCena())

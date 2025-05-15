@@ -34,7 +34,7 @@ public class GrupTovDTO {
                 .blok(grupTov.getBlok())
                 .rod(grupTov.getRod())
                 .grupName(grupTov.getGrupName())
-                .picPreview(ASSETS + grupTov.getPicPreview())
+                .picPreview(ASSETS + grupTov.getPicPreview()) //изображения основных групп (не кешируется пока)
                 .keywords(grupTov.getKeywords())
                 .description(grupTov.getDescription())
                 .alias(grupTov.getPurl().substring(grupTov.getPurl().lastIndexOf("/") + 1))

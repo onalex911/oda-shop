@@ -12,6 +12,7 @@ import ru.onalex.odashop.entities.Tovar;
 import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.repositories.TovarRepository;
 import ru.onalex.odashop.services.CartService;
+import ru.onalex.odashop.services.ImageService;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class CartController {
 
     @Autowired
     private TovarRepository tovarRepository;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
@@ -44,7 +47,13 @@ public class CartController {
                             @RequestParam(defaultValue = "1") int quantity,
                             HttpSession session) {
         Tovar tovar = tovarRepository.findById(Math.toIntExact(tovarId)).orElseThrow();
-        cartService.addToCart(session, TovarDTO.fromEntity(tovar), quantity);
+        TovarDTO tovarDTO = TovarDTO.fromEntity(tovar);
+
+        tovarDTO.setRealPreview(imageService.getImagePath(tovar.getPicPreview()));
+        tovarDTO.setRealPicBig(imageService.getImagePath(tovar.getPicBig()));
+
+//        System.out.println("pic preview: " + tovar.getPicPreview());
+        cartService.addToCart(session, tovarDTO, quantity);
         return "redirect:/cart";
     }
 
@@ -54,7 +63,14 @@ public class CartController {
                                    @PathVariable int quantity,
                                    HttpSession session) {
         Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
-        cartService.addToCart(session, TovarDTO.fromEntity(tovar), quantity);
+        TovarDTO tovarDTO = TovarDTO.fromEntity(tovar);
+
+        tovarDTO.setRealPreview(imageService.getImagePath(tovar.getPicPreview()));
+        tovarDTO.setRealPicBig(imageService.getImagePath(tovar.getPicBig()));
+
+//        System.out.println("pic preview: " + tovar.getPicPreview());
+
+        cartService.addToCart(session, tovarDTO, quantity);
         return new CartInfo(cartService.getCartItems(session));
     }
 
