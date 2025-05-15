@@ -5,12 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.onalex.odashop.entities.Tovar;
 
+import static ru.onalex.odashop.services.ImageService.ASSETS;
 import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
+
 
 @Getter
 @Setter
 @Builder
 public class TovarDTO {
+
     private int id;
     private String purl;
     private int nomer;
@@ -19,6 +22,8 @@ public class TovarDTO {
     private String normalTovName;
     private String picPreview;
     private String picBig;
+    private String realPreview;
+    private String realPicBig;
     private int ostatok;
     private double cena;
     private double cena1;

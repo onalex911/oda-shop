@@ -4,7 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ru.onalex.odashop.entities.GrupTov;
+import ru.onalex.odashop.utils.ServiceUtils;
 
+import static ru.onalex.odashop.services.ImageService.ASSETS;
 import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 
 @Getter
@@ -32,7 +34,7 @@ public class GrupTovDTO {
                 .blok(grupTov.getBlok())
                 .rod(grupTov.getRod())
                 .grupName(grupTov.getGrupName())
-                .picPreview(grupTov.getPicPreview())
+                .picPreview(ASSETS + grupTov.getPicPreview()) //изображения основных групп (не кешируется пока)
                 .keywords(grupTov.getKeywords())
                 .description(grupTov.getDescription())
                 .alias(grupTov.getPurl().substring(grupTov.getPurl().lastIndexOf("/") + 1))

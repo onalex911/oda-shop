@@ -2934,7 +2934,9 @@ body {
 /* Products-List-Wrapper */
 .table-wrapper, .table-wrapper-2 {
   overflow-x: auto;
-  min-height: 0.01%; }
+  min-height: 0.01%;
+  margin-top: 1em;
+}
   .table-wrapper > table, .table-wrapper-2 > table {
     width: 100%; }
     .table-wrapper > table th, .table-wrapper-2 > table th {
@@ -2974,7 +2976,9 @@ body {
   border: 1px solid #eceff8; }
 
 .action-wrapper {
-  display: inline-block; }
+  display: inline-block;
+  white-space: nowrap;
+}
   .action-wrapper button:before {
     transform: rotate(0deg);
     transition: .3s;
@@ -2982,7 +2986,7 @@ body {
   .action-wrapper button:hover:before {
     transform: rotate(360deg); }
   .action-wrapper .fa-trash {
-    margin-left: 6px; }
+    margin-left: 2px; }
 
 /* Coupon */
 .coupon-continue-checkout {
@@ -3610,3 +3614,7 @@ body {
     left: 90px;
     top: 8px; } }
 
+.top-panel{
+  border-bottom: 3px solid #b60c0d;
+  margin-bottom: 1rem;
+}

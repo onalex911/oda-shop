@@ -15,7 +15,7 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center top-panel">
                 <div class="col-lg-3">
                     <div class="v-menu v-close">
                             <span class="v-title">
@@ -30,7 +30,7 @@
                                         <a th:href="@{${g.purl}}">
                                             <i class="ion ion-md-folder"></i>
                                             <span th:text="${g.normalName}"/>
-<!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
+                                            <!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
                                         </a>
                                     </li>
                                 </ul>
@@ -53,6 +53,7 @@
                                     <table>
                                         <thead>
                                         <tr>
+                                            <th>&nbsp;</th>
                                             <th>Наименование</th>
                                             <th>Цена</th>
                                             <th>Количество</th>
@@ -76,110 +77,119 @@
                                         <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
                                             <td>
                                                 <div class="cart-anchor-image">
-                                        <a th:href="@{${item.tovar.purl}}">
-                                            <img alt="Product" th:src="'/assets/' + ${item.tovar.picPreview}"/>
-                                            <h6 th:text="${item.tovar.normalTovName}"></h6>
-                                        </a>
-                                </div>
-                                </td>
-                                <td>
-                                    <div class="cart-price" th:text="${item.tovar.cena}"></div>
-                                </td>
-                                <td>
-                                    <div class="cart-quantity">
-                                        <div class="quantity">
-                                            <input type="text" th:id="'q_'+${item.tovar.id}" class="quantity-text-field" name="quantity" th:value="${item.quantity}">
-                                            <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
-                                            <a class="minus-a" data-min="1">&#45;</a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="cart-quantity">
-                                        <div class="quantity" th:id="'s_'+${item.tovar.id}" th:text="${item.tovar.cena * item.quantity}"></div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-wrapper">
-                                        <button class="button button-outline-secondary fas fa-sync" th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
-                                        <button class="button button-outline-secondary fas fa-trash" th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
-                                    </div>
-                                </td>
-                                </tr>
+                                                    <a th:href="@{${item.tovar.purl}}">
+                                                        <img alt="Product" th:src="${item.tovar.realPreview}"/>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{${item.tovar.purl}}">
+                                                    <h6 th:text="${item.tovar.normalTovName}"></h6>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class="cart-price" th:text="${item.tovar.cena}"></div>
+                                            </td>
+                                            <td>
+                                                <div class="cart-quantity">
+                                                    <div class="quantity">
+                                                        <input type="text" th:id="'q_'+${item.tovar.id}"
+                                                               class="quantity-text-field" name="quantity"
+                                                               th:value="${item.quantity}">
+                                                        <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
+                                                        <a class="minus-a" data-min="1">&#45;</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="cart-quantity">
+                                                    <div class="quantity" th:id="'s_'+${item.tovar.id}"
+                                                         th:text="${item.tovar.cena * item.quantity}"></div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-wrapper">
+                                                    <button class="button button-outline-secondary fas fa-sync"
+                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
+                                                    <button class="button button-outline-secondary fas fa-trash"
+                                                            th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                </tbody>
-                                </table>
-                        </div>
-                        <!-- Products-List-Wrapper /- -->
-                        <!-- Coupon -->
-                        <div class="coupon-continue-checkout u-s-m-b-60">
-                            <div class="coupon-area">
-                                <!--                                        <h6>Enter your coupon code if you have one.</h6>-->
-                                <!--                                        <div class="coupon-field">-->
-                                <!--                                            <label class="sr-only" for="coupon-code">Apply Coupon</label>-->
-                                <!--                                            <input id="coupon-code" type="text" class="text-field" placeholder="Coupon Code">-->
-                                <!--                                            <button type="submit" class="button">Apply Coupon</button>-->
-                                <!--                                        </div>-->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Products-List-Wrapper /- -->
+                                <!-- Coupon -->
+                                <div class="coupon-continue-checkout u-s-m-b-60">
+                                    <div class="coupon-area">
+                                        <!--                                        <h6>Enter your coupon code if you have one.</h6>-->
+                                        <!--                                        <div class="coupon-field">-->
+                                        <!--                                            <label class="sr-only" for="coupon-code">Apply Coupon</label>-->
+                                        <!--                                            <input id="coupon-code" type="text" class="text-field" placeholder="Coupon Code">-->
+                                        <!--                                            <button type="submit" class="button">Apply Coupon</button>-->
+                                        <!--                                        </div>-->
+                                    </div>
+                                    <div class="button-area">
+                                        <a href="shop-v1-root-category.html" class="continue">Продолжить покупки</a>
+                                        <a href="checkout.html" class="checkout">Оформить заказ</a>
+                                    </div>
+                                </div>
+                                <!-- Coupon /- -->
+                            </form>
+                            <!-- Billing -->
+                            <div class="calculation u-s-m-b-60">
+                                <div class="table-wrapper-2">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Содержимое Корзины:</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <h3 class="calc-h3 u-s-m-b-0">Сумма</h3>
+                                            </td>
+                                            <td>
+                                                <span class="calc-text"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h3 class="calc-h3 u-s-m-b-0" id="tax-heading">Скидка</h3>
+                                            </td>
+                                            <td>
+                                                <span class="calc-text"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h3 class="calc-h3 u-s-m-b-0">Сумма со скидкой</h3>
+                                            </td>
+                                            <td>
+                                                <span class="calc-text"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="button-area">
-                                <a href="shop-v1-root-category.html" class="continue">Продолжить покупки</a>
-                                <a href="checkout.html" class="checkout">Оформить заказ</a>
-                            </div>
+                            <!-- Billing /- -->
                         </div>
-                        <!-- Coupon /- -->
-                        </form>
-                        <!-- Billing -->
-                        <div class="calculation u-s-m-b-60">
-                            <div class="table-wrapper-2">
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th colspan="2">Содержимое Корзины:</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <h3 class="calc-h3 u-s-m-b-0">Сумма</h3>
-                                        </td>
-                                        <td>
-                                            <span class="calc-text"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h3 class="calc-h3 u-s-m-b-0" id="tax-heading">Скидка</h3>
-                                        </td>
-                                        <td>
-                                            <span class="calc-text"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <h3 class="calc-h3 u-s-m-b-0">Сумма со скидкой</h3>
-                                        </td>
-                                        <td>
-                                            <span class="calc-text"></span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- Billing /- -->
                     </div>
                 </div>
             </div>
+            <!-- Cart-Page /- -->
         </div>
-        <!-- Cart-Page /- -->
     </div>
-</div>
 </div>
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->

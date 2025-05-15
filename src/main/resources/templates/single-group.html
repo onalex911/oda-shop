@@ -15,7 +15,7 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center top-panel">
                 <div class="col-lg-3">
                     <div class="v-menu v-close">
                             <span class="v-title">
@@ -48,7 +48,7 @@
                     <div class="item">
                         <div class="image-container">
                             <a class="item-img-wrapper-link" th:href="@{${t.purl}}">
-                                <img class="img-fluid" th:src="'/assets/' + ${t.picBig}" th:alt="${t.normalTovName}">
+                                <img class="img-fluid" th:src="${t.realPicBig}" th:alt="${t.normalTovName}">
                             </a>
                         </div>
                         <div class="item-content">

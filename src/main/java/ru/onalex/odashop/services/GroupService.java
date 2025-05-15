@@ -2,6 +2,7 @@ package ru.onalex.odashop.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -22,11 +23,13 @@ import static ru.onalex.odashop.dtos.GrupTovDTO.fromEntity;
 public class GroupService {
     private final GrupTovRepository grupTovRepository;
     private final TovarRepository tovarRepository;
-//    private GrupTovDTO grupTovDTO;
+    private final ImageService imageService;
 
-    public GroupService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository) {
+    @Autowired
+    public GroupService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService) {
         this.grupTovRepository = grupTovRepository;
         this.tovarRepository = tovarRepository;
+        this.imageService = imageService;
     }
 
     public String getGroups(Model model){
@@ -42,7 +45,19 @@ public class GroupService {
     public String getGrupTov(String alias, int page, int size, Model model) {
         try {
             Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
+            System.out.println("tovar page" + tovarPage.getTotalElements());
+
             Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
+            System.out.println("products page" + products.getTotalElements());
+
+            products.getContent().forEach(product -> {
+                System.out.println("pic from repo: " + product.getPicBig());
+                product.setRealPicBig(imageService.getImagePath(product.getPicBig()));
+            });
+
+            for(TovarDTO t : products){
+                System.out.println("real pic: " + t.getRealPicBig());
+            }
 
             GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
 
