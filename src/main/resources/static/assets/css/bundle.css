@@ -2976,7 +2976,9 @@ body {
   border: 1px solid #eceff8; }
 
 .action-wrapper {
-  display: inline-block; }
+  display: inline-block;
+  white-space: nowrap;
+}
   .action-wrapper button:before {
     transform: rotate(0deg);
     transition: .3s;
@@ -2984,7 +2986,7 @@ body {
   .action-wrapper button:hover:before {
     transform: rotate(360deg); }
   .action-wrapper .fa-trash {
-    margin-left: 6px; }
+    margin-left: 2px; }
 
 /* Coupon */
 .coupon-continue-checkout {
