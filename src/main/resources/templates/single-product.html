@@ -71,8 +71,8 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     <!-- Product-zoom-area -->
                     <div class="zoom-area">
-                        <img id="zoom-pro" class="img-fluid" th:src="'/assets/' + ${product.picBig}"
-                             th:data-zoom-image="'/' + ${product.picBig}" alt="Zoom Image">
+                        <img id="zoom-pro" class="img-fluid" th:src="${product.realPicBig}"
+                             th:data-zoom-image="'/' + ${product.realPicBig}" alt="Zoom Image">
                     </div>
                     <!-- Product-zoom-area /- -->
                 </div>

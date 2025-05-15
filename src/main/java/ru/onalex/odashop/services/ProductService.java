@@ -16,22 +16,35 @@ import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 @Service
 public class ProductService {
 
-    private GrupTovRepository grupTovRepository;
-    private TovarRepository tovarRepository;
+//    private GrupTovRepository grupTovRepository;
+//    private TovarRepository tovarRepository;
+
+//    @Autowired
+//    public void setTovarRepository(TovarRepository tovarRepository) {
+//        this.tovarRepository = tovarRepository;
+//    }
+//    @Autowired
+//    public void setGrupTovRepository(GrupTovRepository grupTovRepository) {
+//        this.grupTovRepository = grupTovRepository;
+//    }
+    private final GrupTovRepository grupTovRepository;
+    private final TovarRepository tovarRepository;
+    private final ImageService imageService;
 
     @Autowired
-    public void setTovarRepository(TovarRepository tovarRepository) {
-        this.tovarRepository = tovarRepository;
-    }
-    @Autowired
-    public void setGrupTovRepository(GrupTovRepository grupTovRepository) {
+    public ProductService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService) {
         this.grupTovRepository = grupTovRepository;
+        this.tovarRepository = tovarRepository;
+        this.imageService = imageService;
     }
+
 
     public String getProductPage(String groupAlias, String prodAlias, Model model){
         try {
             int prodId = getLastNumber(prodAlias);
-            TovarDTO tovarDTO = TovarDTO.fromEntity(tovarRepository.findExistTovarByCode(prodId));
+            Tovar tovar = tovarRepository.findExistTovarByCode(prodId);
+            TovarDTO tovarDTO = TovarDTO.fromEntity(tovar);
+            tovarDTO.setRealPicBig(imageService.getImagePath(tovar.getPicBig()));
             GrupTovDTO grupTovDTO = GrupTovDTO.fromEntity(grupTovRepository.findByAlias(groupAlias));
             String groupName = grupTovDTO.getNormalName();
 //            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
