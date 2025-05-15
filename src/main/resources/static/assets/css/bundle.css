@@ -2934,7 +2934,9 @@ body {
 /* Products-List-Wrapper */
 .table-wrapper, .table-wrapper-2 {
   overflow-x: auto;
-  min-height: 0.01%; }
+  min-height: 0.01%;
+  margin-top: 1em;
+}
   .table-wrapper > table, .table-wrapper-2 > table {
     width: 100%; }
     .table-wrapper > table th, .table-wrapper-2 > table th {
@@ -3610,3 +3612,7 @@ body {
     left: 90px;
     top: 8px; } }
 
+.top-panel{
+  border-bottom: 3px solid #b60c0d;
+  margin-bottom: 1rem;
+}
