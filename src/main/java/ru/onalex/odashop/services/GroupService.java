@@ -45,19 +45,19 @@ public class GroupService {
     public String getGrupTov(String alias, int page, int size, Model model) {
         try {
             Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
-            System.out.println("tovar page" + tovarPage.getTotalElements());
+//            System.out.println("tovar page" + tovarPage.getTotalElements());
 
             Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
-            System.out.println("products page" + products.getTotalElements());
+//            System.out.println("products page" + products.getTotalElements());
 
             products.getContent().forEach(product -> {
                 System.out.println("pic from repo: " + product.getPicBig());
                 product.setRealPicBig(imageService.getImagePath(product.getPicBig()));
             });
 
-            for(TovarDTO t : products){
-                System.out.println("real pic: " + t.getRealPicBig());
-            }
+//            for(TovarDTO t : products){
+//                System.out.println("real pic: " + t.getRealPicBig());
+//            }
 
             GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
 

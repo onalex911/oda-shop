@@ -15,9 +15,12 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @NotNull
     @NotEmpty
-    private String email;
+    @Column(name="username")
+    private String username;
+
     @NotNull
     @NotEmpty
     private String password;
