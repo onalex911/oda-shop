@@ -1,22 +1,28 @@
 package ru.onalex.odashop.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.onalex.odashop.entities.Customer;
-import ru.onalex.odashop.repositories.CustomerRepository;
-
-import java.util.Collections;
+import ru.onalex.odashop.services.CustomerService;
 
 @Configuration
+//@EnableWebSecurity(debug = true)
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private CustomerService customerService;
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -26,41 +32,29 @@ public class SecurityConfig {
 //                        .requestMatchers("/assets/**").permitAll()
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/customer/**").authenticated()
+                        .requestMatchers("/customer/**").hasAnyRole("ADMIN", "USER")
 //                        .requestMatchers("/adminlte/**").hasRole("ADMIN")
 //                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-//                        .loginPage("/login")
-                        .loginPage("/account")
+//                        .loginPage("/customer/login")
                         .permitAll()
                 )
+//                .logout((logout) -> logout.logoutSuccessUrl("/catalog/bizhuteriya"))
                 .build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(CustomerRepository customerRepository) {
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("securepassword"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin);
-        return username -> {
-            Customer user = customerRepository.findByUsername(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found");
-            }
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    Collections.emptyList()
-            );
-        };
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setUserDetailsService(customerService); //привязываем процесс получения наших пользователей к провайдеру безопасности
+        return authProvider;
     }
 }
