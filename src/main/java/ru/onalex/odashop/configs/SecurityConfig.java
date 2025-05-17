@@ -38,10 +38,11 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-//                        .loginPage("/customer/login")
+                        .loginPage("/customer/login")
+                        .loginProcessingUrl("/login")
                         .permitAll()
                 )
-//                .logout((logout) -> logout.logoutSuccessUrl("/catalog/bizhuteriya"))
+                .logout((logout) -> logout.logoutSuccessUrl("/catalog/bizhuteriya"))
                 .build();
     }
 

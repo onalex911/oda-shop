@@ -53,8 +53,8 @@ public class CustomerController {
 //        return "checkout-empty";
 //    }
 
-//    @GetMapping("/login")
-//    public String doLogin(Model model) {
-//        return "account";
-//    }
+    @GetMapping("/login")
+    public String doLogin(Model model) {
+        return "account";
+    }
 }
