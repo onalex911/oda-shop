@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import ru.onalex.odashop.services.CustomerService;
 
 @Configuration
@@ -40,6 +42,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/customer/login")
                         .loginProcessingUrl("/login")
+                        .successHandler(savedRequestAwareAuthenticationSuccessHandler())
                         .permitAll()
                 )
                 .logout((logout) -> logout.logoutSuccessUrl("/catalog/bizhuteriya"))
@@ -57,5 +60,12 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(customerService); //привязываем процесс получения наших пользователей к провайдеру безопасности
         return authProvider;
+    }
+
+    private AuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
+        handler.setDefaultTargetUrl("/catalog/bizhuteriya"); // куда перенаправлять, если нет сохраненного запроса
+        handler.setAlwaysUseDefaultTargetUrl(false); // использовать сохраненный URL, если он есть
+        return handler;
     }
 }
