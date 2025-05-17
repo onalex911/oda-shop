@@ -29,4 +29,11 @@ public class Customer {
 //   у клиента может быть несколько реквизитов
     @OneToMany(mappedBy = "customer")
     private Set<Recvisit> recvisitSet = new HashSet<>();
+
+    //у клиента (пользователя) м.б. много ролей; роль, в свою очередь м.б. назначена множеству пользователей
+    @ManyToMany
+    @JoinTable(name = "customers_roles",
+    joinColumns = @JoinColumn(name="customer_id"),
+    inverseJoinColumns = @JoinColumn(name="role_id"))
+    private Set<Role> roles = new HashSet<>();
 }
