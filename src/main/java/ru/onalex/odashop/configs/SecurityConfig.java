@@ -13,10 +13,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import ru.onalex.odashop.services.CustomerService;
 
+import static ru.onalex.odashop.controllers.GlobalControllerAdvice.MAIN_PAGE;
+
 @Configuration
 //@EnableWebSecurity(debug = true)
 @EnableWebSecurity
 public class SecurityConfig {
+
 
     private CustomerService customerService;
 
@@ -45,7 +48,7 @@ public class SecurityConfig {
                         .successHandler(savedRequestAwareAuthenticationSuccessHandler())
                         .permitAll()
                 )
-                .logout((logout) -> logout.logoutSuccessUrl("/catalog/bizhuteriya"))
+                .logout((logout) -> logout.logoutSuccessUrl(MAIN_PAGE))
                 .build();
     }
 
@@ -64,7 +67,7 @@ public class SecurityConfig {
 
     private AuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler handler = new SavedRequestAwareAuthenticationSuccessHandler();
-        handler.setDefaultTargetUrl("/catalog/bizhuteriya"); // куда перенаправлять, если нет сохраненного запроса
+        handler.setDefaultTargetUrl(MAIN_PAGE); // куда перенаправлять, если нет сохраненного запроса
         handler.setAlwaysUseDefaultTargetUrl(false); // использовать сохраненный URL, если он есть
         return handler;
     }

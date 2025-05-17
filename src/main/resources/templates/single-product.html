@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-lg-9">
                     <h3>
-                        <a th:href="@{'/catalog/bizhuteriya/' + ${group_alias}}">
+                        <a th:href="@{${mainPage} + '/' + ${group_alias}}">
                             <span th:text="${group_name}"></span>
                         </a>
                     </h3>
