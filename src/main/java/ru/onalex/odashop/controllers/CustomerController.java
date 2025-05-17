@@ -18,12 +18,12 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-//    private CartService cartService;
-//
-//    @Autowired
-//    public void setCartService(CartService cartService) {
-//        this.cartService = cartService;
-//    }
+    private CartService cartService;
+
+    @Autowired
+    public void setCartService(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     private CustomerService customerService;
 
@@ -40,18 +40,18 @@ public class CustomerController {
         return "customer";
     }
 
-//    @GetMapping("/checkout")
-//    public String doCheckout(Model model, HttpSession session) {
-//
-//        List<CartItemDTO> items = cartService.getCartItems(session);
-//        double total = cartService.getTotal(session);
-//        if (total > 0 && items.size() > 0) {
-//            model.addAttribute("cartItems", items);
-//            model.addAttribute("total", total);
-//            return "checkout";
-//        }
-//        return "checkout-empty";
-//    }
+    @GetMapping("/checkout")
+    public String doCheckout(Model model, HttpSession session) {
+
+        List<CartItemDTO> items = cartService.getCartItems(session);
+        double total = cartService.getTotal(session);
+        if (total > 0 && items.size() > 0) {
+            model.addAttribute("cartItems", items);
+            model.addAttribute("total", total);
+            return "checkout";
+        }
+        return "checkout-empty";
+    }
 
     @GetMapping("/login")
     public String doLogin(Model model) {
