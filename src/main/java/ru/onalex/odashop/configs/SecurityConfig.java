@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
 //                        .requestMatchers("/assets/**", "/static/**", "/public/**", "/resources/**").permitAll()
 //                        .requestMatchers("/assets/**").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                         .requestMatchers("/customer/**").authenticated()
                         .requestMatchers("/customer/**").hasAnyRole("ADMIN", "USER")
 //                        .requestMatchers("/adminlte/**").hasRole("ADMIN")
