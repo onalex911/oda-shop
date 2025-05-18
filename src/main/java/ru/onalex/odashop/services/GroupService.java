@@ -32,13 +32,14 @@ public class GroupService {
         this.imageService = imageService;
     }
 
-    public String getGroups(Model model){
-        List<GrupTovDTO> groups = grupTovRepository.findBijou()
+    public List<GrupTovDTO> getGroupsDto() {
+        return grupTovRepository.findBijou()
                 .stream().map(GrupTovDTO::fromEntity).collect(Collectors.toList());
-        model.addAttribute("groups",groups);
-        model.addAttribute("title","");
+    }
 
-//        System.out.println(groups.size());
+    public String getGroups(Model model){
+        model.addAttribute("groups",getGroupsDto());
+        model.addAttribute("title","Бижутерия");
         return "groups-page";
     }
 
