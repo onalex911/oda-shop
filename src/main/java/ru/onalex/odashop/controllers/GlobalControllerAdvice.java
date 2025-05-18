@@ -48,7 +48,7 @@ public class GlobalControllerAdvice {
         model.addAttribute("mainAdminPage", MAIN_ADMIN_PAGE);
         try {
             // Добавляем список групп товаров
-            List<GrupTovDTO> groups = grupTovRepository.findBijou().stream()
+            List<GrupTovDTO> groups = grupTovRepository.findBijouActive().stream()
                     .map(GrupTovDTO::fromEntity)
                     .collect(Collectors.toList());
             model.addAttribute("menuGroups", groups);

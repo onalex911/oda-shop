@@ -32,14 +32,17 @@ public class GroupService {
         this.imageService = imageService;
     }
 
+    public List<GrupTov> getGroupsAll() {
+        return grupTovRepository.findBijou();
+    }
     public List<GrupTovDTO> getGroupsDto() {
-        return grupTovRepository.findBijou()
+        return grupTovRepository.findBijouActive()
                 .stream().map(GrupTovDTO::fromEntity).collect(Collectors.toList());
     }
 
     public String getGroups(Model model){
         model.addAttribute("groups",getGroupsDto());
-        model.addAttribute("title","Бижутерия");
+        model.addAttribute("title","");
         return "groups-page";
     }
 
@@ -77,7 +80,11 @@ public class GroupService {
         }
     }
 
-    public GrupTovDTO findById(int id) {
-        return fromEntity(grupTovRepository.findById(id));
+    public GrupTov findById(int id) {
+        return grupTovRepository.findById(id);
+    }
+
+    public void save(GrupTov grupTov) {
+        grupTovRepository.save(grupTov);
     }
 }

@@ -81,4 +81,8 @@ public class Tovar {
     //    dop varchar(250),
     @Column(name = "dop", columnDefinition = "varchar(250)")
     private String dop;
+
+//    @ManyToOne
+//    @JoinColumn(name="gruptov")
+//    private GrupTov grupTov;
 }

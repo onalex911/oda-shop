@@ -236,20 +236,80 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <form th:action="@{${mainAdminPage}+'/edit/'+${category.id}}" method="post">
+                    <form th:action="@{${mainAdminPage}+'/categories/edit/'+${category.id}}" method="post">
+                        <input type="hidden" name="id" th:value="${category.id}"/>
                         <div class="row mb-3">
-                            <label for="inputName" class="col-sm-2 col-form-label">Наименование</label>
+                            <label for="purl" class="col-sm-2 col-form-label">URL</label>
                             <div class="col-sm-10">
-                                <input name="name" type="text" class="form-control" id="inputName" th:value="${category.normalName}">
+                                <input name="purl" type="text" class="form-control" id="purl" th:value="${category.purl}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="flpurl" class="col-sm-2 col-form-label">FLURL</label>
+                            <div class="col-sm-10">
+                                <input name="flpurl" type="text" class="form-control" id="flpurl" th:value="${category.flpurl}">
+                            </div>
+                        </div>
+                        <input name="code1s" type="hidden" id="code1s" th:value="${category.code1s}" disabled>
+                        <div class="row mb-3">
+                            <label for="nomer" class="col-sm-2 col-form-label">Порядковый номер</label>
+                            <div class="col-sm-10">
+                                <input name="nomer" type="text" class="form-control" id="nomer" th:value="${category.nomer}">
+                            </div>
+                        </div>
+                        <input name="vid" type="hidden" id="vid" th:value="${category.vid}">
+                        <input name="cena" type="hidden" id="cena" th:value="${category.cena}">
+                        <input name="skidka" type="hidden" id="skidka" th:value="${category.skidka}">
+                        <input name="zakaz" type="hidden" id="zakaz" th:value="${category.zakaz}">
+                        <input name="ost" type="hidden" id="ost" th:value="${category.ost}">
+                        <div class="row mb-3">
+                            <label for="blokCB" class="col-sm-2 col-form-label">Активно</label>
+                            <div class="col-sm-10">
+                                <input type="checkbox" class="form-check-input" id="blokCB"
+                                       th:checked="${category.blok == 1 ? false: true}"
+                                    onclick="setActiveVal()">
+                                <input type="hidden" name="blok" id="blok" th:value="${category.blok}">
+                            </div>
+                        </div>
+                        <input name="rod" type="hidden" id="rod" th:value="${category.rod}">
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label">Наименование</label>
+                            <div class="col-sm-10">
+                                <input name="grupName" type="text" class="form-control" id="name" th:value="${category.grupName}">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <img th:src="${category.picPreview}" style="width:600px;">
                             <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>
                             <div class="col-sm-10">
-                                <input name="pic" type="text" class="form-control" id="inputPic" th:value="${category.picPreview}">
+                                <input name="picPreview" type="text" class="form-control" id="inputPic" th:value="${category.picPreview}">
                             </div>
                         </div>
+                        <input name="menu1" type="hidden" id="menu1" th:value="${category.menu1}">
+                        <input name="menu2" type="hidden" id="menu2" th:value="${category.menu2}">
+                        <input name="flmenu" type="hidden" id="flmenu" th:value="${category.flmenu}">
+                        <input name="top" type="hidden" id="top" th:value="${category.top}">
+                        <input name="maingrup" type="hidden" id="maingrup" th:value="${category.maingrup}">
+                        <input name="razmerpic" type="hidden" id="razmerpic" th:value="${category.razmerpic}">
+                        <div class="row mb-3">
+                            <label for="comment" class="col-sm-2 col-form-label">Комментарий</label>
+                            <div class="col-sm-10">
+                                <input name="comment" type="text" class="form-control" id="comment" th:value="${category.comment}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="keywords" class="col-sm-2 col-form-label">Ключ. слова (keywords)</label>
+                            <div class="col-sm-10">
+                                <input name="keywords" type="text" class="form-control" id="keywords" th:value="${category.keywords}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="description" class="col-sm-2 col-form-label">Описание (description)</label>
+                            <div class="col-sm-10">
+                                <input name="description" type="text" class="form-control" id="description" th:value="${category.description}">
+                            </div>
+                        </div>
+                        <input name="dop" type="hidden" id="dop" th:value="${category.dop}">
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </div>
@@ -349,6 +409,27 @@
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
         crossorigin="anonymous"
 ></script>
+<script>
+<!--    -->
+//    cb.addEventListener('click',function(e){
+//        if(e.target.classList.contains('thead')){
+//            let keyName = e.target.className.split(' ')[1];
+//            let cb = document.getElementsByName(keyName)[0];
+//            sortAndRedrawBy(mainTblBody,keyName,cbState);
+//
+//            document.getElementsByName(keyName)[0].checked = !cbState;
+//        }
+
+    function setActiveVal(){
+        let cb = document.getElementById("blokCB");
+        let cbState = cb.checked;
+        console.log(cbState);
+        let blok = document.getElementById("blok");
+        blok.value = (cb !== 'undefined' && cbState) ? 0 : 1;
+        // cb.checked = !cbState;
+        blok.setAttribute('value', blok.value);
+    }
+</script>
 
 </body>
 <!--end::Body-->

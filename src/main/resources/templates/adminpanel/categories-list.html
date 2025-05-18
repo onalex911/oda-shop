@@ -217,7 +217,10 @@
                 <!--begin::Row-->
                 <div class="row">
                     <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
-                    <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>
+                    <div class="col-sm-6">
+                        <h3 class="mb-0" th:text="${title}"></h3>
+                        <a href="/adminpanel/categories/create" title="Добавить группу"><i class="bi bi-plus-square"></i></a>
+                    </div>
                     <div class="col-sm-6">
                         <!-- <ol class="breadcrumb float-sm-end">
                           <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -244,6 +247,7 @@
                             <th style="width: 10px">Активно</th>
                             <th>Изображение</th>
                             <th>Наименование</th>
+                            <th>Порядок</th>
                             <!--                <th style="width: 40px">Порядок</th>-->
                             <th>&nbsp;</th>
                         </tr>
@@ -251,20 +255,19 @@
                         <tbody>
                         <tr class="align-middle" th:each="c : ${categories}">
                             <td th:text="${c.id}"></td>
-                            <td>
+                            <td class="text-center">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck1"
-                                           th:checked="${c.blok > 0 ? 'checked' : ''}"/>
-                                    <!--                    <label class="form-check-label" for="gridCheck1">-->
-                                    <!--                      Example checkbox-->
-                                    <!--                    </label>-->
+                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
+                                           th:checked="${c.blok == 1 ? false: true}">
+
                                 </div>
                             </td>
-                            <td><img th:src="${c.picPreview}" style="width:50px;"/></td>
+                            <td><img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/></td>
                             <td th:text="${c.grupName}"></td>
+                            <td class="text-center" th:text="${c.nomer}"></td>
                             <td>
                                 <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
-                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>
+<!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
                             </td>
                         </tr>
                         </tbody>
