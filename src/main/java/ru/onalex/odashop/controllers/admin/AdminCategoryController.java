@@ -2,27 +2,41 @@ package ru.onalex.odashop.controllers.admin;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.GroupService;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
+import java.util.UUID;
+
+//import static ru.onalex.odashop.controllers.GlobalControllerAdvice.uploadDir;
 
 @Controller
 @RequestMapping("/adminpanel/categories")
 public class AdminCategoryController {
+//    @Value("${app.upload.dir}")
+//    public static String uploadDir;
+
     private final CustomerService customerService;
     private final GroupService grupService;
+    private final ResourceLoader resourceLoader;
 
     @Autowired
-    public AdminCategoryController(GroupService grupTovService, CustomerService customerService) {
+    public AdminCategoryController(GroupService grupTovService, CustomerService customerService, ResourceLoader resourceLoader) {
         this.grupService = grupTovService;
         this.customerService = customerService;
+        this.resourceLoader = resourceLoader;
     }
 
     /**
@@ -86,14 +100,37 @@ public class AdminCategoryController {
      */
     @PostMapping("/edit/{id}")
     public String editCategory(@PathVariable int id,
+                               @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                @Valid @ModelAttribute("category") GrupTov category,
                                BindingResult bindingResult,
                                Model model,
-                               Principal principal) {
+                               Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Редактирование категории");
             model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             return "adminpanel/categories-form";
+        }
+        //сохраняем приложенное изображение (если оно было вставлено в форму)
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Генерируем уникальное имя файла
+            String fileName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+
+            // Получаем путь к ресурсам
+            Resource resource = resourceLoader.getResource("classpath:static/assets/pic/tovar/gruptov/");
+            File uploadDirFile = resource.getFile();
+
+            // Создаем директорию, если она не существует
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs();
+            }
+
+            // Сохраняем файл
+            File dest = new File(uploadDirFile, fileName);
+            imageFile.transferTo(dest);
+
+            // Путь к файлу, который будет сохранен в базе данных
+            String dbFilePath = "pic/tovar/gruptov/" + fileName;
+            category.setPicPreview(dbFilePath);
         }
 
         category.setId(id); // Убедимся, что ID установлен правильно

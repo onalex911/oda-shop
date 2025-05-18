@@ -236,7 +236,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <form th:action="@{${mainAdminPage}+'/categories/edit/'+${category.id}}" method="post">
+                    <form th:action="@{${mainAdminPage}+'/categories/edit/'+${category.id}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" th:value="${category.id}"/>
                         <div class="row mb-3">
                             <label for="purl" class="col-sm-2 col-form-label">URL</label>
@@ -271,18 +271,30 @@
                                 <input type="hidden" name="blok" id="blok" th:value="${category.blok}">
                             </div>
                         </div>
-                        <input name="rod" type="hidden" id="rod" th:value="${category.rod}">
+                        <input name="rod" type="hidden" id="rod" th:value="${category.rod} != '' ? ${category.rod} : 1413">
                         <div class="row mb-3">
                             <label for="name" class="col-sm-2 col-form-label">Наименование</label>
                             <div class="col-sm-10">
                                 <input name="grupName" type="text" class="form-control" id="name" th:value="${category.grupName}">
                             </div>
                         </div>
+<!--                        <div class="row mb-3">-->
+<!--                            <img th:src="${category.picPreview}" style="width:600px;">-->
+<!--                            <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input name="picPreview" type="text" class="form-control" id="inputPic" th:value="${category.picPreview}">-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="row mb-3">
-                            <img th:src="${category.picPreview}" style="width:600px;">
-                            <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>
+                            <div class="col-sm-12 mb-3">
+                                <img th:if="${category.picPreview}" th:src="'/assets/' + ${category.picPreview}" class="img-thumbnail" style="max-width:600px;">
+                                <p th:unless="${category.picPreview}" class="text-muted">Нет изображения</p>
+                            </div>
+                            <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
                             <div class="col-sm-10">
-                                <input name="picPreview" type="text" class="form-control" id="inputPic" th:value="${category.picPreview}">
+                                <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
+                                <input type="hidden" name="picPreview" th:value="${category.picPreview}">
+                                <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
                             </div>
                         </div>
                         <input name="menu1" type="hidden" id="menu1" th:value="${category.menu1}">
