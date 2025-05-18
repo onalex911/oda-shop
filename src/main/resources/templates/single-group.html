@@ -76,17 +76,17 @@
                 <div class="pagination-number">
                     <ul th:if="${totalPages > 1}">
                         <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
-                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${currentPage - 1}, size=${pageSize})}"
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage - 1}, size=${pageSize})}"
                                title="Предыдущая">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         </li>
                         <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
-                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${i}, size=${pageSize})}"
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${i}, size=${pageSize})}"
                                th:text="${i + 1}"></a>
                         </li>
                         <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
-                            <a th:href="@{/catalog/bizhuteriya/{alias}(alias=${alias}, page=${currentPage + 1}, size=${pageSize})}"
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage + 1}, size=${pageSize})}"
                                title="Следующая">
                                 <i class="fa fa-angle-right"></i>
                             </a>

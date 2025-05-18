@@ -9,7 +9,7 @@ import ru.onalex.odashop.services.ProductService;
 import ru.onalex.odashop.services.AdminUIUserService;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/adminpanel")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
@@ -22,10 +22,11 @@ public class AdminController {
     }
 
     @GetMapping
-    public String dashboard(Model model) {
-        model.addAttribute("userCount", adminUIUserService.count());
-        model.addAttribute("productCount", productService.count());
-        return "admin/index";
+//    public String dashboard(Model model) {
+    public String dashboard() {
+//        model.addAttribute("userCount", adminUIUserService.count());
+//        model.addAttribute("productCount", productService.count());
+        return "adminpanel/index";
     }
 
     @GetMapping("/users")

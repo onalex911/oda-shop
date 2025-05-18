@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <h3 th:text="${group_name} + ' (' + ${totalItems} + ')'"></h3>
+                    <h3>Профиль пользователя</h3>
                 </div>
             </div>
             <!-- Cart-Page -->
@@ -47,7 +47,9 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2>Профиль пользователя</h2>
+                            <h2></h2>
+                            <p th:text="${customer.username}"></p>
+                            <p th:text="${customer.discount}"></p>
                         </div>
                     </div>
                 </div>

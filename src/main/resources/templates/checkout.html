@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Checkout-Page -->
+    <div class="page-checkout u-s-p-t-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <form>
+                        <div class="row">
+                            <!-- Billing-&-Shipping-Details -->
+                            <div class="col-lg-6">
+                                <h4 class="section-h4">Реквизиты заказчика</h4>
+                                <!-- Form-Fields -->
+                                <div class="group-inline u-s-m-b-13">
+                                    <div class="group-1 u-s-p-r-16">
+                                        <label for="first-name">First Name
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input type="text" id="first-name" class="text-field">
+                                    </div>
+                                    <div class="group-2">
+                                        <label for="last-name">Last Name
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input type="text" id="last-name" class="text-field">
+                                    </div>
+                                </div>
+                                <div class="street-address u-s-m-b-13">
+                                    <label for="req-st-address">Street Address
+                                        <span class="astk">*</span>
+                                    </label>
+                                    <input type="text" id="req-st-address" class="text-field"
+                                           placeholder="House name and street name">
+
+                                </div>
+                                <div class="u-s-m-b-13">
+                                    <label for="town-city">Town / City
+                                        <span class="astk">*</span>
+                                    </label>
+                                    <input type="text" id="town-city" class="text-field">
+                                </div>
+                                <div class="group-inline u-s-m-b-13">
+                                    <div class="group-1 u-s-p-r-16">
+                                        <label for="email">Email address
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input type="text" id="email" class="text-field">
+                                    </div>
+                                    <div class="group-2">
+                                        <label for="phone">Phone
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input type="text" id="phone" class="text-field">
+                                    </div>
+                                </div>
+
+                                <!-- Form-Fields /- -->
+                                <!--                                <h4 class="section-h4">Shipping Details</h4>-->
+                                <!--                                <div class="u-s-m-b-24">-->
+                                <!--                                    <input type="checkbox" class="check-box" id="ship-to-different-address" data-toggle="collapse" data-target="#showdifferent">-->
+                                <!--                                    <label class="label-text" for="ship-to-different-address">Ship to a different address?</label>-->
+                                <!--                                </div>-->
+                                <!--                                <div class="collapse" id="showdifferent">-->
+                                <!--                                    &lt;!&ndash; Form-Fields &ndash;&gt;-->
+                                <!--                                    <div class="group-inline u-s-m-b-13">-->
+                                <!--                                        <div class="group-1 u-s-p-r-16">-->
+                                <!--                                            <label for="first-name-extra">First Name-->
+                                <!--                                                <span class="astk">*</span>-->
+                                <!--                                            </label>-->
+                                <!--                                            <input type="text" id="first-name-extra" class="text-field">-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="group-2">-->
+                                <!--                                            <label for="last-name-extra">Last Name-->
+                                <!--                                                <span class="astk">*</span>-->
+                                <!--                                            </label>-->
+                                <!--                                            <input type="text" id="last-name-extra" class="text-field">-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="u-s-m-b-13">-->
+                                <!--                                        <label for="select-country-extra">Country-->
+                                <!--                                            <span class="astk">*</span>-->
+                                <!--                                        </label>-->
+                                <!--                                        <div class="select-box-wrapper">-->
+                                <!--                                            <select class="select-box" id="select-country-extra">-->
+                                <!--                                                <option selected="selected" value="">Choose your country...</option>-->
+                                <!--                                                <option value="">United Kingdom (UK)</option>-->
+                                <!--                                                <option value="">United States (US)</option>-->
+                                <!--                                                <option value="">United Arab Emirates (UAE)</option>-->
+                                <!--                                            </select>-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="street-address u-s-m-b-13">-->
+                                <!--                                        <label for="req-st-address-extra">Street Address-->
+                                <!--                                            <span class="astk">*</span>-->
+                                <!--                                        </label>-->
+                                <!--                                        <input type="text" id="req-st-address-extra" class="text-field" placeholder="House name and street name">-->
+                                <!--                                        <label class="sr-only" for="opt-st-address-extra"></label>-->
+                                <!--                                        <input type="text" id="opt-st-address-extra" class="text-field" placeholder="Apartment, suite unit etc. (optional)">-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="u-s-m-b-13">-->
+                                <!--                                        <label for="town-city-extra">Town / City-->
+                                <!--                                            <span class="astk">*</span>-->
+                                <!--                                        </label>-->
+                                <!--                                        <input type="text" id="town-city-extra" class="text-field">-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="u-s-m-b-13">-->
+                                <!--                                        <label for="select-state-extra">State / Country-->
+                                <!--                                            <span class="astk"> *</span>-->
+                                <!--                                        </label>-->
+                                <!--                                        <div class="select-box-wrapper">-->
+                                <!--                                            <select class="select-box" id="select-state-extra">-->
+                                <!--                                                <option selected="selected" value="">Choose your state...</option>-->
+                                <!--                                                <option value="">Alabama</option>-->
+                                <!--                                                <option value="">Alaska</option>-->
+                                <!--                                                <option value="">Arizona</option>-->
+                                <!--                                            </select>-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="u-s-m-b-13">-->
+                                <!--                                        <label for="postcode-extra">Postcode / Zip-->
+                                <!--                                            <span class="astk">*</span>-->
+                                <!--                                        </label>-->
+                                <!--                                        <input type="text" id="postcode-extra" class="text-field">-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="group-inline u-s-m-b-13">-->
+                                <!--                                        <div class="group-1 u-s-p-r-16">-->
+                                <!--                                            <label for="email-extra">Email address-->
+                                <!--                                                <span class="astk">*</span>-->
+                                <!--                                            </label>-->
+                                <!--                                            <input type="text" id="email-extra" class="text-field">-->
+                                <!--                                        </div>-->
+                                <!--                                        <div class="group-2">-->
+                                <!--                                            <label for="phone-extra">Phone-->
+                                <!--                                                <span class="astk">*</span>-->
+                                <!--                                            </label>-->
+                                <!--                                            <input type="text" id="phone-extra" class="text-field">-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                    &lt;!&ndash; Form-Fields /- &ndash;&gt;-->
+                                <!--                                </div>-->
+                                <!--                                <div>-->
+                                <!--                                    <label for="order-notes">Order Notes</label>-->
+                                <!--                                    <textarea class="text-area" id="order-notes" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>-->
+                                <!--                                </div>-->
+                            </div>
+                            <!-- Billing-&-Shipping-Details /- -->
+                            <!-- Checkout -->
+                            <div class="col-lg-6">
+                                <h4 class="section-h4">Выбранные товары</h4>
+                                <div class="order-table">
+                                    <table class="u-s-m-b-13">
+                                        <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Итог</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
+                                            <td>
+                                                <a th:href="@{${item.tovar.purl}}">
+                                                    <h6 th:text="${item.tovar.normalTovName}"></h6>
+                                                    <span class="order-span-quantity">x <span
+                                                            th:text="${item.quantity}"></span></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h6 class="order-h6" th:text="${item.tovar.cena * item.quantity}"></h6>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--                                    <div class="u-s-m-b-13">-->
+                                    <!--                                        <input type="checkbox" class="check-box" id="accept">-->
+                                    <!--                                        <label class="label-text no-color" for="accept">Я ознакомился и согласен с-->
+                                    <!--                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями заказа товара на данном сайте</a>-->
+                                    <!--                                        </label>-->
+                                    <!--                                    </div>-->
+                                    <button type="submit" class="button button-outline-secondary">Отправить</button>
+                                </div>
+                            </div>
+                            <!-- Checkout /- -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout-Page /- -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</body>
+</html>

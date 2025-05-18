@@ -25,6 +25,7 @@ public class GlobalControllerAdvice {
 
     private final GrupTovRepository grupTovRepository;
     private CartService cartService;
+    public static final String MAIN_PAGE = "/catalog/bizhuteriya";
 
     @Autowired
     public void setCartService(CartService cartService) {
@@ -42,6 +43,7 @@ public class GlobalControllerAdvice {
         model.addAttribute("isAuthenticated", isAuthenticated);
         model.addAttribute("currentYear", currentYear);
         model.addAttribute("title", "");
+        model.addAttribute("mainPage", MAIN_PAGE);
         try {
             // Добавляем список групп товаров
             List<GrupTovDTO> groups = grupTovRepository.findBijou().stream()

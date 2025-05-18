@@ -49,35 +49,35 @@
                         <!-- Login -->
                         <div class="col-lg-6">
                             <div class="login-wrapper">
-                                <h2 class="account-h2 u-s-m-b-20">Login</h2>
-                                <h6 class="account-h6 u-s-m-b-30">Welcome back! Sign in to your account.</h6>
-                                <form>
+                                <h2 class="account-h2 u-s-m-b-20">Вход</h2>
+                                <h6 class="account-h6 u-s-m-b-30">Введите ваш e-mail и пароль, если вы уже зарегистрированы.</h6>
+                                <form action="/login" method="post">
                                     <div class="u-s-m-b-30">
-                                        <label for="user-name-email">Username or Email
+                                        <label for="user-name-email">E-mail
                                             <span class="astk">*</span>
                                         </label>
-                                        <input type="text" id="user-name-email" class="text-field" placeholder="Username / Email">
+                                        <input name="username" type="text" id="user-name-email" class="text-field" placeholder="E-mail">
                                     </div>
                                     <div class="u-s-m-b-30">
-                                        <label for="login-password">Password
+                                        <label for="login-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
-                                        <input type="text" id="login-password" class="text-field" placeholder="Password">
+                                        <input name="password" type="text" id="login-password" class="text-field" placeholder="Пароль">
                                     </div>
-                                    <div class="group-inline u-s-m-b-30">
-                                        <div class="group-1">
-                                            <input type="checkbox" class="check-box" id="remember-me-token">
-                                            <label class="label-text" for="remember-me-token">Remember me</label>
-                                        </div>
-                                        <div class="group-2 text-right">
-                                            <div class="page-anchor">
-                                                <a href="lost-password.html">
-                                                    <i class="fas fa-circle-o-notch u-s-m-r-9"></i>Lost your password?</a>
-                                            </div>
-                                        </div>
-                                    </div>
+<!--                                    <div class="group-inline u-s-m-b-30">-->
+<!--                                        <div class="group-1">-->
+<!--                                            <input type="checkbox" class="check-box" id="remember-me-token">-->
+<!--                                            <label class="label-text" for="remember-me-token">Remember me</label>-->
+<!--                                        </div>-->
+<!--                                        <div class="group-2 text-right">-->
+<!--                                            <div class="page-anchor">-->
+<!--                                                <a href="lost-password.html">-->
+<!--                                                    <i class="fas fa-circle-o-notch u-s-m-r-9"></i>Lost your password?</a>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="m-b-45">
-                                        <button class="button button-outline-secondary w-100">Login</button>
+                                        <button class="button button-outline-secondary w-100">Войти</button>
                                     </div>
                                 </form>
                             </div>
@@ -86,26 +86,20 @@
                         <!-- Register -->
                         <div class="col-lg-6">
                             <div class="reg-wrapper">
-                                <h2 class="account-h2 u-s-m-b-20">Register</h2>
-                                <h6 class="account-h6 u-s-m-b-30">Registering for this site allows you to access your order status and history.</h6>
-                                <form>
+                                <h2 class="account-h2 u-s-m-b-20">Регистрация</h2>
+                                <h6 class="account-h6 u-s-m-b-30">Регистрация необходима для оформления заказа на сайте.</h6>
+                                <form action="/register" method="post">
                                     <div class="u-s-m-b-30">
-                                        <label for="user-name">Username
+                                        <label for="email">E-mail
                                             <span class="astk">*</span>
                                         </label>
-                                        <input type="text" id="user-name" class="text-field" placeholder="Username">
-                                    </div>
-                                    <div class="u-s-m-b-30">
-                                        <label for="email">Email
-                                            <span class="astk">*</span>
-                                        </label>
-                                        <input type="text" id="email" class="text-field" placeholder="Email">
+                                        <input name="username" type="text" id="email" class="text-field" placeholder="Email">
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label for="password">Password
                                             <span class="astk">*</span>
                                         </label>
-                                        <input type="text" id="password" class="text-field" placeholder="Password">
+                                        <input name="password" type="text" id="password" class="text-field" placeholder="Password">
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <input type="checkbox" class="check-box" id="accept">
@@ -114,7 +108,7 @@
                                         </label>
                                     </div>
                                     <div class="u-s-m-b-45">
-                                        <button class="button button-primary w-100">Register</button>
+                                        <button class="button button-primary w-100">Зарегистрироваться</button>
                                     </div>
                                 </form>
                             </div>
