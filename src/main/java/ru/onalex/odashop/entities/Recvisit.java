@@ -69,7 +69,7 @@ public class Recvisit {
 
     //у нескольких реквизитов - один клиент
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer")
     private Customer customer;
 
 }

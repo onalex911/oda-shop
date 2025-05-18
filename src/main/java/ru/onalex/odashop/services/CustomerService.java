@@ -9,10 +9,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.onalex.odashop.entities.Customer;
+import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
+import ru.onalex.odashop.models.UserInfo;
 import ru.onalex.odashop.repositories.CustomerRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,5 +47,12 @@ public class CustomerService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+
+    public UserInfo getUserInfoByUsername(String username){
+        Customer customer = findByUsername(username);
+        List<Recvisit> recvisits = customerRepository.getRecvisitsByUsername(username);
+        return new UserInfo(customer,recvisits);
+
     }
 }
