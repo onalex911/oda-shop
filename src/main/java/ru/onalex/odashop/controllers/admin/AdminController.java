@@ -1,4 +1,4 @@
-package ru.onalex.odashop.controllers;
+package ru.onalex.odashop.controllers.admin;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -29,31 +29,30 @@ public class AdminController {
         return "adminpanel/index";
     }
 
-    @GetMapping("/users")
-    public String users(Model model) {
-        model.addAttribute("users", adminUIUserService.findAll());
-        return "admin/users";
-    }
+//    @GetMapping("/users")
+//    public String users(Model model) {
+//        model.addAttribute("users", adminUIUserService.findAll());
+//        return "admin/users";
+//    }
+//
+//    @GetMapping("/tovar")
+//    public String products(Model model) {
+//        model.addAttribute("tovar", productService.findAll());
+//        return "admin/products";
+//    }
+//
+//    // CRUD операции для пользователей
+//    @GetMapping("/users/edit/{id}")
+//    public String editUser(@PathVariable Long id, Model model) {
+//        AdminUIUser user = adminUIUserService.findById(id);
+//        model.addAttribute("user", user);
+//        return "admin/user-form";
+//    }
+//
+//    @PostMapping("/users/save")
+//    public String saveUser(@ModelAttribute("user") AdminUIUser user) {
+//        adminUIUserService.save(user);
+//        return "redirect:/admin/users";
+//    }
 
-    @GetMapping("/tovar")
-    public String products(Model model) {
-        model.addAttribute("tovar", productService.findAll());
-        return "admin/products";
-    }
-
-    // CRUD операции для пользователей
-    @GetMapping("/users/edit/{id}")
-    public String editUser(@PathVariable Long id, Model model) {
-        AdminUIUser user = adminUIUserService.findById(id);
-        model.addAttribute("user", user);
-        return "admin/user-form";
-    }
-
-    @PostMapping("/users/save")
-    public String saveUser(@ModelAttribute("user") AdminUIUser user) {
-        adminUIUserService.save(user);
-        return "redirect:/admin/users";
-    }
-
-    // Аналогично для продуктов
 }
