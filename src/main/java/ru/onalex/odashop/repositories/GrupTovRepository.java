@@ -19,6 +19,7 @@ public interface GrupTovRepository extends JpaRepository<GrupTov, Integer> {
     @Query(value="SELECT * FROM gruptov WHERE blok=0 AND purl LIKE CONCAT('%/',:alias)",nativeQuery = true)
     GrupTov findByAlias(String alias);
 
-
+    @Query(value="SELECT * FROM gruptov WHERE code=:id",nativeQuery = true)
+    GrupTov findById(int id);
 
 }

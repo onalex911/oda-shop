@@ -76,4 +76,8 @@ public class GroupService {
             return "error";
         }
     }
+
+    public GrupTovDTO findById(int id) {
+        return fromEntity(grupTovRepository.findById(id));
+    }
 }

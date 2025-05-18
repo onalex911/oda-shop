@@ -236,39 +236,23 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <form>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">Id</th>
-                            <th style="width: 10px">Активно</th>
-                            <th>Изображение</th>
-                            <th>Наименование</th>
-                            <!--                <th style="width: 40px">Порядок</th>-->
-                            <th>&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="align-middle" th:each="c : ${categories}">
-                            <td th:text="${c.id}"></td>
-                            <td>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck1"
-                                           th:checked="${c.blok > 0 ? 'checked' : ''}"/>
-                                    <!--                    <label class="form-check-label" for="gridCheck1">-->
-                                    <!--                      Example checkbox-->
-                                    <!--                    </label>-->
-                                </div>
-                            </td>
-                            <td><img th:src="${c.picPreview}" style="width:50px;"/></td>
-                            <td th:text="${c.grupName}"></td>
-                            <td>
-                                <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
-                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <form th:action="@{${mainAdminPage}+'/edit/'+${category.id}}" method="post">
+                        <div class="row mb-3">
+                            <label for="inputName" class="col-sm-2 col-form-label">Наименование</label>
+                            <div class="col-sm-10">
+                                <input name="name" type="text" class="form-control" id="inputName" th:value="${category.normalName}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <img th:src="${category.picPreview}" style="width:600px;">
+                            <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>
+                            <div class="col-sm-10">
+                                <input name="pic" type="text" class="form-control" id="inputPic" th:value="${category.picPreview}">
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
                     </form>
                 </div>
                 <!--end::Row-->

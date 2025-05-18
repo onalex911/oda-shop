@@ -3,26 +3,23 @@ package ru.onalex.odashop.controllers.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.GroupService;
 
-import jakarta.validation.Valid;
-
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/adminpanel/categories")
 public class AdminCategoryController {
     private final CustomerService customerService;
-    private final GroupService grupTovService;
+    private final GroupService grupService;
 
     @Autowired
     public AdminCategoryController(GroupService grupTovService, CustomerService customerService) {
-        this.grupTovService = grupTovService;
+        this.grupService = grupTovService;
         this.customerService = customerService;
     }
 
@@ -31,7 +28,7 @@ public class AdminCategoryController {
      */
     @GetMapping
     public String listCategories(Principal principal, Model model) {
-        model.addAttribute("categories", grupTovService.getGroupsDto());
+        model.addAttribute("categories", grupService.getGroupsDto());
         model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Управление группами");
         return "adminpanel/categories-list";
@@ -64,18 +61,20 @@ public class AdminCategoryController {
 //        return "redirect:/adminpanel/categories";
 //    }
 //
-//    /**
-//     * Форма редактирования категории
-//     */
-//    @GetMapping("/edit/{id}")
-//    public String editCategoryForm(@PathVariable Long id, Model model) {
-//        GrupTov category = grupTovService.findById(id)
+    /**
+     * Форма редактирования категории
+     */
+    @GetMapping("/edit/{id}")
+    public String editCategoryForm(@PathVariable int id, Model model, Principal principal) {
+        GrupTovDTO category = grupService.findById(id);
+        //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
 //                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
-//
-//        model.addAttribute("category", category);
-//        model.addAttribute("title", "Редактирование категории");
-//        return "admin/categories/form";
-//    }
+
+        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+        model.addAttribute("category", category);
+        model.addAttribute("title", "Редактирование категории");
+        return "adminpanel/categories-form";
+    }
 //
 //    /**
 //     * Обработка формы редактирования категории
