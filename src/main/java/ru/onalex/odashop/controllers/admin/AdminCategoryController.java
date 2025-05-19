@@ -24,17 +24,12 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/adminpanel/categories")
 public class AdminCategoryController {
-//    @Value("${app.upload.dir}")
-//    public static String uploadDir;
-
-    private final CustomerService customerService;
     private final GroupService groupService;
     private final ResourceLoader resourceLoader;
 
     @Autowired
-    public AdminCategoryController(GroupService grupTovService, CustomerService customerService, ResourceLoader resourceLoader) {
+    public AdminCategoryController(GroupService grupTovService, ResourceLoader resourceLoader) {
         this.groupService = grupTovService;
-        this.customerService = customerService;
         this.resourceLoader = resourceLoader;
     }
 
@@ -42,9 +37,8 @@ public class AdminCategoryController {
      * Вывод списка всех категорий
      */
     @GetMapping
-    public String listCategories(Principal principal, Model model) {
+    public String listCategories(Model model) {
         model.addAttribute("categories", groupService.getGroupsAll());
-        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Управление группами");
         return "adminpanel/categories-list";
 //        return "adminpanel/index";
@@ -54,9 +48,8 @@ public class AdminCategoryController {
      * Форма создания новой категории
      */
     @GetMapping("/create")
-    public String createCategoryForm(Principal principal, Model model) {
+    public String createCategoryForm(Model model) {
         model.addAttribute("category", new GrupTov());
-        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Создание категории");
         return "adminpanel/categories-form";
     }
@@ -67,10 +60,8 @@ public class AdminCategoryController {
     @PostMapping("/create")
     public String createCategory(@Valid @ModelAttribute("category") GrupTov category,
                                  BindingResult bindingResult,
-                                 Model model,
-                                 Principal principal) {
+                                 Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             model.addAttribute("title", "Создание категории");
             return "adminpanel/categories-form";
         }
@@ -83,12 +74,11 @@ public class AdminCategoryController {
      * Форма редактирования категории
      */
     @GetMapping("/edit/{id}")
-    public String editCategoryForm(@PathVariable int id, Model model, Principal principal) {
+    public String editCategoryForm(@PathVariable int id, Model model) {
         GrupTov category = groupService.findById(id);
         //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
 //                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
 
-        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("category", category);
         model.addAttribute("title", "Редактирование категории");
         return "adminpanel/categories-form";
@@ -102,11 +92,9 @@ public class AdminCategoryController {
                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                @Valid @ModelAttribute("category") GrupTov category,
                                BindingResult bindingResult,
-                               Model model,
-                               Principal principal) throws IOException {
+                               Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Редактирование категории");
-            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             return "adminpanel/categories-form";
         }
         //сохраняем приложенное изображение (если оно было вставлено в форму)

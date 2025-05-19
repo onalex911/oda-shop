@@ -16,20 +16,18 @@ import java.util.List;
 
 @Service
 public class ProductAdminService {
-    private final CustomerService customerService;
     private final GrupTovRepository grupTovRepository;
     private final TovarRepository tovarRepository;
 //    private final ImageService imageService;
 
     @Autowired
-    public ProductAdminService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, CustomerService customerService) {
+    public ProductAdminService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository) {
         this.grupTovRepository = grupTovRepository;
         this.tovarRepository = tovarRepository;
-        this.customerService = customerService;
 //        this.imageService = imageService;
     }
 
-    public String getProductsByGroupId(int groupId, Model model, Principal principal) {
+    public String getProductsByGroupId(int groupId, Model model) {
         try {
             List<Tovar> tovary = tovarRepository.findTovarByGroupId(groupId);
             List<GrupTov> groups = grupTovRepository.findBijou();
@@ -70,7 +68,7 @@ public class ProductAdminService {
         }
     }
 
-    public String editProductForm(int id, Model model, Principal principal) {
+    public String editProductForm(int id, Model model) {
         try {
             Tovar product = tovarRepository.findTovarById(id);
             //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю

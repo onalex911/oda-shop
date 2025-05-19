@@ -29,16 +29,14 @@ public class AdminProductController {
 //    public static String uploadDir;
     public static int DEFAULT_GROUP = 1418;
 
-    private final CustomerService customerService;
     private final GroupService groupService;
     private final ProductAdminService productAdminService;
     private final ResourceLoader resourceLoader;
 
     @Autowired
-    public AdminProductController(GroupService grupTovService, ProductAdminService productAdminService, CustomerService customerService, ResourceLoader resourceLoader) {
+    public AdminProductController(GroupService grupTovService, ProductAdminService productAdminService, ResourceLoader resourceLoader) {
         this.groupService = grupTovService;
         this.productAdminService = productAdminService;
-        this.customerService = customerService;
         this.resourceLoader = resourceLoader;
     }
 
@@ -46,14 +44,14 @@ public class AdminProductController {
      * Вывод списка товаров категории, выбранной по-умолчанию
      */
     @GetMapping()
-    public String listProductsDef(Principal principal, Model model) {
-        return listProducts(DEFAULT_GROUP, principal, model);
+    public String listProductsDef(Model model) {
+        return listProducts(DEFAULT_GROUP, model);
     }
 
     @GetMapping("/{id}")
-    public String listProducts(@PathVariable int id, Principal principal, Model model) {
+    public String listProducts(@PathVariable int id, Model model) {
 
-       return productAdminService.getProductsByGroupId(id,model,principal);
+       return productAdminService.getProductsByGroupId(id,model);
 //        model.addAttribute("categories", groupService.getGroupsAll());
 //        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
 //        model.addAttribute("title", "Управление товарами");
@@ -65,9 +63,8 @@ public class AdminProductController {
      * Форма создания нового товара
      */
     @GetMapping("/create")
-    public String createProductForm(Principal principal, Model model) {
+    public String createProductForm(Model model) {
         model.addAttribute("category", new GrupTov());
-//        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Создание категории");
         return "adminpanel/products-form";
     }
@@ -78,10 +75,8 @@ public class AdminProductController {
     @PostMapping("/create")
     public String createProduct(@Valid @ModelAttribute("category") GrupTov category,
                                  BindingResult bindingResult,
-                                 Model model,
-                                 Principal principal) {
+                                 Model model) {
         if (bindingResult.hasErrors()) {
-//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             model.addAttribute("title", "Создание категории");
             return "adminpanel/products-form";
         }
@@ -94,8 +89,8 @@ public class AdminProductController {
      * Форма редактирования товара
      */
     @GetMapping("/edit/{id}")
-    public String editProductForm(@PathVariable int id, Model model, Principal principal) {
-        return productAdminService.editProductForm(id, model,principal);
+    public String editProductForm(@PathVariable int id, Model model) {
+        return productAdminService.editProductForm(id, model);
     }
 
     /**
@@ -106,11 +101,9 @@ public class AdminProductController {
                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                @Valid @ModelAttribute("category") GrupTov category,
                                BindingResult bindingResult,
-                               Model model,
-                               Principal principal) throws IOException {
+                               Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Редактирование товара");
-//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             return "adminpanel/products-form";
         }
         //сохраняем приложенное изображение (если оно было вставлено в форму)
