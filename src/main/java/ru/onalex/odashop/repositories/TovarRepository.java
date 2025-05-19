@@ -25,9 +25,11 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
 //    List<Tovar> findTovarByAlias(String alias);
     Page<Tovar> findTovarByAlias(String alias, Pageable pageable);
 
-
-    @Query(value="SELECT * FROM tovar t WHERE code=:code AND t.ostatok > 0",nativeQuery = true)
+    @Query(value="SELECT * FROM tovar t WHERE t.code=:code AND t.ostatok > 0",nativeQuery = true)
     Tovar findExistTovarByCode(int code);
+
+    @Query(value="SELECT * FROM tovar t WHERE t.code=:id",nativeQuery = true)
+    Tovar findTovarById(int id);
 
     @Query(value="SELECT * FROM tovar t WHERE t.gruptov = :groupId ORDER BY nomer",nativeQuery = true)
     List<Tovar> findTovarByGroupId(int groupId);

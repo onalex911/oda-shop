@@ -239,6 +239,21 @@
                     <form th:action="@{${mainAdminPage}+'/categories/edit/'+${product.id}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" th:value="${product.id}"/>
                         <div class="row mb-3">
+                            <label for="blokCB" class="col-sm-2 col-form-label">Активно</label>
+                            <div class="col-sm-10">
+                                <input type="checkbox" class="form-check-input" id="blokCB"
+                                       th:checked="${product.blok == 1 ? false: true}"
+                                    onclick="setBlokStatus()">
+                                <input type="hidden" name="blok" id="blok" th:value="${product.blok}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label">Артикул</label>
+                            <div class="col-sm-10">
+                                <input name="dop" type="text" class="form-control" id="dop" th:value="${product.dop}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
                             <label for="purl" class="col-sm-2 col-form-label">URL</label>
                             <div class="col-sm-10">
                                 <input name="purl" type="text" class="form-control" id="purl" th:value="${product.purl}">
@@ -257,52 +272,71 @@
                                 <input name="nomer" type="text" class="form-control" id="nomer" th:value="${product.nomer}">
                             </div>
                         </div>
-                        <input name="vid" type="hidden" id="vid" th:value="${product.vid}">
-                        <input name="cena" type="hidden" id="cena" th:value="${product.cena}">
-                        <input name="skidka" type="hidden" id="skidka" th:value="${product.skidka}">
-                        <input name="zakaz" type="hidden" id="zakaz" th:value="${product.zakaz}">
-                        <input name="ost" type="hidden" id="ost" th:value="${product.ost}">
+<!--                        <select name="gruptov" class="form-select" aria-label="Default select example" th:each="g : ${groups}">-->
+<!--                            <option th:value="${g.code}" th:if="${g.code == group_id}" th:attr="${'selected'}">-->
+<!--                                <span th:text="${g.grupName}"/>-->
+<!--                            </option>-->
+<!--                        </select>-->
                         <div class="row mb-3">
-                            <label for="blokCB" class="col-sm-2 col-form-label">Активно</label>
+                            <label for="tovName" class="col-sm-2 col-form-label">Наименование</label>
                             <div class="col-sm-10">
-                                <input type="checkbox" class="form-check-input" id="blokCB"
-                                       th:checked="${product.blok == 1 ? false: true}"
-                                    onclick="setBlokStatus()">
-                                <input type="hidden" name="blok" id="blok" th:value="${product.blok}">
+                                <input name="tovName" type="text" class="form-control" id="tovName" th:value="${product.tovName}">
                             </div>
                         </div>
-                        <input name="rod" type="hidden" id="rod" th:value="${product.rod} != '' ? ${product.rod} : 1413">
-                        <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Наименование</label>
-                            <div class="col-sm-10">
-                                <input name="grupName" type="text" class="form-control" id="name" th:value="${product.grupName}">
-                            </div>
-                        </div>
-<!--                        <div class="row mb-3">-->
-<!--                            <img th:src="${product.picPreview}" style="width:600px;">-->
-<!--                            <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>-->
-<!--                            <div class="col-sm-10">-->
-<!--                                <input name="picPreview" type="text" class="form-control" id="inputPic" th:value="${product.picPreview}">-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="row mb-3">
                             <div class="col-sm-12 mb-3">
-                                <img th:if="${product.picPreview}" th:src="'/assets/' + ${product.picPreview}" class="img-thumbnail" style="max-width:600px;">
+                                <img th:if="${product.picPreview}" th:src="'/assets/' + ${product.picPreview}" class="img-thumbnail" style="max-width:300px;">
                                 <p th:unless="${product.picPreview}" class="text-muted">Нет изображения</p>
                             </div>
                             <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
                             <div class="col-sm-10">
-                                <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
+                                <input type="file" class="form-control" id="imagePreview" name="imagePreview" accept="image/*">
                                 <input type="hidden" name="picPreview" th:value="${product.picPreview}">
                                 <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
                             </div>
                         </div>
-                        <input name="menu1" type="hidden" id="menu1" th:value="${product.menu1}">
-                        <input name="menu2" type="hidden" id="menu2" th:value="${product.menu2}">
-                        <input name="flmenu" type="hidden" id="flmenu" th:value="${product.flmenu}">
+                        <div class="row mb-3">
+                            <div class="col-sm-12 mb-3">
+                                <img th:if="${product.picBig}" th:src="'/assets/' + ${product.picBig}" class="img-thumbnail" style="max-width:600px;">
+                                <p th:unless="${product.picBig}" class="text-muted">Нет изображения</p>
+                            </div>
+                            <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
+                                <input type="hidden" name="picPreview" th:value="${product.picBig}">
+                                <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ostatok" class="col-sm-2 col-form-label">Остаток</label>
+                            <div class="col-sm-10">
+                                <input name="ostatok" id="ostatok" th:value="${product.ostatok}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="cena" class="col-sm-2 col-form-label">Цена</label>
+                            <div class="col-sm-10">
+                                <input name="cena"  id="cena" th:value="${product.cena}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="cena1" class="col-sm-2 col-form-label">Цена1</label>
+                            <div class="col-sm-10">
+                                <input name="cena1"  id="cena1" th:value="${product.cena1}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="ves" class="col-sm-2 col-form-label">Вес</label>
+                            <div class="col-sm-10">
+                                <input name="ves"  id="ves" th:value="${product.ves}">
+                            </div>
+                        </div>
+                        <input name="data" type="hidden" id="data" th:value="${product.data}">
+                        <input name="dataRed" type="hidden" id="dataRed" th:value="${product.dataRed}">
                         <input name="top" type="hidden" id="top" th:value="${product.top}">
-                        <input name="maingrup" type="hidden" id="maingrup" th:value="${product.maingrup}">
-                        <input name="razmerpic" type="hidden" id="razmerpic" th:value="${product.razmerpic}">
+                        <input name="dopParametru" type="hidden" id="dopParametru" th:value="${product.dopParametru}">
+                        <input name="link" type="hidden" id="link" th:value="${product.link}">
+                        <input name="prosmotru" type="hidden" id="prosmotru" th:value="${product.prosmotru}">
                         <div class="row mb-3">
                             <label for="comment" class="col-sm-2 col-form-label">Комментарий</label>
                             <div class="col-sm-10">
@@ -310,18 +344,11 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="keywords" class="col-sm-2 col-form-label">Ключ. слова (keywords)</label>
+                            <label for="comment1" class="col-sm-2 col-form-label">Комментарий 1</label>
                             <div class="col-sm-10">
-                                <input name="keywords" type="text" class="form-control" id="keywords" th:value="${product.keywords}">
+                                <input name="comment1" type="text" class="form-control" id="comment1" th:value="${product.comment1}">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label for="description" class="col-sm-2 col-form-label">Описание (description)</label>
-                            <div class="col-sm-10">
-                                <input name="description" type="text" class="form-control" id="description" th:value="${product.description}">
-                            </div>
-                        </div>
-                        <input name="dop" type="hidden" id="dop" th:value="${product.dop}">
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Сохранить</button>
                         </div>

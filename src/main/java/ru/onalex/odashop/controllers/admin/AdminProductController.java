@@ -62,26 +62,26 @@ public class AdminProductController {
     }
 
     /**
-     * Форма создания новой категории
+     * Форма создания нового товара
      */
     @GetMapping("/create")
-    public String createCategoryForm(Principal principal, Model model) {
+    public String createProductForm(Principal principal, Model model) {
         model.addAttribute("category", new GrupTov());
-        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+//        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Создание категории");
         return "adminpanel/products-form";
     }
 
     /**
-     * Обработка формы создания категории
+     * Обработка формы создания товара
      */
     @PostMapping("/create")
-    public String createCategory(@Valid @ModelAttribute("category") GrupTov category,
+    public String createProduct(@Valid @ModelAttribute("category") GrupTov category,
                                  BindingResult bindingResult,
                                  Model model,
                                  Principal principal) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             model.addAttribute("title", "Создание категории");
             return "adminpanel/products-form";
         }
@@ -91,25 +91,18 @@ public class AdminProductController {
     }
 
     /**
-     * Форма редактирования категории
+     * Форма редактирования товара
      */
     @GetMapping("/edit/{id}")
-    public String editCategoryForm(@PathVariable int id, Model model, Principal principal) {
-        GrupTov category = groupService.findById(id);
-        //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
-//                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
-
-        model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
-        model.addAttribute("category", category);
-        model.addAttribute("title", "Редактирование категории");
-        return "adminpanel/products-form";
+    public String editProductForm(@PathVariable int id, Model model, Principal principal) {
+        return productAdminService.editProductForm(id, model,principal);
     }
 
     /**
-     * Обработка формы редактирования категории
+     * Обработка формы редактирования товара
      */
     @PostMapping("/edit/{id}")
-    public String editCategory(@PathVariable int id,
+    public String editProduct(@PathVariable int id,
                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
                                @Valid @ModelAttribute("category") GrupTov category,
                                BindingResult bindingResult,
@@ -117,7 +110,7 @@ public class AdminProductController {
                                Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Редактирование товара");
-            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             return "adminpanel/products-form";
         }
         //сохраняем приложенное изображение (если оно было вставлено в форму)
@@ -150,13 +143,13 @@ public class AdminProductController {
 
     @PostMapping("/block/{id}/{status}")
     @ResponseBody
-    public MyResponse blockCategory(@PathVariable int id,
+    public MyResponse blockProduct(@PathVariable int id,
                                   @PathVariable int status) {
 //        System.out.println("id="+id+" status="+status);
         return productAdminService.setActivity(id,status);
     }
     /**
-     * Удаление категории (НЕ ИСПОЛЬЗУЕТСЯ В ИНТЕРФЕЙСЕ. ВМЕСТО НЕГО ИСПОЛЬЗУЕТСЯ ДЕАКТИВАЦИЯ)
+     * Удаление товара (НЕ ИСПОЛЬЗУЕТСЯ В ИНТЕРФЕЙСЕ. ВМЕСТО НЕГО ИСПОЛЬЗУЕТСЯ ДЕАКТИВАЦИЯ)
      */
     /*@GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable int id) {

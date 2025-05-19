@@ -33,13 +33,15 @@ public class ProductAdminService {
         try {
             List<Tovar> tovary = tovarRepository.findTovarByGroupId(groupId);
             List<GrupTov> groups = grupTovRepository.findBijou();
-            String groupName = grupTovRepository.findById(groupId).getGrupName();
+            GrupTov currentGroup = grupTovRepository.findById(groupId);
+            String groupName = currentGroup.getGrupName();
 //            System.out.println(groupName);
 //            System.out.println(groupAlias);
             model.addAttribute("products", tovary);
             model.addAttribute("groups", groups);
             model.addAttribute("group_name", groupName);
-            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+            model.addAttribute("group_id", groupId);
+//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
             model.addAttribute("title", "Управление товарами");
 //            model.addAttribute("title", groupName + ". ");
             return "adminpanel/products-list";
@@ -68,4 +70,19 @@ public class ProductAdminService {
         }
     }
 
+    public String editProductForm(int id, Model model, Principal principal) {
+        try {
+            Tovar product = tovarRepository.findTovarById(id);
+            //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
+//                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
+
+//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+            model.addAttribute("product", product);
+            model.addAttribute("title", "Редактирование товара");
+            return "adminpanel/products-form";
+        }catch (Exception e){
+            model.addAttribute("error_message",e.getMessage());
+            return "redirect:/adminpanel";
+        }
+    }
 }
