@@ -272,11 +272,19 @@
                                 <input name="nomer" type="text" class="form-control" id="nomer" th:value="${product.nomer}">
                             </div>
                         </div>
-<!--                        <select name="gruptov" class="form-select" aria-label="Default select example" th:each="g : ${groups}">-->
-<!--                            <option th:value="${g.code}" th:if="${g.code == group_id}" th:attr="${'selected'}">-->
-<!--                                <span th:text="${g.grupName}"/>-->
-<!--                            </option>-->
-<!--                        </select>-->
+                        <div class="row mb-3">
+                            <label for="nomer" class="col-sm-2 col-form-label">Группа</label>
+                            <div class="col-sm-10">
+                                <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
+<!--                                    <option th:value="${g.id}" th:if="${g.id == product.grupTov}" th:attr="${'selected'}">-->
+                                    <option th:each="g : ${groups}"
+                                            th:value="${g.id}"
+                                            th:text="${g.grupName}"
+                                            th:selected="${g.id == product.grupTov}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label for="tovName" class="col-sm-2 col-form-label">Наименование</label>
                             <div class="col-sm-10">

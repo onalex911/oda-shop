@@ -74,7 +74,8 @@ public class ProductAdminService {
             //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
 //                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
 
-//            model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
+            List<GrupTov> groups = grupTovRepository.findBijou();
+            model.addAttribute("groups", groups);
             model.addAttribute("product", product);
             model.addAttribute("title", "Редактирование товара");
             return "adminpanel/products-form";
