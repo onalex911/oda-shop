@@ -9,11 +9,11 @@ async function addTovar(id) {
     });
 
     if (response.ok){
-        let result = await response;
+        let result = await response.json();
         // alert(result.text())
 
-        // document.getElementsByClassName('item-counter')[0].innerText = result.amountPos;
-        // document.getElementsByClassName('item-price')[0].innerText = formatMoneyValue(result.totalSum);
+        document.getElementsByClassName('item-counter')[0].innerText = result.amountPos;
+        document.getElementsByClassName('item-price')[0].innerText = formatMoneyValue(result.totalSum);
     }else{
         console.log("error")
     }
