@@ -1,8 +1,10 @@
 package ru.onalex.odashop.repositories;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
@@ -23,7 +25,15 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
 //    List<Tovar> findTovarByAlias(String alias);
     Page<Tovar> findTovarByAlias(String alias, Pageable pageable);
 
+
     @Query(value="SELECT * FROM tovar t WHERE code=:code AND t.ostatok > 0",nativeQuery = true)
     Tovar findExistTovarByCode(int code);
 
+    @Query(value="SELECT * FROM tovar t WHERE t.gruptov = :groupId ORDER BY nomer",nativeQuery = true)
+    List<Tovar> findTovarByGroupId(int groupId);
+
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE tovar SET blok=:status WHERE code=:id", nativeQuery=true)
+    void setBlokStatus(int id, int status) ;
 }

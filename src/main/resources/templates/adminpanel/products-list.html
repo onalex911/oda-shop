@@ -222,13 +222,14 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <a class="float-sm-end" href="/adminpanel/categories/create" title="Добавить группу"><i style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
+                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
                         <!-- <ol class="breadcrumb float-sm-end">
                           <li class="breadcrumb-item"><a href="#">Home</a></li>
                           <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                         </ol> -->
                     </div>
                 </div>
+                <div class="row"></div>
                 <!--end::Row-->
             </div>
             <!--end::Container-->
@@ -247,27 +248,36 @@
                             <th style="width: 10px">Id</th>
                             <th style="width: 10px">Активно</th>
                             <th>Изображение</th>
+                            <th>Артикул</th>
                             <th>Наименование</th>
+                            <th>Группа
+<!--                                <input type=""-->
+                            </th>
                             <th>Порядок</th>
-                            <!--                <th style="width: 40px">Порядок</th>-->
+                            <th>Цена</th>
+                            <th>Остаток</th>
                             <th>&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="align-middle" th:each="c : ${categories}">
-                            <td th:text="${c.id}"></td>
+                        <tr class="align-middle" th:each="p : ${products}">
+                            <td th:text="${p.id}"></td>
                             <td class="text-center">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
-                                           th:checked="${c.blok == 1 ? false: true}"
-                                           th:onclick="'setBlokStatus(\'blok_' + ${c.id}+'\')'">
+                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${p.id}"
+                                           th:checked="${p.blok == 1 ? false: true}"
+                                           th:onclick="'setBlokStatus(\'blok_' + ${p.id}+'\')'">
                                 </div>
                             </td>
-                            <td><img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/></td>
-                            <td th:text="${c.grupName}"></td>
-                            <td class="text-center" th:text="${c.nomer}"></td>
+                            <td><img th:src="'/assets/' + ${p.picPreview}" style="width:50px;"/></td>
+                            <td><span th:text="${p.dop}"></span>&nbsp;<i class="bi bi-info-circle" th:title="${p.code1s}"></i></td>
+                            <td th:text="${p.tovName}"></td>
+                            <td th:text="${p.grupTov}"></td>
+                            <td class="text-center" th:text="${p.nomer}"></td>
+                            <td class="text-right" th:text="${p.cena}"></td>
+                            <td class="text-right" th:text="${p.ostatok}"></td>
                             <td>
-                                <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
+                                <a th:href="@{${mainAdminPage}+'/categories/edit/'+${p.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
 <!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
                             </td>
                         </tr>
@@ -379,7 +389,7 @@
         console.error("id: " + id);
         // alert("id: " + id);
         try {
-            let response = await fetch(`/adminpanel/categories/block/${id}/${status}`, {
+            let response = await fetch(`/adminpanel/products/block/${id}/${status}`, {
                 method: 'POST'
             });
 

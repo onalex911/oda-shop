@@ -215,14 +215,10 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <!--begin::Row-->
-                <div class="row d-flex">
+                <div class="row">
                     <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
+                    <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>
                     <div class="col-sm-6">
-                        <h3 class="mb-0" th:text="${title}"></h3>
-
-                    </div>
-                    <div class="col-sm-6">
-                        <a class="float-sm-end" href="/adminpanel/categories/create" title="Добавить группу"><i style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
                         <!-- <ol class="breadcrumb float-sm-end">
                           <li class="breadcrumb-item"><a href="#">Home</a></li>
                           <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
@@ -240,40 +236,96 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-<!--                    <form>-->
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th style="width: 10px">Id</th>
-                            <th style="width: 10px">Активно</th>
-                            <th>Изображение</th>
-                            <th>Наименование</th>
-                            <th>Порядок</th>
-                            <!--                <th style="width: 40px">Порядок</th>-->
-                            <th>&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="align-middle" th:each="c : ${categories}">
-                            <td th:text="${c.id}"></td>
-                            <td class="text-center">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
-                                           th:checked="${c.blok == 1 ? false: true}"
-                                           th:onclick="'setBlokStatus(\'blok_' + ${c.id}+'\')'">
-                                </div>
-                            </td>
-                            <td><img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/></td>
-                            <td th:text="${c.grupName}"></td>
-                            <td class="text-center" th:text="${c.nomer}"></td>
-                            <td>
-                                <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
-<!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-<!--                    </form>-->
+                    <form th:action="@{${mainAdminPage}+'/categories/edit/'+${product.id}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id" th:value="${product.id}"/>
+                        <div class="row mb-3">
+                            <label for="purl" class="col-sm-2 col-form-label">URL</label>
+                            <div class="col-sm-10">
+                                <input name="purl" type="text" class="form-control" id="purl" th:value="${product.purl}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="flpurl" class="col-sm-2 col-form-label">FLPURL</label>
+                            <div class="col-sm-10">
+                                <input name="flpurl" type="text" class="form-control" id="flpurl" th:value="${product.flpurl}">
+                            </div>
+                        </div>
+                        <input name="code1s" type="hidden" id="code1s" th:value="${product.code1s}" disabled>
+                        <div class="row mb-3">
+                            <label for="nomer" class="col-sm-2 col-form-label">Порядковый номер</label>
+                            <div class="col-sm-10">
+                                <input name="nomer" type="text" class="form-control" id="nomer" th:value="${product.nomer}">
+                            </div>
+                        </div>
+                        <input name="vid" type="hidden" id="vid" th:value="${product.vid}">
+                        <input name="cena" type="hidden" id="cena" th:value="${product.cena}">
+                        <input name="skidka" type="hidden" id="skidka" th:value="${product.skidka}">
+                        <input name="zakaz" type="hidden" id="zakaz" th:value="${product.zakaz}">
+                        <input name="ost" type="hidden" id="ost" th:value="${product.ost}">
+                        <div class="row mb-3">
+                            <label for="blokCB" class="col-sm-2 col-form-label">Активно</label>
+                            <div class="col-sm-10">
+                                <input type="checkbox" class="form-check-input" id="blokCB"
+                                       th:checked="${product.blok == 1 ? false: true}"
+                                    onclick="setBlokStatus()">
+                                <input type="hidden" name="blok" id="blok" th:value="${product.blok}">
+                            </div>
+                        </div>
+                        <input name="rod" type="hidden" id="rod" th:value="${product.rod} != '' ? ${product.rod} : 1413">
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label">Наименование</label>
+                            <div class="col-sm-10">
+                                <input name="grupName" type="text" class="form-control" id="name" th:value="${product.grupName}">
+                            </div>
+                        </div>
+<!--                        <div class="row mb-3">-->
+<!--                            <img th:src="${product.picPreview}" style="width:600px;">-->
+<!--                            <label for="inputPic" class="col-sm-2 col-form-label">Изображение</label>-->
+<!--                            <div class="col-sm-10">-->
+<!--                                <input name="picPreview" type="text" class="form-control" id="inputPic" th:value="${product.picPreview}">-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div class="row mb-3">
+                            <div class="col-sm-12 mb-3">
+                                <img th:if="${product.picPreview}" th:src="'/assets/' + ${product.picPreview}" class="img-thumbnail" style="max-width:600px;">
+                                <p th:unless="${product.picPreview}" class="text-muted">Нет изображения</p>
+                            </div>
+                            <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
+                                <input type="hidden" name="picPreview" th:value="${product.picPreview}">
+                                <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
+                            </div>
+                        </div>
+                        <input name="menu1" type="hidden" id="menu1" th:value="${product.menu1}">
+                        <input name="menu2" type="hidden" id="menu2" th:value="${product.menu2}">
+                        <input name="flmenu" type="hidden" id="flmenu" th:value="${product.flmenu}">
+                        <input name="top" type="hidden" id="top" th:value="${product.top}">
+                        <input name="maingrup" type="hidden" id="maingrup" th:value="${product.maingrup}">
+                        <input name="razmerpic" type="hidden" id="razmerpic" th:value="${product.razmerpic}">
+                        <div class="row mb-3">
+                            <label for="comment" class="col-sm-2 col-form-label">Комментарий</label>
+                            <div class="col-sm-10">
+                                <input name="comment" type="text" class="form-control" id="comment" th:value="${product.comment}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="keywords" class="col-sm-2 col-form-label">Ключ. слова (keywords)</label>
+                            <div class="col-sm-10">
+                                <input name="keywords" type="text" class="form-control" id="keywords" th:value="${product.keywords}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="description" class="col-sm-2 col-form-label">Описание (description)</label>
+                            <div class="col-sm-10">
+                                <input name="description" type="text" class="form-control" id="description" th:value="${product.description}">
+                            </div>
+                        </div>
+                        <input name="dop" type="hidden" id="dop" th:value="${product.dop}">
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                    </form>
                 </div>
                 <!--end::Row-->
             </div>
@@ -370,40 +422,24 @@
         crossorigin="anonymous"
 ></script>
 <script>
-    async function setBlokStatus(elId) {
-        cb = document.getElementById(elId);
-        let checked = cb.checked;
-        let status = checked ? 0 : 1;
-        let id = elId.substring(5);
+<!--    -->
+//    cb.addEventListener('click',function(e){
+//        if(e.target.classList.contains('thead')){
+//            let keyName = e.target.className.split(' ')[1];
+//            let cb = document.getElementsByName(keyName)[0];
+//            sortAndRedrawBy(mainTblBody,keyName,cbState);
+//
+//            document.getElementsByName(keyName)[0].checked = !cbState;
+//        }
 
-        console.error("id: " + id);
-        // alert("id: " + id);
-        try {
-            let response = await fetch(`/adminpanel/categories/block/${id}/${status}`, {
-                method: 'POST'
-            });
-
-            if (response.ok) {
-                // Парсим JSON-ответ
-                let result = await response.json();
-
-                if (result.status === 'success'){
-                    console.log("id "+id+" успешно изменен на " + status);
-                    return;
-                }
-                else{
-                    console.error("Ошибка: " + result.message);
-                    // alert("Ошибка: " + result.message);
-                }
-            } else {
-                console.error("Ошибка HTTP: " + response.status);
-                // alert("Ошибка соединения: " + response.status);
-            }
-        } catch (error) {
-            console.error("Исключение: ", error);
-            // alert("Произошла ошибка: " + error.message);
-        }
-        cb.checked = !checked;
+    function setBlokStatus(){
+        let cb = document.getElementById("blokCB");
+        let cbState = cb.checked;
+        console.log(cbState);
+        let blok = document.getElementById("blok");
+        blok.value = (cb !== 'undefined' && cbState) ? 0 : 1;
+        // cb.checked = !cbState;
+        blok.setAttribute('value', blok.value);
     }
 </script>
 
