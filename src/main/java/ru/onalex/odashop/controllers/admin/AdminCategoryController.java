@@ -2,7 +2,6 @@ package ru.onalex.odashop.controllers.admin;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
@@ -10,8 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.entities.GrupTov;
+import ru.onalex.odashop.models.MyResponse;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.GroupService;
 
@@ -29,12 +28,12 @@ public class AdminCategoryController {
 //    public static String uploadDir;
 
     private final CustomerService customerService;
-    private final GroupService grupService;
+    private final GroupService groupService;
     private final ResourceLoader resourceLoader;
 
     @Autowired
     public AdminCategoryController(GroupService grupTovService, CustomerService customerService, ResourceLoader resourceLoader) {
-        this.grupService = grupTovService;
+        this.groupService = grupTovService;
         this.customerService = customerService;
         this.resourceLoader = resourceLoader;
     }
@@ -44,7 +43,7 @@ public class AdminCategoryController {
      */
     @GetMapping
     public String listCategories(Principal principal, Model model) {
-        model.addAttribute("categories", grupService.getGroupsAll());
+        model.addAttribute("categories", groupService.getGroupsAll());
         model.addAttribute("userData", customerService.getUserInfoByUsername(principal.getName()));
         model.addAttribute("title", "Управление группами");
         return "adminpanel/categories-list";
@@ -76,7 +75,7 @@ public class AdminCategoryController {
             return "adminpanel/categories-form";
         }
 
-        grupService.save(category);
+        groupService.save(category);
         return "redirect:/adminpanel/categories";
     }
 
@@ -85,7 +84,7 @@ public class AdminCategoryController {
      */
     @GetMapping("/edit/{id}")
     public String editCategoryForm(@PathVariable int id, Model model, Principal principal) {
-        GrupTov category = grupService.findById(id);
+        GrupTov category = groupService.findById(id);
         //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
 //                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
 
@@ -134,10 +133,17 @@ public class AdminCategoryController {
         }
 
         category.setId(id); // Убедимся, что ID установлен правильно
-        grupService.save(category);
+        groupService.save(category);
         return "redirect:/adminpanel/categories";
     }
 
+    @PostMapping("/block/{id}/{status}")
+    @ResponseBody
+    public MyResponse blockCategory(@PathVariable int id,
+                                  @PathVariable int status) {
+//        System.out.println("id="+id+" status="+status);
+        return groupService.setActivity(id,status);
+    }
     /**
      * Удаление категории (НЕ ИСПОЛЬЗУЕТСЯ В ИНТЕРФЕЙСЕ. ВМЕСТО НЕГО ИСПОЛЬЗУЕТСЯ ДЕАКТИВАЦИЯ)
      */

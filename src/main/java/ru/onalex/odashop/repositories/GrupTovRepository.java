@@ -1,6 +1,8 @@
 package ru.onalex.odashop.repositories;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.onalex.odashop.entities.GrupTov;
@@ -25,4 +27,8 @@ public interface GrupTovRepository extends JpaRepository<GrupTov, Integer> {
     @Query(value="SELECT * FROM gruptov WHERE code=:id",nativeQuery = true)
     GrupTov findById(int id);
 
+    @Modifying
+    @Transactional
+    @Query(value="UPDATE gruptov SET blok=:status WHERE code=:id", nativeQuery=true)
+    void setBlokStatus(int id, int status) ;
 }

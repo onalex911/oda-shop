@@ -239,7 +239,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <form>
+<!--                    <form>-->
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -258,8 +258,8 @@
                             <td class="text-center">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
-                                           th:checked="${c.blok == 1 ? false: true}">
-
+                                           th:checked="${c.blok == 1 ? false: true}"
+                                           th:onclick="'setBlokStatus(\'blok_' + ${c.id}+'\')'">
                                 </div>
                             </td>
                             <td><img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/></td>
@@ -272,7 +272,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    </form>
+<!--                    </form>-->
                 </div>
                 <!--end::Row-->
             </div>
@@ -368,6 +368,43 @@
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
         crossorigin="anonymous"
 ></script>
+<script>
+    async function setBlokStatus(elId) {
+        cb = document.getElementById(elId);
+        let checked = cb.checked;
+        let status = checked ? 0 : 1;
+        let id = elId.substring(5);
+
+        console.error("id: " + id);
+        // alert("id: " + id);
+        try {
+            let response = await fetch(`/adminpanel/categories/block/${id}/${status}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                // Парсим JSON-ответ
+                let result = await response.json();
+
+                if (result.status === 'success'){
+                    console.log("id "+id+" успешно изменен на " + status);
+                    return;
+                }
+                else{
+                    console.error("Ошибка: " + result.message);
+                    // alert("Ошибка: " + result.message);
+                }
+            } else {
+                console.error("Ошибка HTTP: " + response.status);
+                // alert("Ошибка соединения: " + response.status);
+            }
+        } catch (error) {
+            console.error("Исключение: ", error);
+            // alert("Произошла ошибка: " + error.message);
+        }
+        cb.checked = !checked;
+    }
+</script>
 
 </body>
 <!--end::Body-->

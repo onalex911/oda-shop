@@ -1,5 +1,6 @@
 package ru.onalex.odashop.services;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,6 +12,7 @@ import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.entities.Tovar;
+import ru.onalex.odashop.models.MyResponse;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
 
@@ -86,5 +88,29 @@ public class GroupService {
 
     public void save(GrupTov grupTov) {
         grupTovRepository.save(grupTov);
+    }
+
+    public MyResponse setActivity(int id, int status) {
+        if (id <= 0) {
+            return MyResponse.error("Некорректный ID");
+        }
+
+        if (status != 0 && status != 1) {
+            return MyResponse.error("Статус должен быть 0 или 1");
+        }
+
+        try {
+//            int updatedRows = grupTovRepository.setBlokStatus(id, status);
+            grupTovRepository.setBlokStatus(id, status);
+
+//            if (updatedRows == 0) {
+//                return MyResponse.error("Категория с ID " + id + " не найдена");
+//            }
+
+            return MyResponse.success("Статус успешно изменен");
+        } catch (Exception e) {
+//            log.error("Ошибка при изменении статуса блокировки категории: {}", e.getMessage(), e);
+            return MyResponse.error(e.getMessage());
+        }
     }
 }
