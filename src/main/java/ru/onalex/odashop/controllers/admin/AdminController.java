@@ -4,10 +4,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.onalex.odashop.entities.AdminUIUser;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.ProductService;
-import ru.onalex.odashop.services.AdminUIUserService;
 
 import java.security.Principal;
 
@@ -16,12 +14,10 @@ import java.security.Principal;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    private final AdminUIUserService adminUIUserService;
     private final ProductService productService;
     private final CustomerService customerService;
 
-    public AdminController(AdminUIUserService adminUIUserService, ProductService productService, CustomerService customerService) {
-        this.adminUIUserService = adminUIUserService;
+    public AdminController(ProductService productService, CustomerService customerService) {
         this.productService = productService;
         this.customerService = customerService;
     }

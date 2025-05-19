@@ -90,6 +90,7 @@ public class GrupTov {
     @Column(name = "dop", columnDefinition = "varchar(250)")
     private String dop;
 
-    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER )
+    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = false)
     private Set<Tovar> tovarGrupSet = new HashSet<>();
 }

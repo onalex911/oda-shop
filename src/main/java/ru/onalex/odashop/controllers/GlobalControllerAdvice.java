@@ -4,6 +4,7 @@ package ru.onalex.odashop.controllers;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +27,8 @@ public class GlobalControllerAdvice {
     private final GrupTovRepository grupTovRepository;
     private CartService cartService;
     public static final String MAIN_PAGE = "/catalog/bizhuteriya";
+    public static final String MAIN_ADMIN_PAGE = "/adminpanel";
+
 
     @Autowired
     public void setCartService(CartService cartService) {
@@ -44,9 +47,10 @@ public class GlobalControllerAdvice {
         model.addAttribute("currentYear", currentYear);
         model.addAttribute("title", "");
         model.addAttribute("mainPage", MAIN_PAGE);
+        model.addAttribute("mainAdminPage", MAIN_ADMIN_PAGE);
         try {
             // Добавляем список групп товаров
-            List<GrupTovDTO> groups = grupTovRepository.findBijou().stream()
+            List<GrupTovDTO> groups = grupTovRepository.findBijouActive().stream()
                     .map(GrupTovDTO::fromEntity)
                     .collect(Collectors.toList());
             model.addAttribute("menuGroups", groups);

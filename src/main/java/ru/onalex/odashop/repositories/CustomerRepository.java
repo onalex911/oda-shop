@@ -15,4 +15,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     @Query(value="SELECT r.* from public.customers c " +
             "left join public.rekvizitu_schet r on c.id = r.customer WHERE c.username=:username", nativeQuery=true)
     List<Recvisit> getRecvisitsByUsername(String username);
+
+
 }
