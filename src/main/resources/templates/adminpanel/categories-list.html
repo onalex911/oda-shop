@@ -265,7 +265,9 @@
                             <td>
                                 <img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/>
                             </td>
-                            <td th:text="${c.grupName}"></td>
+                            <td><a th:href="@{${mainAdminPage}+'/products/'+${c.id}}"
+                                   th:text="${c.grupName}"></a>
+                            </td>
                             <td class="text-center" th:text="${c.nomer}"></td>
                             <td>
                                 <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
