@@ -244,26 +244,27 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th style="width: 10px">Id</th>
-                            <th style="width: 10px">Активно</th>
-                            <th>Изображение</th>
-                            <th>Наименование</th>
-                            <th>Порядок</th>
-                            <!--                <th style="width: 40px">Порядок</th>-->
-                            <th>&nbsp;</th>
+                            <th class="col-1">Id</th>
+                            <th class="col-1">Активно</th>
+                            <th class="col-1">Изображение</th>
+                            <th class="col-7">Наименование</th>
+                            <th class="col-1">Порядок</th>
+                            <th class="col-1">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="align-middle" th:each="c : ${categories}">
                             <td th:text="${c.id}"></td>
-                            <td class="text-center">
+                            <td class="d-flex justify-content-center align-items-center" style="height:66px;">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
                                            th:checked="${c.blok == 1 ? false: true}"
                                            th:onclick="'setBlokStatus(\'blok_' + ${c.id}+'\')'">
                                 </div>
                             </td>
-                            <td><img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/></td>
+                            <td>
+                                <img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/>
+                            </td>
                             <td th:text="${c.grupName}"></td>
                             <td class="text-center" th:text="${c.nomer}"></td>
                             <td>

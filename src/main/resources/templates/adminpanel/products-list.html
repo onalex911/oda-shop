@@ -253,28 +253,30 @@
                     <table class="table table-bordered table-striped" id="productsTable">
                         <thead>
                         <tr>
-                            <th style="width: 10px">Id</th>
-                            <th style="width: 10px">Активно</th>
-                            <th>Изображение</th>
-                            <th>Артикул</th>
-                            <th>Наименование</th>
-                            <th>Порядок</th>
-                            <th>Цена</th>
-                            <th>Остаток</th>
-                            <th>&nbsp;</th>
+                            <th class="col-1">Id</th>
+                            <th class="col-1">Активно</th>
+                            <th class="col-1">Изображение</th>
+                            <th class="col-1">Артикул</th>
+                            <th class="col-3">Наименование</th>
+                            <th class="col-1">Порядок</th>
+                            <th class="col-1">Цена</th>
+                            <th class="col-1">Остаток</th>
+                            <th class="col-1">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="align-middle" th:each="p : ${products}">
                             <td th:text="${p.id}"></td>
-                            <td class="text-center">
+                            <td class="d-md-flex justify-content-md-center align-items-center" style="height:66px;">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" th:id="'blok_' + ${p.id}"
                                            th:checked="${p.blok == 1 ? false: true}"
                                            th:onclick="'setBlokStatus(\'blok_' + ${p.id}+'\')'">
                                 </div>
                             </td>
-                            <td><img th:src="'/assets/' + ${p.picPreview}" style="width:50px;"/></td>
+                            <td>
+                                <img th:src="'/assets/' + ${p.picPreview}" style="width:50px;"/>
+                            </td>
                             <td><span th:text="${p.dop}"></span>&nbsp;<i class="bi bi-info-circle"
                                                                          th:title="${p.code1s}"></i></td>
                             <td th:text="${p.tovName}"></td>
@@ -495,8 +497,10 @@
             row.className = "align-middle";
             row.innerHTML = `
             <td>${product.id}</td>
-            <td>` + drawCB(product.id,product.blok) + `</td>
-            <td><img src="/assets/${product.picPreview}" style="width:50px;"></td>
+            <td class="d-md-flex justify-content-md-center align-items-center" style="height: 66px;">` + drawCB(product.id,product.blok) + `</td>
+            <td>
+                <img src="/assets/${product.picPreview}" style="width:50px;">
+            </td>
             <td><span>${product.dop}</span>&nbsp;<i class="bi bi-info-circle" title="${product.code1s}"></i></td>
             <td>${product.tovName}</td>
             <td class="text-center">${product.nomer}</td>
