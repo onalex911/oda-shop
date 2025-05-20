@@ -50,7 +50,7 @@ public class ProductAdminService {
         }
     }
     public List<Tovar> getProductsByGroupId(int groupId){
-        return tovarRepository.findTovarByGroupIdShort(groupId);
+        return tovarRepository.findTovarByGroupId(groupId);
     }
 
     public MyResponse setActivity(int id, int status) {

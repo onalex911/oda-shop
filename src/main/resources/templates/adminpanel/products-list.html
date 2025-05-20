@@ -279,8 +279,8 @@
                                                                          th:title="${p.code1s}"></i></td>
                             <td th:text="${p.tovName}"></td>
                             <td class="text-center" th:text="${p.nomer}"></td>
-                            <td class="text-right" th:text="${p.cena}"></td>
-                            <td class="text-right" th:text="${p.ostatok}"></td>
+                            <td class="text-end" th:text="${p.cena}+'&nbsp;руб.'"></td>
+                            <td class="text-end" th:text="${p.ostatok}+'&nbsp;шт.'"></td>
                             <td>
                                 <a th:href="@{${mainAdminPage}+'/products/edit/'+${p.id}}"><i
                                         class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
@@ -455,19 +455,24 @@
 
     document.getElementById('grupTov').addEventListener('change', function() {
         const selectedGroupId = this.value;
+        console.log(selectedGroupId);
 
         // Отправляем AJAX-запрос на сервер
-        fetch(`/adminpanel/products/${selectedGroupId}`)
+        fetch(`/adminpanel/products/${selectedGroupId}`,{
+                        method: 'POST'
+                    })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                myResponse = response.json();
-                console.log(myResponse.status);
+                return response.json();
+            })
+            .then(myResponse => {
+                console.log("Status:" + myResponse.status);
                 if(myResponse.status === 'success'){
                     return  myResponse.dataset.length ? myResponse.dataset : null;
                 }else{
-                    alert(myResponse.message);
+                    alert("Not success: " + myResponse.message);
                     return null;
                 }
             })
@@ -487,21 +492,29 @@
         // Заполняем таблицу новыми данными
         products.forEach(product => {
             const row = document.createElement('tr');
-
+            row.className = "align-middle";
             row.innerHTML = `
             <td>${product.id}</td>
-            <td>${product.blok}</td>
-            <td>${product.picPreview}</td>
-            <td>${product.dop}</td>
+            <td>` + drawCB(product.id,product.blok) + `</td>
+            <td><img src="/assets/${product.picPreview}" style="width:50px;"></td>
+            <td><span>${product.dop}</span>&nbsp;<i class="bi bi-info-circle" title="${product.code1s}"></i></td>
             <td>${product.tovName}</td>
-            <td>${product.nomer}</td>
-            <td>${product.cena}</td>
-            <td>${product.ostatok}</td>
-            <td>&nbsp;</td>
+            <td class="text-center">${product.nomer}</td>
+            <td class="text-end">${product.cena}&nbsp;руб.</td>
+            <td class="text-end">${product.ostatok}&nbsp;шт.</td>
+            <td><a href="/adminpanel/products/edit/${product.id}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a></td>
         `;
 
             tableBody.appendChild(row);
         });
+    }
+
+    function drawCB(id,status) {
+        let checked = status == 0 ? 'checked="checked"' : '';
+        return `<div className="form-check">
+            <input className="form-check-input" type="checkbox" id="blok_${id}" onClick="setBlokStatus('blok_${id}')"
+                   ${checked}"/>
+        </div>`;
     }
 </script>
 
