@@ -58,6 +58,7 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
+    <script src="/assets-admin/js/script.js" defer></script>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -247,8 +248,8 @@
                             <th class="col-1">Id</th>
                             <th class="col-1">Активно</th>
                             <th class="col-1">Изображение</th>
-                            <th class="col-7">Наименование</th>
-                            <th class="col-1">Порядок</th>
+                            <th style="cursor: pointer;text-decoration: underline;" class="col-7" onclick="sortTable(3)">Наименование</th>
+                            <th style="cursor: pointer;text-decoration: underline;" class="col-1" onclick="sortTable(4)">Порядок</th>
                             <th class="col-1">&nbsp;</th>
                         </tr>
                         </thead>

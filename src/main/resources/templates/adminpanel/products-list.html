@@ -58,6 +58,7 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
+    <script src="/assets-admin/js/script.js" defer></script>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -256,11 +257,11 @@
                             <th class="col-1">Id</th>
                             <th class="col-1">Активно</th>
                             <th class="col-1">Изображение</th>
-                            <th class="col-1">Артикул</th>
-                            <th class="col-3">Наименование</th>
-                            <th class="col-1">Порядок</th>
-                            <th class="col-1">Цена</th>
-                            <th class="col-1">Остаток</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(3)">Артикул</th>
+                            <th class="col-3" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(4)">Наименование</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(5)">Порядок</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(6)">Цена</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(7)">Остаток</th>
                             <th class="col-1">&nbsp;</th>
                         </tr>
                         </thead>
@@ -281,8 +282,8 @@
                                                                          th:title="${p.code1s}"></i></td>
                             <td th:text="${p.tovName}"></td>
                             <td class="text-center" th:text="${p.nomer}"></td>
-                            <td class="text-end" th:text="${p.cena}+'&nbsp;руб.'"></td>
-                            <td class="text-end" th:text="${p.ostatok}+'&nbsp;шт.'"></td>
+                            <td class="text-end" th:text="${p.cena}"></td>
+                            <td class="text-end" th:text="${p.ostatok}"></td>
                             <td>
                                 <a th:href="@{${mainAdminPage}+'/products/edit/'+${p.id}}"><i
                                         class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
@@ -423,38 +424,6 @@
         cb.checked = !checked;
     }
 
-    // async function refreshList(){
-    //     let id = document.getElementById("grupTov").value;
-    //     let body = document.getElementsByTagName("tbody")[0];
-    //     let headers = document.getElementsByTagName("th");
-    //     let rows = Array.from(body.getElementsByTagName("tr"));
-    //
-    //     console.log("id: " + id);
-    //     try {
-    //         let response = await fetch(`/adminpanel/products/${id}`, {
-    //             method: 'POST'
-    //         });
-    //
-    //         if (response.ok) {
-    //             // Парсим JSON-ответ
-    //             let result = await response.json();
-    //
-    //             if (result.length) {
-    //
-    //
-    //             } else {
-    //                 console.error("Ошибка получения списка товара по группе: " + id);
-    //             }
-    //         } else {
-    //             console.error("Ошибка HTTP: " + response.status);
-    //             // alert("Ошибка соединения: " + response.status);
-    //         }
-    //     } catch (error) {
-    //         console.error("Исключение: ", error);
-    //         // alert("Произошла ошибка: " + error.message);
-    //     }
-    // }
-
     document.getElementById('grupTov').addEventListener('change', function() {
         const selectedGroupId = this.value;
         console.log(selectedGroupId);
@@ -504,21 +473,13 @@
             <td><span>${product.dop}</span>&nbsp;<i class="bi bi-info-circle" title="${product.code1s}"></i></td>
             <td>${product.tovName}</td>
             <td class="text-center">${product.nomer}</td>
-            <td class="text-end">${product.cena}&nbsp;руб.</td>
-            <td class="text-end">${product.ostatok}&nbsp;шт.</td>
+            <td class="text-end">${product.cena}</td>
+            <td class="text-end">${product.ostatok}</td>
             <td><a href="/adminpanel/products/edit/${product.id}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a></td>
         `;
 
             tableBody.appendChild(row);
         });
-    }
-
-    function drawCB(id,status) {
-        let checked = status == 0 ? 'checked="checked"' : '';
-        return `<div className="form-check">
-            <input className="form-check-input" type="checkbox" id="blok_${id}" onClick="setBlokStatus('blok_${id}')"
-                   ${checked}"/>
-        </div>`;
     }
 </script>
 
