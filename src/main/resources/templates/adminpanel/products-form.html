@@ -236,7 +236,7 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <form th:action="@{${mainAdminPage}+'/categories/edit/'+${product.id}}" method="post" enctype="multipart/form-data">
+                    <form th:action="@{${mainAdminPage}+'/products/edit/'+${product.id}}" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" th:value="${product.id}"/>
                         <div class="row mb-3">
                             <label for="blokCB" class="col-sm-2 col-form-label">Активно</label>
@@ -248,9 +248,15 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label">Артикул</label>
+                            <label for="dop" class="col-sm-2 col-form-label">Артикул</label>
                             <div class="col-sm-10">
                                 <input name="dop" type="text" class="form-control" id="dop" th:value="${product.dop}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="code1s" class="col-sm-2 col-form-label">Артикул 1С</label>
+                            <div class="col-sm-10">
+                                <input name="code1s" type="text" class="form-control" id="code1s" th:value="${product.code1s}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -265,7 +271,6 @@
                                 <input name="flpurl" type="text" class="form-control" id="flpurl" th:value="${product.flpurl}">
                             </div>
                         </div>
-                        <input name="code1s" type="hidden" id="code1s" th:value="${product.code1s}" disabled>
                         <div class="row mb-3">
                             <label for="nomer" class="col-sm-2 col-form-label">Порядковый номер</label>
                             <div class="col-sm-10">
@@ -276,7 +281,6 @@
                             <label for="nomer" class="col-sm-2 col-form-label">Группа</label>
                             <div class="col-sm-10">
                                 <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
-<!--                                    <option th:value="${g.id}" th:if="${g.id == product.grupTov}" th:attr="${'selected'}">-->
                                     <option th:each="g : ${groups}"
                                             th:value="${g.id}"
                                             th:text="${g.grupName}"
@@ -296,12 +300,7 @@
                                 <img th:if="${product.picPreview}" th:src="'/assets/' + ${product.picPreview}" class="img-thumbnail" style="max-width:300px;">
                                 <p th:unless="${product.picPreview}" class="text-muted">Нет изображения</p>
                             </div>
-                            <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" id="imagePreview" name="imagePreview" accept="image/*">
-                                <input type="hidden" name="picPreview" th:value="${product.picPreview}">
-                                <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
-                            </div>
+                            <input type="hidden" name="picPreview" th:value="${product.picPreview}">
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-12 mb-3">
@@ -311,7 +310,7 @@
                             <label for="imageFile" class="col-sm-2 col-form-label">Загрузить изображение</label>
                             <div class="col-sm-10">
                                 <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
-                                <input type="hidden" name="picPreview" th:value="${product.picBig}">
+                                <input type="hidden" name="picBig" th:value="${product.picBig}">
                                 <small class="form-text text-muted">Выберите файл изображения (JPEG, PNG, GIF)</small>
                             </div>
                         </div>

@@ -34,6 +34,10 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     @Query(value="SELECT * FROM tovar t WHERE t.gruptov = :groupId ORDER BY nomer",nativeQuery = true)
     List<Tovar> findTovarByGroupId(int groupId);
 
+    @Query(value="SELECT t.code, t.blok, t.pic, t.dop, t.code1, t.name, t.nomer, t.cena, t.ostatok " +
+            "FROM tovar t WHERE t.gruptov = :groupId ORDER BY nomer",nativeQuery = true)
+    List<Tovar> findTovarByGroupIdShort(int groupId);
+
     @Modifying
     @Transactional
     @Query(value="UPDATE tovar SET blok=:status WHERE code=:id", nativeQuery=true)

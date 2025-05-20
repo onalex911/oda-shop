@@ -1,5 +1,6 @@
 package ru.onalex.odashop.services;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -48,6 +49,9 @@ public class ProductAdminService {
             return "error";
         }
     }
+    public List<Tovar> getProductsByGroupId(int groupId){
+        return tovarRepository.findTovarByGroupIdShort(groupId);
+    }
 
     public MyResponse setActivity(int id, int status) {
         if (id <= 0) {
@@ -83,5 +87,9 @@ public class ProductAdminService {
             model.addAttribute("error_message",e.getMessage());
             return "redirect:/adminpanel";
         }
+    }
+
+    public void save(@Valid Tovar product) {
+        tovarRepository.save(product);
     }
 }

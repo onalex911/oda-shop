@@ -122,7 +122,7 @@
                         <!--begin::Menu Footer-->
                         <li class="user-footer">
                             <!-- <a href="#" class="btn btn-default btn-flat">Профиль</a> -->
-                            <a  th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
+                            <a th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
                         </li>
                         <!--end::Menu Footer-->
                     </ul>
@@ -139,7 +139,7 @@
         <!--begin::Sidebar Brand-->
         <div class="sidebar-brand">
             <!--begin::Brand Link-->
-            <a  th:href="@{${mainAdminPage}}" class="brand-link">
+            <a th:href="@{${mainAdminPage}}" class="brand-link">
                 <!--begin::Brand Image-->
                 <img
                         src="/assets-admin/img/AdminLTELogo.png"
@@ -181,7 +181,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview" style="display: block; box-sizing: border-box;">
-                            <a  th:href="@{${mainAdminPage}+'/categories'}" class="nav-link">
+                            <a th:href="@{${mainAdminPage}+'/categories'}" class="nav-link">
                                 <i class="nav-icon bi bi-box-arrow-in-right"></i>
                                 <p>
                                     Группы товаров
@@ -193,7 +193,7 @@
                                     Товары
                                 </p>
                             </a>
-                            <a  th:href="@{${mainAdminPage}+'/customers'}" class="nav-link">
+                            <a th:href="@{${mainAdminPage}+'/customers'}" class="nav-link">
                                 <i class="nav-icon bi bi-box-arrow-in-right"></i>
                                 <p>
                                     Пользователи
@@ -222,14 +222,22 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
-                        <!-- <ol class="breadcrumb float-sm-end">
-                          <li class="breadcrumb-item"><a href="#">Home</a></li>
-                          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                        </ol> -->
+                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i
+                                style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
                     </div>
                 </div>
-                <div class="row"></div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <span>Группа:</span>
+                        <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
+                            <option th:each="g : ${groups}"
+                                    th:value="${g.id}"
+                                    th:text="${g.grupName}"
+                                    th:selected="${g.id == group_id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
                 <!--end::Row-->
             </div>
             <!--end::Container-->
@@ -241,8 +249,8 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-<!--                    <form>-->
-                    <table class="table table-bordered table-striped">
+                    <!--                    <form>-->
+                    <table class="table table-bordered table-striped" id="productsTable">
                         <thead>
                         <tr>
                             <th style="width: 10px">Id</th>
@@ -250,9 +258,6 @@
                             <th>Изображение</th>
                             <th>Артикул</th>
                             <th>Наименование</th>
-                            <th>Группа
-<!--                                <input type=""-->
-                            </th>
                             <th>Порядок</th>
                             <th>Цена</th>
                             <th>Остаток</th>
@@ -270,20 +275,21 @@
                                 </div>
                             </td>
                             <td><img th:src="'/assets/' + ${p.picPreview}" style="width:50px;"/></td>
-                            <td><span th:text="${p.dop}"></span>&nbsp;<i class="bi bi-info-circle" th:title="${p.code1s}"></i></td>
+                            <td><span th:text="${p.dop}"></span>&nbsp;<i class="bi bi-info-circle"
+                                                                         th:title="${p.code1s}"></i></td>
                             <td th:text="${p.tovName}"></td>
-                            <td th:text="${p.grupTov}"></td>
                             <td class="text-center" th:text="${p.nomer}"></td>
                             <td class="text-right" th:text="${p.cena}"></td>
                             <td class="text-right" th:text="${p.ostatok}"></td>
                             <td>
-                                <a th:href="@{${mainAdminPage}+'/products/edit/'+${p.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
-<!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
+                                <a th:href="@{${mainAdminPage}+'/products/edit/'+${p.id}}"><i
+                                        class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
+                                <!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
                             </td>
                         </tr>
                         </tbody>
                     </table>
-<!--                    </form>-->
+                    <!--                    </form>-->
                 </div>
                 <!--end::Row-->
             </div>
@@ -397,11 +403,10 @@
                 // Парсим JSON-ответ
                 let result = await response.json();
 
-                if (result.status === 'success'){
-                    console.log("id "+id+" успешно изменен на " + status);
+                if (result.status === 'success') {
+                    console.log("id " + id + " успешно изменен на " + status);
                     return;
-                }
-                else{
+                } else {
                     console.error("Ошибка: " + result.message);
                     // alert("Ошибка: " + result.message);
                 }
@@ -414,6 +419,89 @@
             // alert("Произошла ошибка: " + error.message);
         }
         cb.checked = !checked;
+    }
+
+    // async function refreshList(){
+    //     let id = document.getElementById("grupTov").value;
+    //     let body = document.getElementsByTagName("tbody")[0];
+    //     let headers = document.getElementsByTagName("th");
+    //     let rows = Array.from(body.getElementsByTagName("tr"));
+    //
+    //     console.log("id: " + id);
+    //     try {
+    //         let response = await fetch(`/adminpanel/products/${id}`, {
+    //             method: 'POST'
+    //         });
+    //
+    //         if (response.ok) {
+    //             // Парсим JSON-ответ
+    //             let result = await response.json();
+    //
+    //             if (result.length) {
+    //
+    //
+    //             } else {
+    //                 console.error("Ошибка получения списка товара по группе: " + id);
+    //             }
+    //         } else {
+    //             console.error("Ошибка HTTP: " + response.status);
+    //             // alert("Ошибка соединения: " + response.status);
+    //         }
+    //     } catch (error) {
+    //         console.error("Исключение: ", error);
+    //         // alert("Произошла ошибка: " + error.message);
+    //     }
+    // }
+
+    document.getElementById('grupTov').addEventListener('change', function() {
+        const selectedGroupId = this.value;
+
+        // Отправляем AJAX-запрос на сервер
+        fetch(`/adminpanel/products/${selectedGroupId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                myResponse = response.json();
+                console.log(myResponse.status);
+                if(myResponse.status === 'success'){
+                    return  myResponse.dataset.length ? myResponse.dataset : null;
+                }else{
+                    alert(myResponse.message);
+                    return null;
+                }
+            })
+            .then(products => {
+                updateTable(products); // Обновляем таблицу
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error:', error);
+            });
+    });
+
+    function updateTable(products) {
+        const tableBody = document.querySelector('#productsTable tbody');
+        tableBody.innerHTML = ''; // Очищаем таблицу
+
+        // Заполняем таблицу новыми данными
+        products.forEach(product => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.blok}</td>
+            <td>${product.picPreview}</td>
+            <td>${product.dop}</td>
+            <td>${product.tovName}</td>
+            <td>${product.nomer}</td>
+            <td>${product.cena}</td>
+            <td>${product.ostatok}</td>
+            <td>&nbsp;</td>
+        `;
+
+            tableBody.appendChild(row);
+        });
     }
 </script>
 
