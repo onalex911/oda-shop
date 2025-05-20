@@ -13,6 +13,7 @@ import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,12 +45,13 @@ public class ProductAdminService {
             model.addAttribute("title", "Управление товарами");
 //            model.addAttribute("title", groupName + ". ");
             return "adminpanel/products-list";
-        }catch (Exception e){
+        } catch (Exception e) {
             model.addAttribute("errorMessage", "ОШИБКА! " + e.getMessage());
             return "error";
         }
     }
-    public List<Tovar> getProductsByGroupId(int groupId){
+
+    public List<Tovar> getProductsByGroupId(int groupId) {
         return tovarRepository.findTovarByGroupId(groupId);
     }
 
@@ -83,13 +85,42 @@ public class ProductAdminService {
             model.addAttribute("product", product);
             model.addAttribute("title", "Редактирование товара");
             return "adminpanel/products-form";
-        }catch (Exception e){
-            model.addAttribute("error_message",e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("error_message", e.getMessage());
             return "redirect:/adminpanel";
         }
     }
 
     public void save(@Valid Tovar product) {
         tovarRepository.save(product);
+    }
+
+    public String searchByField(String textToSearch, String fieldToSearch, Model model) {
+        List<Tovar> products = new ArrayList<>();
+        String errorMessage = "";
+        switch (fieldToSearch) {
+            case "tovNane":
+                products = tovarRepository.findByTovNameContainingIgnoreCase(textToSearch);
+                break;
+            case "dop":
+                products = tovarRepository.findByDopContaining(textToSearch);
+                break;
+            case "cena":
+                try {
+                    Double price = Double.parseDouble(textToSearch);
+                    products = tovarRepository.findByCenaBetween(price - 0.01, price + 0.01);
+                } catch (NumberFormatException e) {
+                    errorMessage = "Неверный формат цены";
+                    break;
+                }
+            default:
+                errorMessage = "Неизвестное поле для поиска: " + fieldToSearch;
+        }
+        if(errorMessage.isEmpty()) {
+            model.addAttribute("products", products);
+            return "adminpanel/products-list";
+        }
+        model.addAttribute("error_message", errorMessage);
+        return "adminpanel/index";
     }
 }

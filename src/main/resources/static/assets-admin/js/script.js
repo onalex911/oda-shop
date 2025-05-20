@@ -55,3 +55,25 @@ function drawCB(id,status) {
                    ${checked}"/>
         </div>`;
 }
+
+function doSearch(formId,field){
+    let form = document.getElementById(formId);
+    let searchText = document.getElementById("text-to-search").value.trim();
+    let searchField = document.getElementById("field-to-search");
+
+    if (searchText.length < 2) {
+        alert('Введите минимум 2 символа для поиска');
+        return;
+    }
+
+    if (field === 'tovName' && searchText.length <= 3) {
+        alert('Для поиска по наименованию введите минимум 4 символа');
+        return;
+    }
+    searchField.value = field;
+    console.log("Search text = " + searchText);
+    console.log("Search field = " + searchField.value);
+    console.log("Form action = " + form.getAttribute('action'));
+    // form.submit();
+
+}

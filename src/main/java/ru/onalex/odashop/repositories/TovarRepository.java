@@ -42,4 +42,8 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     @Transactional
     @Query(value="UPDATE tovar SET blok=:status WHERE code=:id", nativeQuery=true)
     void setBlokStatus(int id, int status) ;
+
+    List<Tovar> findByTovNameContainingIgnoreCase(String name);
+    List<Tovar> findByDopContaining(String productCode);
+    List<Tovar> findByCenaBetween(Double minPrice, Double maxPrice);
 }
