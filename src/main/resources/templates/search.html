@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups})}"></div>
+            <!-- Cart-Page -->
+            <div class="page-cart u-s-p-t-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                                <!-- Products-List-Wrapper -->
+                                <div class="table-wrapper u-s-m-b-60">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Изображение</th>
+                                            <th>Артикул</th>
+                                            <th>Наименование</th>
+                                            <th>Цена</th>
+                                            <th>Остаток</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="p : ${products}" th:attr="data-id=${p.id}">
+                                            <td>
+                                                <div class="cart-anchor-image">
+                                                    <a th:href="@{${p.purl}}">
+                                                        <img th:alt="${p.normalTovName}" th:src="${p.realPreview}"/>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{${p.purl}}">
+                                                    <h6 th:text="${p.dop}"></h6>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{${p.purl}}">
+                                                    <h6 th:text="${p.normalTovName}"></h6>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class="cart-price" th:text="${p.cena}"></div>
+                                            </td>
+                                            <td>
+                                                <div class="cart-price" th:text="${p.ostatok}"></div>
+                                            </td>
+                                            <td>?</td>
+
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <!-- Shop-Pagination -->
+                            <div class="pagination-area">
+                                <div class="pagination-number">
+                                    <ul th:if="${totalPages > 1}">
+                                        <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}"
+                                               title="Предыдущая">
+                                                <i class="fa fa-angle-left"></i>
+                                            </a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}"
+                                               th:text="${i + 1}"></a>
+                                        </li>
+                                        <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}"
+                                               title="Следующая">
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Shop-Pagination /- -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart-Page /- -->
+        </div>
+    </div>
+</div>
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script src="/assets/js/cart.js"></script>
+</body>
+</html>

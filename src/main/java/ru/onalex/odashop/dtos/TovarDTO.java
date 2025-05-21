@@ -18,6 +18,7 @@ public class TovarDTO {
     private String purl;
     private int nomer;
     private int grupTov;
+    private String dop; //артикул
     private String tovName;
     private String normalTovName;
     private String picPreview;
@@ -39,6 +40,7 @@ public class TovarDTO {
                 .purl(tovar.getPurl())
                 .nomer(tovar.getNomer())
                 .grupTov(tovar.getGrupTov())
+                .dop(tovar.getDop())
                 .tovName(tovar.getTovName())
                 .normalTovName(replaceQuotes(tovar.getTovName()))
                 .picPreview(tovar.getPicPreview())

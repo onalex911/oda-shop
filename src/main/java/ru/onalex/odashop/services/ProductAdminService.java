@@ -99,7 +99,7 @@ public class ProductAdminService {
     public String searchByField(String textToSearch, String fieldToSearch, Model model) {
         List<Tovar> products = new ArrayList<>();
         String errorMessage = "";
-        Double price = 0.0;
+        double price = 0.0;
         if(fieldToSearch.startsWith("cena")){
             try {
 
@@ -118,13 +118,13 @@ public class ProductAdminService {
                     products = tovarRepository.findByTovNameContainingIgnoreCaseOrderByTovName(textToSearch);
                     break;
                     case "tovName_":
-                    products = tovarRepository.findByTovNameStartsWithOrderByTovName(textToSearch);
+                    products = tovarRepository.findByTovNameStartsWithIgnoreCaseOrderByTovName(textToSearch);
                     break;
                 case "dop":
-                    products = tovarRepository.findByDopContainingOrderByDop(textToSearch);
+                    products = tovarRepository.findByDopContainingIgnoreCaseOrderByDop(textToSearch);
                     break;
                 case "dop_":
-                    products = tovarRepository.findByDopStartsWithOrderByDop(textToSearch);
+                    products = tovarRepository.findByDopStartsWithIgnoreCaseOrderByDop(textToSearch);
                     break;
                 case "cena":
                     products = tovarRepository.findByCenaEqualsOrderByCena(price);
@@ -140,8 +140,8 @@ public class ProductAdminService {
                     String[] priceParts = textToSearch.split("-");
                     if(priceParts.length == 2) {
                         try {
-                            Double price1 = Double.parseDouble(priceParts[0]);
-                            Double price2 = Double.parseDouble(priceParts[1]);
+                            double price1 = Double.parseDouble(priceParts[0]);
+                            double price2 = Double.parseDouble(priceParts[1]);
                             //если a и b число, но b < a - ошибка
                             if(price1 < price2) {
                                 System.out.println("price1 = "+price1+", price2 = "+price2);

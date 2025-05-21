@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Фрагмент top-panel -->
+<div th:fragment="top-panel(menuGroups)" class="row align-items-center top-panel">
+    <div class="col-lg-3">
+        <div class="v-menu v-close">
+            <span class="v-title">
+                <i class="ion ion-md-menu"></i>
+                Все разделы
+                <i class="fas fa-angle-down"></i>
+            </span>
+            <nav>
+                <div class="v-wrapper">
+                    <ul class="v-list animated fadeIn">
+                        <li class="js-backdrop" th:each="g : ${menuGroups}">
+                            <a th:href="@{${g.purl}}">
+                                <i class="ion ion-md-folder"></i>
+                                <span th:text="${g.normalName}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <h3>Результаты поиска</h3>
+    </div>
+</div>
+
+</body>
+</html>

@@ -111,19 +111,21 @@
                     </div>
                 </div>
                 <div class="col-lg-6 u-d-none-lg">
-                    <form class="form-searchbox">
+                    <form th:action="@{${mainPage}+'/search'}" method="get" class="form-searchbox">
                         <label class="sr-only" for="search-landscape">Поиск</label>
-                        <input id="search-landscape" type="text" class="text-field" placeholder="Искать по всем разделам">
+                        <input name="textToSearch" id="search-landscape" type="text" class="text-field" placeholder="Искать по всем разделам">
                                                     <div class="select-box-position">
                                                         <div class="select-box-wrapper select-hide">
-                                                            <label class="sr-only" for="select-category">Искать по&#133;</label>
-                                                            <select class="select-box" id="select-category">
+                                                            <label class="sr-only" for="select-category">Искать&#133;</label>
+                                                            <select name="fieldToSearch" class="select-box" id="select-category">
                                                                 <option selected="selected" value="">Везде</option>
-                                                                <option value="tovName">&#133;наименованию</option>
-                                                                <option value="dop">&#133;артикулу</option>
-                                                                <option value="cena_ot">&#133;цене ОТ</option>
-                                                                <option value="cena_do">&#133;цене ДО</option>
-                                                                <option value="ceny_ot_do">&#133;цене ОТ-ДО</option>
+                                                                <option selected="selected" value="tovName">наименов.</option>
+                                                                <option value="tovName_">наименов. нач.</option>
+                                                                <option value="dop">артикул сод.</option>
+                                                                <option value="dop_">артикул нач.</option>
+                                                                <option value="cena_ot">цена ОТ</option>
+                                                                <option value="cena_do">цена ДО</option>
+                                                                <option value="ceny_ot_do">цена ОТ-ДО</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -181,5 +183,28 @@
     </div>
     <!-- Bottom-Header /- -->
 </header>
+
+<div class="col-lg-3" th:fragment="groups_menu()">
+    <div class="v-menu v-close">
+                            <span class="v-title">
+                                <i class="ion ion-md-menu"></i>
+                                Все разделы
+                                <i class="fas fa-angle-down"></i>
+                            </span>
+        <nav>
+            <div class="v-wrapper">
+                <ul class="v-list animated fadeIn">
+                    <li class="js-backdrop" th:each="g : ${menuGroups}">
+                        <a th:href="@{${g.purl}}">
+                            <i class="ion ion-md-folder"></i>
+                            <span th:text="${g.normalName}"/>
+                            <!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
 </body>
 </html>
