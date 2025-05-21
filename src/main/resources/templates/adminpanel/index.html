@@ -237,30 +237,32 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <div class="alert alert-danger visually-hidden" role="alert">
-                        <span th:text="${error_massage}"/>
+<!--                    <div class="alert alert-danger visually-hidden" role="alert">-->
+                    <div class="alert alert-danger" role="alert">
+                        <span th:text="${error_message}"/>
                     </div>
                     <h4>Для редактирования информации на сайте <a href="/catalog/bizhuteriya">odadv.ru</a> используйте
                         меню слева</h4>
-                </div>
-                <div class="input-group mb-3">
-                    <form th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
-                        <input name="textToSearch" type="text" class="form-control"
-                               aria-label="Text input with dropdown button" id="text-to-search">
-                        <input name="fieldToSearch" type="hidden" id="field-to-search">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">Искать по&#133;
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">&#133;
-                                наименованию</a></li>
-                            <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">&#133; артикулу</a>
-                            </li>
-                            <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">&#133; цене</a></li>
-                            <!--                <li><hr class="dropdown-divider"></li>-->
-                            <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
-                        </ul>
-                    </form>
+                    <div class="input-group mb-3">
+                        <form th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
+                            <input name="textToSearch" type="text" class="form-control"
+                                   aria-label="Text input with dropdown button" id="text-to-search">
+                            <input name="fieldToSearch" type="hidden" id="field-to-search">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">Искать по&#133;
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">&#133;
+                                    наименованию</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">&#133; артикулу</a>
+                                </li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">&#133; цене</a>
+                                </li>
+                                <!--                <li><hr class="dropdown-divider"></li>-->
+                                <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
+                            </ul>
+                        </form>
+                    </div>
                 </div>
                 <!--end::Row-->
             </div>

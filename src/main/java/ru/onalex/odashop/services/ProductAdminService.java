@@ -99,16 +99,16 @@ public class ProductAdminService {
         List<Tovar> products = new ArrayList<>();
         String errorMessage = "";
         switch (fieldToSearch) {
-            case "tovNane":
-                products = tovarRepository.findByTovNameContainingIgnoreCase(textToSearch);
+            case "tovName":
+                products = tovarRepository.findByTovNameContainingIgnoreCaseOrderByTovName(textToSearch);
                 break;
             case "dop":
-                products = tovarRepository.findByDopContaining(textToSearch);
+                products = tovarRepository.findByDopContainingOrderByDop(textToSearch);
                 break;
             case "cena":
                 try {
                     Double price = Double.parseDouble(textToSearch);
-                    products = tovarRepository.findByCenaBetween(price - 0.01, price + 0.01);
+                    products = tovarRepository.findByCenaBetweenOrderByCena(price - 0.01, price + 0.01);
                 } catch (NumberFormatException e) {
                     errorMessage = "Неверный формат цены";
                     break;

@@ -153,9 +153,9 @@ public class AdminProductController {
     public String searchByField(@RequestParam(value = "textToSearch", required = true) String textToSearch,
                                 @RequestParam(value = "fieldToSearch", required = true) String fieldToSearch,
                                 Model model) {
-//        return productAdminService.searchByField(textToSearch,fieldToSearch,model);
-        model.addAttribute("error_message", textToSearch);
-        return "/adminpanel/index";
+        return productAdminService.searchByField(textToSearch,fieldToSearch,model);
+//        model.addAttribute("error_message", textToSearch);
+//        return "/adminpanel/index";
     }
     /**
      * Удаление товара (НЕ ИСПОЛЬЗУЕТСЯ В ИНТЕРФЕЙСЕ. ВМЕСТО НЕГО ИСПОЛЬЗУЕТСЯ ДЕАКТИВАЦИЯ)

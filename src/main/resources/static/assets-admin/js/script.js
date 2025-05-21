@@ -74,6 +74,6 @@ function doSearch(formId,field){
     console.log("Search text = " + searchText);
     console.log("Search field = " + searchField.value);
     console.log("Form action = " + form.getAttribute('action'));
-    // form.submit();
+    form.submit();
 
 }

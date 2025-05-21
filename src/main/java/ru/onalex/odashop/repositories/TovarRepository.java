@@ -21,11 +21,11 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
 //    @Query(value="SELECT t.* FROM tovar t RIGHT JOIN bj_groups bg " +
 //            "ON bg.group_id = t.gruptov " +
 //            "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
-    @Query(value="SELECT * FROM tovar t WHERE t.ostatok > 0 AND purl LIKE CONCAT('%/',:alias,'/%')",nativeQuery = true)
+    @Query(value="SELECT * FROM tovar t WHERE t.ostatok > 0 AND purl LIKE CONCAT('%/',:alias,'/%') ORDER BY t.nomer",nativeQuery = true)
 //    List<Tovar> findTovarByAlias(String alias);
     Page<Tovar> findTovarByAlias(String alias, Pageable pageable);
 
-    @Query(value="SELECT * FROM tovar t WHERE t.code=:code AND t.ostatok > 0",nativeQuery = true)
+    @Query(value="SELECT * FROM tovar t WHERE t.code=:code AND t.ostatok > 0 ORDER BY t.nomer",nativeQuery = true)
     Tovar findExistTovarByCode(int code);
 
     @Query(value="SELECT * FROM tovar t WHERE t.code=:id",nativeQuery = true)
@@ -43,7 +43,7 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     @Query(value="UPDATE tovar SET blok=:status WHERE code=:id", nativeQuery=true)
     void setBlokStatus(int id, int status) ;
 
-    List<Tovar> findByTovNameContainingIgnoreCase(String name);
-    List<Tovar> findByDopContaining(String productCode);
-    List<Tovar> findByCenaBetween(Double minPrice, Double maxPrice);
+    List<Tovar> findByTovNameContainingIgnoreCaseOrderByTovName(String name);
+    List<Tovar> findByDopContainingOrderByDop(String productCode);
+    List<Tovar> findByCenaBetweenOrderByCena(Double minPrice, Double maxPrice);
 }
