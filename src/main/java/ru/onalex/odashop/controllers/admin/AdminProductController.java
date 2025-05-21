@@ -53,16 +53,16 @@ public class AdminProductController {
 
     @GetMapping("/{id}")
     public String listProducts(@PathVariable int id, Model model) {
-
        return productAdminService.getProductsByGroupId(id,model);
     }
+
     @ResponseBody
     @PostMapping("/{group_id}")
     public MyResponse listProductsJson(@PathVariable int group_id, Authentication authentication) {
         if(authentication.isAuthenticated()) {
             return new MyResponse(productAdminService.getProductsByGroupId(group_id));
         }else{
-            return MyResponse.error("You are not logged in");
+            return MyResponse.error("Вы не авторизованы.");
         }
     }
 

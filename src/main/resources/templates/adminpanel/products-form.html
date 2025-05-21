@@ -281,7 +281,7 @@
                             <label for="nomer" class="col-sm-2 col-form-label">Группа</label>
                             <div class="col-sm-10">
                                 <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
-                                    <option th:each="g : ${groups}"
+                                    <option th:each="g : ${menuGroups}"
                                             th:value="${g.id}"
                                             th:text="${g.grupName}"
                                             th:selected="${g.id == product.grupTov}">

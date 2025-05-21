@@ -243,21 +243,24 @@
                     </div>
                     <h4>Для редактирования информации на сайте <a href="/catalog/bizhuteriya">odadv.ru</a> используйте
                         меню слева</h4>
-                    <div class="input-group mb-3">
-                        <form th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
+                    <div class="mb-3">
+                        <form class="d-inline-flex" th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
                             <input name="textToSearch" type="text" class="form-control"
                                    aria-label="Text input with dropdown button" id="text-to-search">
+                            <span><i class="bi bi-info-circle" title="Укажите поисковую фразу и выберите область поиска. Для задания диапазона цен укажите их через дефис (100-200)."></i></span>
                             <input name="fieldToSearch" type="hidden" id="field-to-search">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">Искать по&#133;
+                                    data-bs-toggle="dropdown" aria-expanded="false">Искать&#133;
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">&#133;
-                                    наименованию</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">&#133; артикулу</a>
-                                </li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">&#133; цене</a>
-                                </li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">наим. сод.</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName_')">наим. нач.</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">артикул сод.</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop_')">артикул нач.</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">цена точно</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena_ot')">цена от&#133;</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena_do')">цена до&#133;</a></li>
+                                <li><a class="dropdown-item" onclick="doSearch('search-form','ceny_ot_do')">цена от-до</a></li>
                                 <!--                <li><hr class="dropdown-divider"></li>-->
                                 <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
                             </ul>

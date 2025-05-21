@@ -44,6 +44,13 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     void setBlokStatus(int id, int status) ;
 
     List<Tovar> findByTovNameContainingIgnoreCaseOrderByTovName(String name);
+    List<Tovar> findByTovNameStartsWithOrderByTovName(String name);
+
     List<Tovar> findByDopContainingOrderByDop(String productCode);
+    List<Tovar> findByDopStartsWithOrderByDop(String productCode);
+
+    List<Tovar> findByCenaEqualsOrderByCena(Double price);
     List<Tovar> findByCenaBetweenOrderByCena(Double minPrice, Double maxPrice);
+    List<Tovar> findByCenaGreaterThanOrderByCena(Double minPrice);
+    List<Tovar> findByCenaLessThanOrderByCena(Double maxPrice);
 }

@@ -216,27 +216,54 @@
             <!--begin::Container-->
             <div class="container-fluid">
                 <!--begin::Row-->
-                <div class="row d-flex">
+                <div class="row">
                     <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
                     <div class="col-sm-6">
                         <h3 class="mb-0" th:text="${title}"></h3>
-
-                    </div>
-                    <div class="col-sm-6">
-                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i
-                                style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
+                        <h6>Кол-во записей: <span id="kol-zap" th:text="${products.size()}"/></h6>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <span>Группа:</span>
-                        <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
-                            <option th:each="g : ${groups}"
-                                    th:value="${g.id}"
-                                    th:text="${g.grupName}"
-                                    th:selected="${g.id == group_id}">
-                            </option>
-                        </select>
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <form class="d-inline-flex" th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
+                                <input name="textToSearch" type="text" class="form-control"
+                                       aria-label="Text input with dropdown button" id="text-to-search">
+                                <span><i class="bi bi-info-circle" title="Укажите поисковую фразу и выберите область поиска. Для задания диапазона цен укажите их через дефис (100-200)."></i></span>
+                                <input name="fieldToSearch" type="hidden" id="field-to-search">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">Искать&#133;
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">наим. сод.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','tovName_')">наим. нач.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">артикул сод.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','dop_')">артикул нач.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">цена точно</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena_ot')">цена от&#133;</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena_do')">цена до&#133;</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','ceny_ot_do')">цена от-до</a></li>
+                                    <!--                <li><hr class="dropdown-divider"></li>-->
+                                    <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 d-inline-flex">
+                        <div th:if="!${search_results}">
+                            <span>Группа:</span>
+                            <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
+                                <option th:each="g : ${menuGroups}"
+                                        th:value="${g.id}"
+                                        th:text="${g.grupName}"
+                                        th:selected="${g.id == group_id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 d-flex">
+                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i
+                                style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
                     </div>
                 </div>
                 <!--end::Row-->
@@ -257,11 +284,21 @@
                             <th class="col-1">Id</th>
                             <th class="col-1">Активно</th>
                             <th class="col-1">Изображение</th>
-                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(3)">Артикул</th>
-                            <th class="col-3" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(4)">Наименование</th>
-                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(5)">Порядок</th>
-                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(6)">Цена</th>
-                            <th class="col-1" style="cursor: pointer; text-decoration:underline;" onclick="sortTable(7)">Остаток</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(3)">Артикул
+                            </th>
+                            <th class="col-3" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(4)">Наименование
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(5)">Порядок
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(6)">Цена
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(7)">Остаток
+                            </th>
                             <th class="col-1">&nbsp;</th>
                         </tr>
                         </thead>
@@ -424,14 +461,14 @@
         cb.checked = !checked;
     }
 
-    document.getElementById('grupTov').addEventListener('change', function() {
+    document.getElementById('grupTov').addEventListener('change', function () {
         const selectedGroupId = this.value;
         console.log(selectedGroupId);
 
         // Отправляем AJAX-запрос на сервер
-        fetch(`/adminpanel/products/${selectedGroupId}`,{
-                        method: 'POST'
-                    })
+        fetch(`/adminpanel/products/${selectedGroupId}`, {
+            method: 'POST'
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -440,9 +477,9 @@
             })
             .then(myResponse => {
                 console.log("Status:" + myResponse.status);
-                if(myResponse.status === 'success'){
-                    return  myResponse.dataset.length ? myResponse.dataset : null;
-                }else{
+                if (myResponse.status === 'success') {
+                    return myResponse.dataset.length ? myResponse.dataset : null;
+                } else {
                     alert("Not success: " + myResponse.message);
                     return null;
                 }
@@ -466,7 +503,7 @@
             row.className = "align-middle";
             row.innerHTML = `
             <td>${product.id}</td>
-            <td class="d-md-flex justify-content-md-center align-items-center" style="height: 66px;">` + drawCB(product.id,product.blok) + `</td>
+            <td class="d-md-flex justify-content-md-center align-items-center" style="height: 66px;">` + drawCB(product.id, product.blok) + `</td>
             <td>
                 <img src="/assets/${product.picPreview}" style="width:50px;">
             </td>
@@ -479,6 +516,7 @@
         `;
 
             tableBody.appendChild(row);
+            document.getElementById("kol-zap").innerText = products.length;
         });
     }
 </script>
