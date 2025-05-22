@@ -3,47 +3,55 @@
 
 <head th:replace="~{fragments/header :: head(${title})}">
 </head>
-
 <body>
-
-<!-- app -->
 <div id="app">
-
-    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
     <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
-
-    <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <div class="row align-items-center top-panel">
-                <div class="col-lg-3">
-                    <div class="v-menu v-close">
-                            <span class="v-title">
-                                <i class="ion ion-md-menu"></i>
-                                Все разделы
-                                <i class="fas fa-angle-down"></i>
-                            </span>
-                        <nav>
-                            <div class="v-wrapper">
-                                <ul class="v-list animated fadeIn">
-                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
-                                        <a th:href="@{${g.purl}}">
-                                            <i class="ion ion-md-folder"></i>
-                                            <span th:text="${g.normalName}">
-<!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <h3 th:text="${group_name} + ' (' + ${totalItems} + ')'"></h3>
-                </div>
-            </div>
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, ${title}, ${totalItems})}"></div>
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
+                <!-- Shop-Right-Wrapper -->
+                <div class="col-12">
+                    <!-- Page-Bar -->
+                    <div class="page-bar clearfix">
+                        <div class="total-items">
+                            <h6 th:text="'Всего позиций: '+${totalItems}"/>
+                        </div>
+                        <div class="form-selectors">
+                            <input type="hidden" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
+                            <form id="do-sort">
+                                <input type="hidden" name="page" id="page-param" value="0"/>
+                                <!-- Toolbar Sorter 1  -->
+                                <div class="toolbar-sorter">
+                                    <div class="select-box-wrapper">
+                                        <label class="sr-only" for="sort-by">Сортировка:</label>
+                                        <select name="sort" class="select-box" id="sort-by" title="Сортировка:">
+                                            <option th:each="s : ${sortFields}"
+                                                    th:value="${s.field}"
+                                                    th:selected="${s.field.equals(sortparam)}"
+                                                    th:text="${s.caption}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- //end Toolbar Sorter 1  -->
+                                <!-- Toolbar Sorter 2  -->
+                                <div class="toolbar-sorter-2">
+                                    <div class="select-box-wrapper">
+                                        <label class="sr-only" for="show-records">Показывать&#133;</label>
+                                        <select name="size" class="select-box" id="show-records"
+                                                title="Показывать&#133;">
+                                            <option th:selected="${pageSize == 12}" value="12">по 12</option>
+                                            <option th:selected="${pageSize == 24}" value="24">по 24</option>
+                                            <option th:selected="${pageSize == 0}" value="0">все</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- //end Toolbar Sorter 2  -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${products}">
                     <div class="item">
                         <div class="image-container">
@@ -56,37 +64,36 @@
                                 <h6 class="item-title">
                                     <a th:href="@{${t.purl}}"><span th:text="${t.normalTovName}"/></a>
                                 </h6>
-                                <div class="item-ost" th:text="'Ост.: ' + ${t.ostatok} + ' шт.'"></div>
+                                <div class="row">
+                                    <div class="col-6 item-art" th:text="'Арт.: ' + ${t.dop}"></div>
+                                    <div class="col-6 item-ost" th:text="'Ост.: ' + ${t.ostatok} + ' шт.'"></div>
+                                </div>
                             </div>
                             <div class="price-template">
-                               <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
-<!--                               <div class="item-old-price">-->
-<!--                                   $60.00-->
-<!--                               </div>-->
-                           </div>
+                                <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
+                            </div>
                         </div>
-<!--                        <div class="tag new">-->
-<!--                            <span>НОВИНКА</span>-->
-<!--                        </div>-->
                     </div>
                 </div>
+
             </div>
             <!-- Shop-Pagination -->
             <div class="pagination-area">
                 <div class="pagination-number">
                     <ul th:if="${totalPages > 1}">
                         <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
-                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage - 1}, size=${pageSize})}"
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage - 1}, size=${pageSize}, sort=${sortparam})}"
                                title="Предыдущая">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         </li>
-                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
-                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${i}, size=${pageSize})}"
+                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:class="${i == currentPage} ? 'active'">
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${i}, size=${pageSize}, sort=${sortparam})}"
                                th:text="${i + 1}"></a>
                         </li>
                         <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
-                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage + 1}, size=${pageSize})}"
+                            <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${currentPage + 1}, size=${pageSize}, sort=${sortparam})}"
                                title="Следующая">
                                 <i class="fa fa-angle-right"></i>
                             </a>
@@ -98,8 +105,26 @@
         </div>
     </div>
 </div>
-    <!-- Custom-Deal-Page -->
-    <!-- Вставляем фрагмент футера -->
-    <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script>
+    let form = document.getElementById('do-sort');
+    form.addEventListener('change', function (event) {
+        if (event.target.classList.contains('select-box')) {
+            let changedEl = event.target;
+            let sourceURL = document.getElementById("src-path").value;
+            let sort_by = document.getElementById("sort-by").value;
+            let pg_size = document.querySelector('select[name="size"]').value;
+
+            // Обновляем URL в зависимости от того, какой селектор изменился
+            let url = `${sourceURL}sort=${sort_by}&size=${pg_size}&page=0`;
+            console.log("Redirecting to URL:" + url);
+
+            // Перенаправляем на новый URL
+            window.location.href = url;
+        }
+    });
+</script>
 </body>
 </html>

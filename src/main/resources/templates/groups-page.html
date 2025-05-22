@@ -15,13 +15,11 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <!-- Page-Bar -->
-            <div class="page-bar clearfix">
-
-            </div>
-            <!-- Page-Bar /- -->
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
+                <div class="error-message" th:if="${groups == null or groups.size() == 0}">
+                    <h3><ion-icon name="warning-outline"></ion-icon> Произошла какая-то ошибка!</h3>
+                </div>
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${groups}">
                     <div class="item">
                         <div class="image-container">

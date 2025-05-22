@@ -2,10 +2,7 @@ package ru.onalex.odashop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.onalex.odashop.services.*;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
@@ -43,13 +40,22 @@ public class BijouController {
         return groupService.getGroups(model);
     }
 
+    /**
+     * Вывод группы товара
+     * @param alias - legacy-псевдоним группы
+     * @param page - номер страницы
+     * @param size - кол-во позиций на странице
+     * @param model - шаблон Thymeleaf
+     * @return - шаблон, настроенный в сервисе
+     */
     @GetMapping("/bizhuteriya/{alias}")
     public String getBjproducts(
             @PathVariable(name="alias") String alias,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "undef") String sort,
             Model model) {
-        return groupService.getGrupTov(alias, page, size, model);
+        return groupService.getGrupTov(alias, page, size, sort, model);
     }
     @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
     public String getBjproduct(
@@ -59,6 +65,13 @@ public class BijouController {
         return productService.getProductPage(groupAlias,prodAlias,model);
     }
 
-
+    @GetMapping("/bizhuteriya/search")
+    public String searchByField(@RequestParam(value = "textToSearch", required = true) String textToSearch,
+                                @RequestParam(value = "fieldToSearch", required = true) String fieldToSearch,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "12") int size,
+                                Model model) {
+        return productService.searchByField(textToSearch,fieldToSearch,page,size,model);
+    }
 
 }

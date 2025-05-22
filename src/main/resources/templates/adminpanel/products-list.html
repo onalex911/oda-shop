@@ -123,8 +123,7 @@
                         <!--begin::Menu Footer-->
                         <li class="user-footer">
                             <!-- <a href="#" class="btn btn-default btn-flat">Профиль</a> -->
-                            <a th:href="@{${mainAdminPage}+'/logout'}"
-                               class="btn btn-default btn-flat float-end">Выйти</a>
+                            <a th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
                         </li>
                         <!--end::Menu Footer-->
                     </ul>
@@ -218,12 +217,53 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <div class="col-sm-6"><h3 class="mb-0">Панель администратора</h3></div>
+                    <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
                     <div class="col-sm-6">
-                        <!-- <ol class="breadcrumb float-sm-end">
-                          <li class="breadcrumb-item"><a href="#">Home</a></li>
-                          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                        </ol> -->
+                        <h3 class="mb-0" th:text="${title}"></h3>
+                        <h6>Кол-во записей: <span id="kol-zap" th:text="${products.size()}"/></h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="mb-3">
+                            <form class="d-inline-flex" th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
+                                <input name="textToSearch" type="text" class="form-control"
+                                       aria-label="Text input with dropdown button" id="text-to-search">
+                                <span style="margin:5px;"><i class="bi bi-info-circle" title="Укажите поисковую фразу и выберите область поиска. Для задания диапазона цен укажите их через дефис (100-200)."></i></span>
+                                <input name="fieldToSearch" type="hidden" id="field-to-search">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">Искать&#133;
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">наим. сод.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','tovName_')">наим. нач.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">артикул сод.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','dop_')">артикул нач.</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">цена точно</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena_ot')">цена от&#133;</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','cena_do')">цена до&#133;</a></li>
+                                    <li><a class="dropdown-item" onclick="doSearch('search-form','ceny_ot_do')">цена от-до</a></li>
+                                    <!--                <li><hr class="dropdown-divider"></li>-->
+                                    <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 d-inline-flex">
+                        <div th:if="!${search_results}">
+                            <span>Группа:</span>
+                            <select name="grupTov" id="grupTov" class="form-select" aria-label="Группа товаров">
+                                <option th:each="g : ${menuGroups}"
+                                        th:value="${g.id}"
+                                        th:text="${g.grupName}"
+                                        th:selected="${g.id == group_id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 d-flex">
+                        <a class="float-sm-end" href="/adminpanel/products/create" title="Добавить товар"><i
+                                style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
                     </div>
                 </div>
                 <!--end::Row-->
@@ -237,35 +277,59 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-<!--                    <div class="alert alert-danger visually-hidden" role="alert">-->
-                    <div class="alert alert-danger" role="alert">
-                        <span th:text="${error_message}"/>
-                    </div>
-                    <h4>Для редактирования информации на сайте <a href="/catalog/bizhuteriya">odadv.ru</a> используйте
-                        меню слева</h4>
-                    <div class="mb-3">
-                        <form class="d-inline-flex" th:action="@{${mainAdminPage}+'/products/search'}" method="post" id="search-form">
-                            <input name="textToSearch" type="text" class="form-control"
-                                   aria-label="Text input with dropdown button" id="text-to-search">
-                            <span style="margin:5px;"><i class="bi bi-info-circle" title="Укажите поисковую фразу и выберите область поиска. Для задания диапазона цен укажите их через дефис (100-200)."></i></span>
-                            <input name="fieldToSearch" type="hidden" id="field-to-search">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">Искать&#133;
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName')">наим. сод.</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','tovName_')">наим. нач.</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop')">артикул сод.</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','dop_')">артикул нач.</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena')">цена точно</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena_ot')">цена от&#133;</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','cena_do')">цена до&#133;</a></li>
-                                <li><a class="dropdown-item" onclick="doSearch('search-form','ceny_ot_do')">цена от-до</a></li>
-                                <!--                <li><hr class="dropdown-divider"></li>-->
-                                <!--                <li><a class="dropdown-item" href="#">везде</a></li>-->
-                            </ul>
-                        </form>
-                    </div>
+                    <!--                    <form>-->
+                    <table class="table table-bordered table-striped" id="productsTable">
+                        <thead>
+                        <tr>
+                            <th class="col-1">Id</th>
+                            <th class="col-1">Активно</th>
+                            <th class="col-1">Изображение</th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(3)">Артикул
+                            </th>
+                            <th class="col-3" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(4)">Наименование
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(5)">Порядок
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(6)">Цена
+                            </th>
+                            <th class="col-1" style="cursor: pointer; text-decoration:underline;"
+                                onclick="sortTable(7)">Остаток
+                            </th>
+                            <th class="col-1">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle" th:each="p : ${products}">
+                            <td th:text="${p.id}"></td>
+                            <td class="d-md-flex justify-content-md-center align-items-center" style="height:66px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${p.id}"
+                                           th:checked="${p.blok == 1 ? false: true}"
+                                           th:onclick="'setBlokStatus(\'blok_' + ${p.id}+'\')'">
+                                </div>
+                            </td>
+                            <td>
+                                <img th:src="'/assets/' + ${p.picPreview}" style="width:50px;"/>
+                            </td>
+                            <td><span th:text="${p.dop}"></span>&nbsp;<i class="bi bi-info-circle"
+                                                                         th:title="${p.code1s}"></i></td>
+                            <td th:text="${p.tovName}"></td>
+                            <td class="text-center" th:text="${p.nomer}"></td>
+                            <td class="text-end" th:text="${p.cena}"></td>
+                            <td class="text-end" th:text="${p.ostatok}"></td>
+                            <td>
+                                <a th:href="@{${mainAdminPage}+'/products/edit/'+${p.id}}"><i
+                                        class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
+                                <!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--                    </form>-->
                 </div>
                 <!--end::Row-->
             </div>
@@ -361,6 +425,101 @@
         integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
         crossorigin="anonymous"
 ></script>
+<script>
+    async function setBlokStatus(elId) {
+        cb = document.getElementById(elId);
+        let checked = cb.checked;
+        let status = checked ? 0 : 1;
+        let id = elId.substring(5);
+
+        console.error("id: " + id);
+        // alert("id: " + id);
+        try {
+            let response = await fetch(`/adminpanel/products/block/${id}/${status}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                // Парсим JSON-ответ
+                let result = await response.json();
+
+                if (result.status === 'success') {
+                    console.log("id " + id + " успешно изменен на " + status);
+                    return;
+                } else {
+                    console.error("Ошибка: " + result.message);
+                    // alert("Ошибка: " + result.message);
+                }
+            } else {
+                console.error("Ошибка HTTP: " + response.status);
+                // alert("Ошибка соединения: " + response.status);
+            }
+        } catch (error) {
+            console.error("Исключение: ", error);
+            // alert("Произошла ошибка: " + error.message);
+        }
+        cb.checked = !checked;
+    }
+
+    document.getElementById('grupTov').addEventListener('change', function () {
+        const selectedGroupId = this.value;
+        console.log(selectedGroupId);
+
+        // Отправляем AJAX-запрос на сервер
+        fetch(`/adminpanel/products/${selectedGroupId}`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(myResponse => {
+                console.log("Status:" + myResponse.status);
+                if (myResponse.status === 'success') {
+                    return myResponse.dataset.length ? myResponse.dataset : null;
+                } else {
+                    alert("Not success: " + myResponse.message);
+                    return null;
+                }
+            })
+            .then(products => {
+                updateTable(products); // Обновляем таблицу
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error:', error);
+            });
+    });
+
+    function updateTable(products) {
+        const tableBody = document.querySelector('#productsTable tbody');
+        tableBody.innerHTML = ''; // Очищаем таблицу
+
+        // Заполняем таблицу новыми данными
+        products.forEach(product => {
+            const row = document.createElement('tr');
+            row.className = "align-middle";
+            row.innerHTML = `
+            <td>${product.id}</td>
+            <td class="d-md-flex justify-content-md-center align-items-center" style="height: 66px;">` + drawCB(product.id, product.blok) + `</td>
+            <td>
+                <img src="/assets/${product.picPreview}" style="width:50px;">
+            </td>
+            <td><span>${product.dop}</span>&nbsp;<i class="bi bi-info-circle" title="${product.code1s}"></i></td>
+            <td>${product.tovName}</td>
+            <td class="text-center">${product.nomer}</td>
+            <td class="text-end">${product.cena}</td>
+            <td class="text-end">${product.ostatok}</td>
+            <td><a href="/adminpanel/products/edit/${product.id}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a></td>
+        `;
+
+            tableBody.appendChild(row);
+            document.getElementById("kol-zap").innerText = products.length;
+        });
+    }
+</script>
 
 </body>
 <!--end::Body-->

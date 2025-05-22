@@ -3,6 +3,7 @@ package ru.onalex.odashop.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class GrupTov {
     private int blok;
 
     @Column(name = "rod", columnDefinition = "varchar(250)")
-    private String rod;
+    private String rod = "1413"; //Legacy id группы "Бижутерия"
     //    name varchar(250),
     @Column(name = "name")
     private String grupName;
