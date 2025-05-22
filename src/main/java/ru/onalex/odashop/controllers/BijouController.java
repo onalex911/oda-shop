@@ -40,13 +40,22 @@ public class BijouController {
         return groupService.getGroups(model);
     }
 
+    /**
+     * Вывод группы товара
+     * @param alias - legacy-псевдоним группы
+     * @param page - номер страницы
+     * @param size - кол-во позиций на странице
+     * @param model - шаблон Thymeleaf
+     * @return - шаблон, настроенный в сервисе
+     */
     @GetMapping("/bizhuteriya/{alias}")
     public String getBjproducts(
             @PathVariable(name="alias") String alias,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "price_up") String sort,
             Model model) {
-        return groupService.getGrupTov(alias, page, size, model);
+        return groupService.getGrupTov(alias, page, size, sort, model);
     }
     @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
     public String getBjproduct(

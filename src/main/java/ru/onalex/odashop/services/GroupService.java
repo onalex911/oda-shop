@@ -46,7 +46,7 @@ public class GroupService {
         return "groups-page";
     }
 
-    public String getGrupTov(String alias, int page, int size, Model model) {
+    public String getGrupTov(String alias, int page, int size, String sortType, Model model) {
         try {
             Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
 //            System.out.println("tovar page" + tovarPage.getTotalElements());

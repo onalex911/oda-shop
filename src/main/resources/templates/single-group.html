@@ -29,8 +29,8 @@
                     <div class="page-bar clearfix">
                         <form id="do-sort">
                             <input type="hidden" name="src-path" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
-                            <input type="hidden" name="sort-by-param" id="sort-by-param" value="price_up"/>
-                            <input type="hidden" name="show-records-param" id="show-records-param" th:value="${pageSize}"/>
+                            <input type="hidden" name="sort" id="sort-by-param" value="price_up"/>
+                            <input type="hidden" name="size" id="show-records-param" th:value="${pageSize}"/>
                         <!-- Toolbar Sorter 1  -->
                         <div class="toolbar-sorter">
                             <div class="select-box-wrapper">
@@ -50,8 +50,8 @@
                             <div class="select-box-wrapper">
                                 <label class="sr-only" for="show-records">Показывать&#133;</label>
                                 <select name="show-records" class="select-box" id="show-records" title="Показывать&#133;">
-                                    <option selected="selected" value="8">по 8</option>
-                                    <option value="16">по 16</option>
+                                    <option selected="selected" th:value="${pageSize}">по <span th:text="${pageSize}"/></option>
+                                    <option value="24">по 24</option>
                                     <option value="0">все</option>
                                 </select>
                             </div>
@@ -136,9 +136,9 @@
                 show_records.value = changedEl.value;
             }else return;
 
-            let url = `${sourceURL.value}sort_by=${sort_by.value}&show_records=${show_records.value}`;
+            let url = `${sourceURL.value}sort=${sort_by.value}&size=${show_records.value}`;
             console.log("URL:" + url);
-            form.submit();
+            // form.submit();
         }
     });
 </script>
