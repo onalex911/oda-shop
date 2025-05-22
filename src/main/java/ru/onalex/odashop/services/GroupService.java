@@ -3,9 +3,9 @@ package ru.onalex.odashop.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.GrupTov;
@@ -47,37 +47,57 @@ public class GroupService {
     }
 
     public String getGrupTov(String alias, int page, int size, String sortType, Model model) {
-        try {
-            Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, size));
-//            System.out.println("tovar page" + tovarPage.getTotalElements());
+        String sortField = "";
+        String sortDirection = "";
+        String errorMessage = "";
 
-            Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
-//            System.out.println("products page" + products.getTotalElements());
-
-            products.getContent().forEach(product -> {
-                System.out.println("pic from repo: " + product.getPicBig());
-                product.setRealPicBig(imageService.getImagePath(product.getPicBig()));
-            });
-
-//            for(TovarDTO t : products){
-//                System.out.println("real pic: " + t.getRealPicBig());
-//            }
-
-            GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
-
-            model.addAttribute("products", products);
-            model.addAttribute("group_name", grupTovDTO.getNormalName());
-            model.addAttribute("totalItems", products.getTotalElements());
-            model.addAttribute("totalPages", products.getTotalPages());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("pageSize", size);
-            model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
-
-            return "single-group";
-        }catch (Exception e){
-            model.addAttribute("error", e.getMessage());
-            return "error";
+        if(sortType.startsWith("price")){
+            sortField = "cena";
+            sortDirection = sortType.equals("price_up") ? "asc" : "desc";
+        }else if(sortType.startsWith("rem")){
+            sortField = "ostatok";
+            sortDirection = sortType.equals("rem_up") ? "asc" : "desc";
+        }else if(sortType.equals("dop")) {
+            sortField = "dop";
+            sortDirection = "asc";
+        }else if(sortType.equals("undef")){
+            sortField = "nomer";
+            sortDirection = "asc";
+        }else{
+            errorMessage = "Неверный тип сортировки!";
         }
+        if(errorMessage.isEmpty()) {
+            System.out.println("field: "+sortField+", dir: "+sortDirection);
+            Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+            String sortParam = "&sort=" + sortType;
+
+            try {
+                int pageSize = size == 0 ? 1000 : size;
+                Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, pageSize, sort));
+                Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
+                products.getContent().forEach(product -> {
+                    System.out.println("pic from repo: " + product.getPicBig());
+                    product.setRealPicBig(imageService.getImagePath(product.getPicBig()));
+                });
+
+                GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
+
+                model.addAttribute("products", products);
+                model.addAttribute("group_name", grupTovDTO.getNormalName());
+                model.addAttribute("totalItems", products.getTotalElements());
+                model.addAttribute("totalPages", products.getTotalPages());
+                model.addAttribute("currentPage", page);
+                model.addAttribute("pageSize", size);
+                model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
+                model.addAttribute("sortparam", sortType);
+
+                return "single-group";
+            } catch (Exception e) {
+                errorMessage = e.getMessage();
+            }
+        }
+        model.addAttribute("errorMessage", errorMessage);
+        return "search-empty";
     }
 
     public GrupTov findById(int id) {

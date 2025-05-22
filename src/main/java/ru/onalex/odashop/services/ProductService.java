@@ -3,6 +3,8 @@ package ru.onalex.odashop.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import ru.onalex.odashop.dtos.GrupTovDTO;
@@ -94,14 +96,13 @@ public class ProductService {
         Page<Tovar> products = null;
         String errorMessage = "";
         double price = 0.0;
+
         if(fieldToSearch.startsWith("cena")){
             try {
-
                 price = Double.parseDouble(textToSearch);
                 errorMessage = price > 0 ? "" : "Неверный формат цены";
 
             } catch (NumberFormatException e) {
-
                 errorMessage = "Неверный формат цены";
 
             }

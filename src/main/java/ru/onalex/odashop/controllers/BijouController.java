@@ -53,7 +53,7 @@ public class BijouController {
             @PathVariable(name="alias") String alias,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
-            @RequestParam(defaultValue = "price_up") String sort,
+            @RequestParam(defaultValue = "undef") String sort,
             Model model) {
         return groupService.getGrupTov(alias, page, size, sort, model);
     }
