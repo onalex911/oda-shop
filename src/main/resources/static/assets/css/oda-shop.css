@@ -1,0 +1,26 @@
+.page-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.total-items, .form-selectors {
+    margin: 0;
+}
+
+.total-items h6 {
+    margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    .page-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .total-items, .form-selectors {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
