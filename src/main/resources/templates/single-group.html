@@ -15,35 +15,41 @@
                 <div class="col-12">
                     <!-- Page-Bar -->
                     <div class="page-bar clearfix">
-                        <input type="hidden" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
-                        <form id="do-sort">
-                            <input type="hidden" name="page" id="page-param" value="0"/>
-                        <!-- Toolbar Sorter 1  -->
-                        <div class="toolbar-sorter">
-                            <div class="select-box-wrapper">
-                                <label class="sr-only" for="sort-by">Сортировка:</label>
-                                <select name="sort" class="select-box" id="sort-by" title="Сортировка:">
-                                    <option th:each="s : ${sortFields}"
-                                            th:value="${s.field}"
-                                            th:selected="${s.field.equals(sortparam)}"
-                                            th:text="${s.caption}"></option>
-                                </select>
-                            </div>
+                        <div class="total-items">
+                            <h6 th:text="'Всего позиций: '+${totalItems}"/>
                         </div>
-                        <!-- //end Toolbar Sorter 1  -->
-                        <!-- Toolbar Sorter 2  -->
-                        <div class="toolbar-sorter-2">
-                            <div class="select-box-wrapper">
-                                <label class="sr-only" for="show-records">Показывать&#133;</label>
-                                <select name="size" id="size" class="select-box" id="show-records" title="Показывать&#133;">
-                                    <option th:selected="${pageSize == 12}" value="12">по 12</option>
-                                    <option th:selected="${pageSize == 24}" value="24">по 24</option>
-                                    <option th:selected="${pageSize == 0}" value="0">все</option>
-                                </select>
-                            </div>
+                        <div class="form-selectors">
+                            <input type="hidden" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
+                            <form id="do-sort">
+                                <input type="hidden" name="page" id="page-param" value="0"/>
+                                <!-- Toolbar Sorter 1  -->
+                                <div class="toolbar-sorter">
+                                    <div class="select-box-wrapper">
+                                        <label class="sr-only" for="sort-by">Сортировка:</label>
+                                        <select name="sort" class="select-box" id="sort-by" title="Сортировка:">
+                                            <option th:each="s : ${sortFields}"
+                                                    th:value="${s.field}"
+                                                    th:selected="${s.field.equals(sortparam)}"
+                                                    th:text="${s.caption}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- //end Toolbar Sorter 1  -->
+                                <!-- Toolbar Sorter 2  -->
+                                <div class="toolbar-sorter-2">
+                                    <div class="select-box-wrapper">
+                                        <label class="sr-only" for="show-records">Показывать&#133;</label>
+                                        <select name="size" class="select-box" id="show-records"
+                                                title="Показывать&#133;">
+                                            <option th:selected="${pageSize == 12}" value="12">по 12</option>
+                                            <option th:selected="${pageSize == 24}" value="24">по 24</option>
+                                            <option th:selected="${pageSize == 0}" value="0">все</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- //end Toolbar Sorter 2  -->
+                            </form>
                         </div>
-                        <!-- //end Toolbar Sorter 2  -->
-                        </form>
                     </div>
                 </div>
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${products}">
@@ -64,8 +70,8 @@
                                 </div>
                             </div>
                             <div class="price-template">
-                               <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
-                           </div>
+                                <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,7 +87,8 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         </li>
-                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
+                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:class="${i == currentPage} ? 'active'">
                             <a th:href="@{{mainpage}/{alias}(mainpage=${mainPage}, alias=${alias}, page=${i}, size=${pageSize}, sort=${sortparam})}"
                                th:text="${i + 1}"></a>
                         </li>
@@ -98,13 +105,13 @@
         </div>
     </div>
 </div>
-    <!-- Custom-Deal-Page -->
-    <!-- Вставляем фрагмент футера -->
-    <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
 <script>
     let form = document.getElementById('do-sort');
-    form.addEventListener('change', function(event) {
-        if(event.target.classList.contains('select-box')){
+    form.addEventListener('change', function (event) {
+        if (event.target.classList.contains('select-box')) {
             let changedEl = event.target;
             let sourceURL = document.getElementById("src-path").value;
             let sort_by = document.getElementById("sort-by").value;
