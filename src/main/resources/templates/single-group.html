@@ -23,6 +23,43 @@
 
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
+                <!-- Shop-Right-Wrapper -->
+                <div class="col-12">
+                    <!-- Page-Bar -->
+                    <div class="page-bar clearfix">
+                        <form id="do-sort">
+                            <input type="hidden" name="src-path" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
+                            <input type="hidden" name="sort-by-param" id="sort-by-param" value="price_up"/>
+                            <input type="hidden" name="show-records-param" id="show-records-param" th:value="${pageSize}"/>
+                        <!-- Toolbar Sorter 1  -->
+                        <div class="toolbar-sorter">
+                            <div class="select-box-wrapper">
+                                <label class="sr-only" for="sort-by">Сортировка:</label>
+                                <select name="sort-by" class="select-box" id="sort-by" title="Сортировка:">
+                                    <option selected="selected" value="price_up">цена возр.</option>
+                                    <option value="price_down">цена убыв.</option>
+                                    <option value="rem_up">остаток возр.</option>
+                                    <option value="rem_down">остаток убыв.</option>
+                                    <option value="dop">артикул</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- //end Toolbar Sorter 1  -->
+                        <!-- Toolbar Sorter 2  -->
+                        <div class="toolbar-sorter-2">
+                            <div class="select-box-wrapper">
+                                <label class="sr-only" for="show-records">Показывать&#133;</label>
+                                <select name="show-records" class="select-box" id="show-records" title="Показывать&#133;">
+                                    <option selected="selected" value="8">по 8</option>
+                                    <option value="16">по 16</option>
+                                    <option value="0">все</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- //end Toolbar Sorter 2  -->
+                        </form>
+                    </div>
+                </div>
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${products}">
                     <div class="item">
                         <div class="image-container">
@@ -49,6 +86,7 @@
 <!--                        </div>-->
                     </div>
                 </div>
+
             </div>
             <!-- Shop-Pagination -->
             <div class="pagination-area">
@@ -80,5 +118,29 @@
     <!-- Custom-Deal-Page -->
     <!-- Вставляем фрагмент футера -->
     <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script>
+    let form = document.getElementById('do-sort');
+    form.addEventListener('change', function () {
+
+        if(event.target.classList.contains('select-box')){
+            let changedEl = document.getElementById(event.target.id);
+            let sourceURL = document.getElementById("src-path");
+            let sort_by = document.getElementById("sort-by-param");
+            let show_records = document.getElementById("show-records-param");
+            // console.log(sourceURL.value)
+            if(changedEl.id === 'sort-by'){
+                // console.log("Sort by:" + changedEl.value);
+                sort_by.value = changedEl.value;
+            }else if(changedEl.id === 'show-records'){
+                // console.log("Number of records:" + changedEl.value);
+                show_records.value = changedEl.value;
+            }else return;
+
+            let url = `${sourceURL.value}sort_by=${sort_by.value}&show_records=${show_records.value}`;
+            console.log("URL:" + url);
+            form.submit();
+        }
+    });
+</script>
 </body>
 </html>
