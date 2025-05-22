@@ -163,6 +163,7 @@ public class ProductService {
                 product.setRealPreview(imageService.getImagePath(product.getPicPreview()));
             });
             model.addAttribute("products", productsDTO);
+            model.addAttribute("title", "Результаты поиска");
             model.addAttribute("totalItems", productsDTO.getTotalElements());
             model.addAttribute("totalPages", productsDTO.getTotalPages());
             model.addAttribute("currentPage", page);

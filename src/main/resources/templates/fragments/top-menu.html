@@ -3,7 +3,7 @@
 <body>
 
 <!-- Фрагмент top-panel -->
-<div th:fragment="top-panel(menuGroups)" class="row align-items-center top-panel">
+<div th:fragment="top-panel(menuGroups, sectTitle, resCount)" class="row align-items-end top-panel">
     <div class="col-lg-3">
         <div class="v-menu v-close">
             <span class="v-title">
@@ -26,7 +26,8 @@
         </div>
     </div>
     <div class="col-lg-9">
-        <h3>Результаты поиска</h3>
+        <h3 th:text="${sectTitle}"></h3>
+<!--        <h6 th:if="${resCount} > 0"><span th:text="' ('+${resCount}+')'"></span></h6>-->
     </div>
 </div>
 

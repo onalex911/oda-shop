@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import ru.onalex.odashop.entities.GrupTov;
@@ -41,7 +42,7 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer> {
     @Modifying
     @Transactional
     @Query(value="UPDATE tovar SET blok=:status WHERE code=:id", nativeQuery=true)
-    void setBlokStatus(int id, int status) ;
+    void setBlokStatus(@Param("id") int id, @Param("status") int status) ;
 
     @Query(value="SELECT * FROM tovar t WHERE UPPER(t.name) LIKE CONCAT('%',:name,'%') " +
             "AND t.gruptov>=1418 AND t.gruptov<=1430 AND t.cena > 0 AND t.ostatok > 0 AND t.blok = 0 ORDER BY t.name",nativeQuery = true)
