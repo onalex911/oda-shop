@@ -24,3 +24,62 @@
         margin-bottom: 10px;
     }
 }
+.product-info-row{
+    margin-bottom:6px;
+}
+.item-art, .item-ost{
+    font-size:0.75em;
+}
+
+
+.cart-oda-button{
+    width:102px;
+    height:36px;
+    font-size:x-large;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 2px solid #1b1e21;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.active{
+    background-color: #ccc;
+    color:#999;
+    border: 2px solid #999;
+}
+.cart-oda-button:hover{
+    background-color: #b60c0d;
+    color:white;
+}
+
+.icon-button:hover {
+    background-color: #f5f5f5;
+    border: 2px solid #b60c0d;
+}
+
+.icon-button.active {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+    color: #2E7D32;
+}
+
+.ion {
+    /*margin-right: 8px;*/
+    font-size: 1.2em;
+    position:relative;
+    top: 1px;
+}
+
+/*.bag-add-outline::before {*/
+/*    content: "+"; !* или ваш иконка *!*/
+/*}*/
+
+/*.bag-check-outline::before {*/
+/*    content: "✓"; !* или ваш иконка *!*/
+/*}*/

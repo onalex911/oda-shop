@@ -1,3 +1,19 @@
+let form = document.getElementById('do-sort');
+form.addEventListener('change', function (event) {
+    if (event.target.classList.contains('select-box')) {
+        let changedEl = event.target;
+        let sourceURL = document.getElementById("src-path").value;
+        let sort_by = document.getElementById("sort-by").value;
+        let pg_size = document.querySelector('select[name="size"]').value;
+
+        // Обновляем URL в зависимости от того, какой селектор изменился
+        let url = `${sourceURL}sort=${sort_by}&size=${pg_size}&page=0`;
+        console.log("Redirecting to URL:" + url);
+
+        // Перенаправляем на новый URL
+        window.location.href = url;
+    }
+});
 
 async function addTovar(id) {
     let quantity = parseInt(document.getElementById(`q_${id}`).value);
@@ -14,6 +30,13 @@ async function addTovar(id) {
 
         document.getElementsByClassName('item-counter')[0].innerText = result.amountPos;
         document.getElementsByClassName('item-price')[0].innerText = formatMoneyValue(result.totalSum);
+        let button = document.getElementById(`cart-${id}`);
+        if(button !== 'undefined'){
+            button.classList.add('active');
+            button.onclick = () => goToCart();
+            button.title = "Перейти к заказу";
+            document.getElementById(`ion-${id}`).classList.replace('ion-md-cart','ion-md-checkmark-circle');
+        }
     }else{
         console.log("error")
     }
@@ -76,5 +99,9 @@ function parseMoneyValue(value) {
 // Функция для форматирования числа в денежный формат с двумя знаками после запятой
 function formatMoneyValue(value) {
     return value.toFixed(2);
+}
+
+function goToCart(){
+    window.location.href = '/cart';
 }
 

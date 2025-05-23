@@ -73,4 +73,8 @@ public class CartService {
                 .sum();
     }
 
+    public int getQuantity(int id, HttpSession session) {
+        return getCartItems(session).stream().mapToInt(item -> item.getTovar().getId() == id ? item.getQuantity() : 0).sum();
+    }
+
 }

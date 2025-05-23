@@ -29,6 +29,7 @@ public class TovarDTO {
     private double cena;
     private double cena1;
     private double ves;
+    private int inCart;
 //    private int blok;
 //    private int prosmotru;
 //    private String comment;
