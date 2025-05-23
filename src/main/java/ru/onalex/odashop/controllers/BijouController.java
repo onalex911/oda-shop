@@ -63,8 +63,8 @@ public class BijouController {
     public String getBjproduct(
             @PathVariable(name="group-alias") String groupAlias,
             @PathVariable(name="prod-alias") String prodAlias,
-            Model model) {
-        return productService.getProductPage(groupAlias,prodAlias,model);
+            Model model, HttpSession session) {
+        return productService.getProductPage(groupAlias,prodAlias,model,session);
     }
 
     @GetMapping("/bizhuteriya/search")

@@ -105,3 +105,9 @@ function goToCart(){
     window.location.href = '/cart';
 }
 
+function goBackAndReload() {
+    window.history.back();
+    setTimeout(() => {
+        location.reload();
+    }, 100); // небольшая задержка для гарантии возврата
+}

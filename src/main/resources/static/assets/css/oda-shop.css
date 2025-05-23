@@ -32,9 +32,8 @@
 }
 
 
-.cart-oda-button{
-    width:102px;
-    height:36px;
+.cart-oda-button, .cart-oda-button-big{
+
     font-size:x-large;
     display: inline-flex;
     align-items: center;
@@ -48,12 +47,21 @@
     transition: all 0.3s ease;
 }
 
+.cart-oda-button{
+    width:102px;
+    height:36px;
+}
+.cart-oda-button-big{
+    width:120px;
+    height:50px;
+}
+
 .active{
     background-color: #ccc;
     color:#999;
     border: 2px solid #999;
 }
-.cart-oda-button:hover{
+.cart-oda-button:hover, .cart-oda-button-big:hover{
     background-color: #b60c0d;
     color:white;
 }
@@ -76,6 +84,9 @@
     top: 1px;
 }
 
+.go-back{
+    font-size: x-large;
+}
 /*.bag-add-outline::before {*/
 /*    content: "+"; !* или ваш иконка *!*/
 /*}*/
