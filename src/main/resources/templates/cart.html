@@ -62,18 +62,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <!--                                        <tr ">-->
-                                        <!--                                            <td th:text="${item.product.name}"></td>-->
-                                        <!--                                            <td th:text="${item.product.price}"></td>-->
-                                        <!--                                            <td th:text="${item.quantity}"></td>-->
-                                        <!--                                            <td th:text="${item.product.price * item.quantity}"></td>-->
-                                        <!--                                            <td>-->
-                                        <!--                                                <form th:action="@{/cart/remove}" method="post">-->
-                                        <!--                                                    <input type="hidden" name="productId" th:value="${item.product.id}">-->
-                                        <!--                                                    <button type="submit">Удалить</button>-->
-                                        <!--                                                </form>-->
-                                        <!--                                            </td>-->
-                                        <!--                                        </tr>-->
                                         <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
                                             <td>
                                                 <div class="cart-anchor-image">
@@ -124,15 +112,9 @@
                                 <!-- Coupon -->
                                 <div class="coupon-continue-checkout u-s-m-b-60">
                                     <div class="coupon-area">
-                                        <!--                                        <h6>Enter your coupon code if you have one.</h6>-->
-                                        <!--                                        <div class="coupon-field">-->
-                                        <!--                                            <label class="sr-only" for="coupon-code">Apply Coupon</label>-->
-                                        <!--                                            <input id="coupon-code" type="text" class="text-field" placeholder="Coupon Code">-->
-                                        <!--                                            <button type="submit" class="button">Apply Coupon</button>-->
-                                        <!--                                        </div>-->
                                     </div>
                                     <div class="button-area">
-                                        <a th:href="@{${mainPage}}" class="continue">Продолжить покупки</a>
+                                        <a href="javascript:goBackAndReload()" class="continue">Продолжить покупки</a>
                                         <a href="/customer/checkout" class="checkout">Оформить заказ</a>
                                     </div>
                                 </div>
@@ -153,7 +135,7 @@
                                                 <h3 class="calc-h3 u-s-m-b-0">Сумма</h3>
                                             </td>
                                             <td>
-                                                <span class="calc-text"></span>
+                                                <span class="calc-text" th:text="${total}+' руб.'"></span>
                                             </td>
                                         </tr>
                                         <tr>

@@ -20,41 +20,21 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
 
-    @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private TovarRepository tovarRepository;
-    @Autowired
-    private ImageService imageService;
+    private final CartService cartService;
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
 
     @GetMapping
     public String viewCart(Model model, HttpSession session) {
-        List<CartItemDTO> items = cartService.getCartItems(session);
-        double total = cartService.getTotal(session);
-        if (total > 0 && items.size() > 0) {
-            model.addAttribute("cartItems", items);
-            model.addAttribute("total", total);
-            model.addAttribute("title", "Корзина. ");
-            return "cart";
-        }
-        model.addAttribute("title", "Корзина пуста. ");
-        return "cart-empty";
+        return cartService.vewCart(model,session);
     }
 
     @PostMapping("/add")
     public String addToCart(@RequestParam Long tovarId,
                             @RequestParam(defaultValue = "1") int quantity,
                             HttpSession session) {
-        Tovar tovar = tovarRepository.findById(Math.toIntExact(tovarId)).orElseThrow();
-        TovarDTO tovarDTO = TovarDTO.fromEntity(tovar);
-
-        tovarDTO.setRealPreview(imageService.getImagePath(tovar.getPicPreview()));
-        tovarDTO.setRealPicBig(imageService.getImagePath(tovar.getPicBig()));
-
-//        System.out.println("pic preview: " + tovar.getPicPreview());
-        cartService.addToCart(session, tovarDTO, quantity);
-        return "redirect:/cart";
+        return cartService.addToCartContr(tovarId, quantity, session);
     }
 
     @PostMapping("/add/{id}/{quantity}")
@@ -62,46 +42,24 @@ public class CartController {
     public CartInfo addToCartQuiet(@PathVariable Long id,
                                    @PathVariable int quantity,
                                    HttpSession session) {
-        Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
-        TovarDTO tovarDTO = TovarDTO.fromEntity(tovar);
-
-        tovarDTO.setRealPreview(imageService.getImagePath(tovar.getPicPreview()));
-        tovarDTO.setRealPicBig(imageService.getImagePath(tovar.getPicBig()));
-
-//        System.out.println("pic preview: " + tovar.getPicPreview());
-
-        cartService.addToCart(session, tovarDTO, quantity);
-        return new CartInfo(cartService.getCartItems(session));
+        return cartService.addToCartQuiet(id,quantity,session);
     }
 
     @PostMapping("/refresh/{id}/{quantity}")
     public void refreshCart(@PathVariable Long id,
                             @PathVariable int quantity,
                             HttpSession session) {
-        Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
-        cartService.refreshCart(session, TovarDTO.fromEntity(tovar), quantity);
-//        System.out.println("Refreshed id: " + id + " new quantity: " + quantity);
-//        return "redirect:/cart";
+       cartService.refreshCartContr(id,quantity,session);
     }
-
 
     @DeleteMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id, HttpSession session) {
-        System.out.println("removing: "+id);
-        cartService.removeFromCart(session, id);
-        if(cartService.getCartItems(session).size() == 0) {
-            return "cart-empty";
-        }else{
-            return "";
-        }
+//        System.out.println("removing: "+id);
+        return cartService.removeFromCartContr(id,session);
     }
 
     @PostMapping("/clear")
     public String clearCart(Model model, HttpSession session) {
-        cartService.clearCart(session);
-        System.out.println("Cart size: " + cartService.getCartItems(session).size());
-        model.addAttribute("title", "Корзина пуста. ");
-        return "cart-empty";
-
+        return cartService.clearCartContr(model,session);
     }
 }
