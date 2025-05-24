@@ -898,7 +898,8 @@ body {
 
 /* Checkbox Component */
 .check-box {
-  display: none; }
+  /* display: none;  */
+  }
   .check-box + .label-text {
     position: relative;
     cursor: pointer;
@@ -907,16 +908,16 @@ body {
     color: #292929;
     margin: 0;
     padding-left: 25px; }
-    .check-box + .label-text:after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0;
-      width: 15px;
-      height: 15px;
-      border: 1px solid #DCDCDD; }
+    /* .check-box + .label-text:after { */
+      /* content: ''; */
+      /* position: absolute; */
+      /* z-index: 1; */
+      /* top: 50%; */
+      /* transform: translateY(-50%); */
+      /* left: 0; */
+      /* width: 15px; */
+      /* height: 15px; */
+      /* border: 1px solid #DCDCDD; } */
 
 .check-box:checked + .label-text {
   color: #b60c0d; }

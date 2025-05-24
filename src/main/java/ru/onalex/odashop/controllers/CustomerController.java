@@ -1,21 +1,24 @@
 package ru.onalex.odashop.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import ru.onalex.odashop.dtos.CartItemDTO;
+import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
+import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 
 import java.security.Principal;
 import java.util.List;
+
+import static ru.onalex.odashop.controllers.GlobalControllerAdvice.MAIN_PAGE;
 
 @Controller
 @RequestMapping("/customer")
@@ -56,6 +59,8 @@ public class CustomerController {
         if (total > 0 && items.size() > 0) {
             model.addAttribute("cartItems", items);
             model.addAttribute("total", total);
+            model.addAttribute("orderRequest", new OrderRequest());
+
             return "checkout";
         }
         return "checkout-empty";
@@ -63,15 +68,60 @@ public class CustomerController {
 
     @GetMapping("/login")
     public String doLogin(Model model) {
+        // Добавляем пустой объект для формы регистрации
+        model.addAttribute("registerRequest", new RegisterRequest());
         return "account";
     }
 
     @PostMapping("/register")
-    public String doRegistration(RegisterRequest request,
+    public String doRegistration(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
+                                 BindingResult bindingResult,
                                  Model model) {
-        return customerService.doRegistration(request,model);
+        if (bindingResult.hasErrors()) {
+            // Возвращаем тот же шаблон, где есть форма
+            return "account";
+        }
+
+        try {
+            customerService.doRegistration(request);
+            return "redirect:/customer/login?success";
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "account";
+        }
     }
 
+    @PostMapping("/order")
+    public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
+                            BindingResult bindingResult,
+                            Model model) {
+        if (bindingResult.hasErrors()) {
+            // Возвращаем тот же шаблон, где есть форма
+            return "checkout";
+        }
 
+        try {
+            customerService.doOrder(request);
+            return "redirect:/customer/order?success";
+        } catch (RuntimeException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "checkout";
+        }
+//        return "redirect:" + MAIN_PAGE;
+    }
+
+    @GetMapping("/order")
+    public String successOrderPage(
+            @RequestParam(value = "success", required = false) String success,
+            Model model) {
+        if (success != null) {
+            // Обработка успешного заказа
+            model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
+            return "checkout-success"; // Имя шаблона представления
+        }
+
+        // Логика для обычной страницы заказа
+        return "checkout";
+    }
 
 }

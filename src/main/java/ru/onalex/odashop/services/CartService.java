@@ -28,10 +28,12 @@ public class CartService {
 
     public String vewCart(Model model, HttpSession session) {
         List<CartItemDTO> items = getCartItems(session);
-        double total = getTotal(session);
-        if (total > 0 && items.size() > 0) {
+        double totalSum = getTotal(session);
+        int totalQuantity = getTotalQuantity(session);
+        if (totalSum > 0 && items.size() > 0) {
             model.addAttribute("cartItems", items);
-            model.addAttribute("total", total);
+            model.addAttribute("totalSum", totalSum);
+            model.addAttribute("totalQuantity", totalQuantity);
             model.addAttribute("title", "Корзина. ");
             return "cart";
         }
@@ -124,6 +126,10 @@ public class CartService {
 
     public int getQuantity(int id, HttpSession session) {
         return getCartItems(session).stream().mapToInt(item -> item.getTovar().getId() == id ? item.getQuantity() : 0).sum();
+    }
+
+    public int getTotalQuantity(HttpSession session) {
+        return getCartItems(session).stream().mapToInt(item -> item.getQuantity()).sum();
     }
 
     public CartInfo addToCartQuiet(Long id, int quantity, HttpSession session) {

@@ -57,7 +57,7 @@
                             <div class="login-wrapper">
                                 <h2 class="account-h2 u-s-m-b-20">Вход</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Введите ваш e-mail и пароль, если вы уже зарегистрированы.</h6>
-                                <form action="/login" method="post">
+                                <form action="/login"  method="post">
                                     <div class="u-s-m-b-30">
                                         <label for="user-name-email">E-mail
                                             <span class="astk">*</span>
@@ -95,33 +95,49 @@
                             <div class="reg-wrapper">
                                 <h2 class="account-h2 u-s-m-b-20">Регистрация</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Регистрация необходима для оформления заказа на сайте.</h6>
-                                <form action="/customer/register" method="post">
-                                    <div class="u-s-m-b-30">
+                                <form th:action="@{/customer/register}"
+                                      th:object="${registerRequest}"
+                                      th:with="type=${T(ru.onalex.odashop.models.RegisterRequest)}" method="post">
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
                                         <label for="email">E-mail (будет использоваться в качестве логина)
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="username" type="text" id="email" class="text-field" placeholder="e-mail">
+                                        <input th:field="*{username}" type="text" id="email" class="text-field" placeholder="e-mail"/>
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{username}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30">
+                                    <div class="u-s-m-b-30"  th:classappend="${#fields.hasErrors('contactName')} ? 'error'">
                                         <label for="email">Ф.И.О. для контакта
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="contactName" type="text" id="contact-name" class="text-field" placeholder="Ф.И.О.">
+                                        <input th:field="*{contactName}" type="text" id="contact-name" class="text-field" placeholder="Ф.И.О.">
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{contactName}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30">
+                                    <div class="u-s-m-b-30"  th:classappend="${#fields.hasErrors('password')} ? 'error'">
                                         <label for="reg-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="password" type="password" id="reg-password" class="text-field" placeholder="Пароль">
+                                        <input th:field="*{password}" type="password" id="reg-password" class="text-field" placeholder="Пароль">
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{password}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30">
-                                        <input type="checkbox" class="check-box" id="accept">
-                                        <label class="label-text no-color" for="accept">I’ve read and accept the
-                                            <a href="terms-and-conditions.html" class="u-c-brand">terms & conditions</a>
+<!--                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">-->
+<!--                                        <input th:field="*{termsAccepted}" type="checkbox" class="check-box" id="accept">-->
+<!--                                        <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с -->
+<!--                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>-->
+<!--                                        </label>-->
+<!--										 <span th:if="${#fields.hasErrors('termsAccepted')}"-->
+<!--                                              th:errors="*{termsAccepted}" class="error-message"></span>-->
+<!--                                    </div>-->
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
+                                        <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
+                                        <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
+                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
                                         </label>
                                     </div>
                                     <div class="u-s-m-b-45">
-                                        <button class="button button-primary w-100">Зарегистрироваться</button>
+                                        <button class="button button-primary w-100" type="submit">Зарегистрироваться</button>
                                     </div>
                                 </form>
                             </div>

@@ -1,6 +1,7 @@
 package ru.onalex.odashop.services;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,9 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
+import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.UserInfo;
 import ru.onalex.odashop.repositories.CustomerRepository;
@@ -68,31 +71,26 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    public String doRegistration(RegisterRequest request, Model model) {
-        String errorMessage = "";
-        if (findByUsername(request.getUsername()) != null) {
-            errorMessage = "Пользователь с именем "+request.getUsername()+" уже зарегистрирован!";
-        }else{
-            try {
-                Customer customer = new Customer();
-                customer.setUsername(request.getUsername());
-                customer.setContactName(request.getContactName());
-                customer.setPassword(passwordEncoder.encode(request.getPassword())); // Шифруем пароль
-                customer.setDiscount(0.0); // Скидка по умолчанию
-
-                Role userRole = roleRepository.findByName(DEFAULT_ROLE);
-                customer.getRoles().add(userRole);
-                customerRepository.save(customer);
-            }catch (Exception e) {
-                errorMessage = e.getMessage();
-            }
+    public void doRegistration(RegisterRequest request) {
+        if (customerRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Пользователь с таким логином уже существует");
         }
-        if(errorMessage.isEmpty()) errorMessage ="it's ok!";
-//        if(!errorMessage.isEmpty()){
-            model.addAttribute("errorMessage", errorMessage);
-//        }
 
-        return "account";
+        Customer customer = new Customer();
+        customer.setUsername(request.getUsername());
+        customer.setContactName(request.getContactName());
+        customer.setPassword(passwordEncoder.encode(request.getPassword()));
+        customer.setDiscount(0.0);
 
+        Role userRole = roleRepository.findByName(DEFAULT_ROLE);
+//                .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
+        customer.getRoles().add(userRole);
+
+        customerRepository.save(customer);
+
+    }
+
+    public void doOrder(@Valid OrderRequest request) {
+        System.out.println("order request: " + request);
     }
 }
