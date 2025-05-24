@@ -16,6 +16,7 @@ import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.UserInfo;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
+import ru.onalex.odashop.services.EmailService;
 
 import java.security.Principal;
 import java.util.List;
@@ -30,21 +31,12 @@ public class CustomerController {
     private final CartService cartService;
     private final CustomerService customerService;
 
-    public CustomerController(CartService cartService, CustomerService customerService) {
+    public CustomerController(CartService cartService,
+                              CustomerService customerService) {
         this.cartService = cartService;
         this.customerService = customerService;
+
     }
-//    @Autowired
-//    public void setCartService(CartService cartService) {
-//        this.cartService = cartService;
-//    }
-//
-//    private CustomerService customerService;
-//
-//    @Autowired
-//    public void setCustomerService(CustomerService customerService) {
-//        this.customerService = customerService;
-//    }
 
     @GetMapping
     public String customer(Principal principal, Model model) {
@@ -116,6 +108,8 @@ public class CustomerController {
     @PostMapping("/order")
     public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
                             BindingResult bindingResult,
+                          Principal principal,
+                          HttpSession session,
                             Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
@@ -123,14 +117,16 @@ public class CustomerController {
         }
 
         try {
-            customerService.doOrder(request);
+            Customer customer = customerService.findByUsername(principal.getName());
+            customerService.doOrder(request,customer,session,model);
             return "redirect:/customer/order?success";
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "checkout";
         }
 //        return "redirect:" + MAIN_PAGE;
     }
+
 
     @GetMapping("/order")
     public String successOrderPage(

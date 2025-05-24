@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваш заказ</title>
+</head>
+<body>
+<h2>Детали вашего заказа</h2>
+<table border="1">
+    <tr>
+        <th>Товар</th>
+        <th>Количество</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+    </tr>
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.productName}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.price} + ' ₽'"></td>
+        <td th:text="${item.price * item.quantity} + ' ₽'"></td>
+    </tr>
+</table>
+<h3>Итого: <span th:text="${total} + ' ₽'"></span></h3>
+<p>Спасибо за ваш заказ!</p>
+</body>
+</html>
