@@ -96,7 +96,7 @@ public class GroupService {
                 model.addAttribute("totalPages", products.getTotalPages());
                 model.addAttribute("currentPage", page);
                 model.addAttribute("pageSize", size);
-                model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
+                model.addAttribute("title", grupTovDTO.getNormalName());
                 model.addAttribute("sortparam", sortType);
 
                 return "single-group";

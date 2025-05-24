@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title th:text="${title} + 'Бижутерия - Компания «Ода». Товары для ювелиров.'"></title>
+    <title th:text="(${title.isEmpty()} ? '' : ${title}+'. ')  + 'Бижутерия - Компания «Ода». Товары для ювелиров.'"></title>
     <!-- Standard Favicon -->
 <!--    <link href="favicon.ico" rel="shortcut icon">-->
     <!-- Base Google Font for Web-app -->
