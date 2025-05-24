@@ -149,7 +149,7 @@
                                                 <h3 class="calc-h3 u-s-m-b-0" id="tax-heading">Скидка</h3>
                                             </td>
                                             <td>
-                                                <span class="calc-text"></span>
+                                                <span class="calc-text" th:text="(${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0) + '%'"/>
                                             </td>
                                         </tr>
                                         <tr>
@@ -157,7 +157,7 @@
                                                 <h3 class="calc-h3 u-s-m-b-0">Сумма со скидкой</h3>
                                             </td>
                                             <td>
-                                                <span class="calc-text"></span>
+                                                <span class="calc-text" th:text="${total} / 100 * (100 - (${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0)) +' руб.'"></span>
                                             </td>
                                         </tr>
                                         </tbody>

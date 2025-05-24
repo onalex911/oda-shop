@@ -69,7 +69,8 @@
                         </a>
                     </li>
                     <li>
-                        <a>Моё
+                        <a><i class="ion ion-md-contact"></i>
+                            <span th:text="${isAuthenticated} ? ${userData.getCustomer().getContactName()} : 'Клиент'"
                             <i class="fas fa-chevron-down u-s-m-l-9"></i>
                         </a>
                         <ul class="g-dropdown" style="width:200px">

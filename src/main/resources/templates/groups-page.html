@@ -15,6 +15,7 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
+            <div class="row top-panel"><h3>БИЖУТЕРИЯ</h3></div>
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
                 <div class="error-message" th:if="${groups == null or groups.size() == 0}">
@@ -28,8 +29,8 @@
                             </a>
                         </div>
                         <div class="item-content">
-                            <div class="what-product-is">
-                                <h6 class="item-title">
+                            <div class="what-product-is-main">
+                                <h6 class="item-title-main">
                                     <a th:href="@{${t.purl}}"><span th:text="${t.normalName}"></a>
                                 </h6>
 <!--                                <p th:text="${t.alias}"></p>-->

@@ -23,6 +23,11 @@ public class Customer {
 
     @NotNull
     @NotEmpty
+    @Column(name="contact_name")
+    private String contactName;
+
+    @NotNull
+    @NotEmpty
     private String password;
     private double discount;
 
