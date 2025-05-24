@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
+import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 
@@ -18,19 +21,24 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    private CartService cartService;
+    private final CartService cartService;
+    private final CustomerService customerService;
 
-    @Autowired
-    public void setCartService(CartService cartService) {
+    public CustomerController(CartService cartService, CustomerService customerService) {
         this.cartService = cartService;
-    }
-
-    private CustomerService customerService;
-
-    @Autowired
-    public void setCustomerService(CustomerService customerService) {
         this.customerService = customerService;
     }
+//    @Autowired
+//    public void setCartService(CartService cartService) {
+//        this.cartService = cartService;
+//    }
+//
+//    private CustomerService customerService;
+//
+//    @Autowired
+//    public void setCustomerService(CustomerService customerService) {
+//        this.customerService = customerService;
+//    }
 
     @GetMapping
     public String customer(Principal principal, Model model) {
@@ -57,4 +65,13 @@ public class CustomerController {
     public String doLogin(Model model) {
         return "account";
     }
+
+    @PostMapping("/register")
+    public String doRegistration(RegisterRequest request,
+                                 Model model) {
+        return customerService.doRegistration(request,model);
+    }
+
+
+
 }

@@ -47,6 +47,11 @@
             <div class="page-account u-s-p-t-80">
                 <div class="container">
                     <div class="row">
+                        <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
+                            <div class="ui-state-error" th:text="${errorMessage}"/>
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- Login -->
                         <div class="col-lg-6">
                             <div class="login-wrapper">
@@ -59,11 +64,12 @@
                                         </label>
                                         <input name="username" type="text" id="user-name-email" class="text-field" placeholder="E-mail">
                                     </div>
-                                    <div class="u-s-m-b-30">
+                                    <div class="u-s-m-b-30"><!-- password-container -->
                                         <label for="login-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="password" type="text" id="login-password" class="text-field" placeholder="Пароль">
+                                        <input name="password" type="password" id="login-password" class="text-field" placeholder="Пароль">
+<!--                                        <button type="button" id="togglePassword"><i class="ion ion-md-eye-off"></i></button>-->
                                     </div>
 <!--                                    <div class="group-inline u-s-m-b-30">-->
 <!--                                        <div class="group-1">-->
@@ -89,18 +95,24 @@
                             <div class="reg-wrapper">
                                 <h2 class="account-h2 u-s-m-b-20">Регистрация</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Регистрация необходима для оформления заказа на сайте.</h6>
-                                <form action="/register" method="post">
+                                <form action="/customer/register" method="post">
                                     <div class="u-s-m-b-30">
-                                        <label for="email">E-mail
+                                        <label for="email">E-mail (будет использоваться в качестве логина)
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="username" type="text" id="email" class="text-field" placeholder="Email">
+                                        <input name="username" type="text" id="email" class="text-field" placeholder="e-mail">
                                     </div>
                                     <div class="u-s-m-b-30">
-                                        <label for="password">Password
+                                        <label for="email">Ф.И.О. для контакта
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="password" type="text" id="password" class="text-field" placeholder="Password">
+                                        <input name="contactName" type="text" id="contact-name" class="text-field" placeholder="Ф.И.О.">
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label for="reg-password">Пароль
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input name="password" type="password" id="reg-password" class="text-field" placeholder="Пароль">
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <input type="checkbox" class="check-box" id="accept">

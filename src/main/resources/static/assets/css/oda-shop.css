@@ -94,3 +94,22 @@
 /*.bag-check-outline::before {*/
 /*    content: "✓"; !* или ваш иконка *!*/
 /*}*/
+
+.password-container {
+    position: relative;
+    display: inline-block;
+}
+
+#login-password, #reg-password {
+    padding-right: 30px; /* Чтобы кнопка не накладывалась на текст */
+}
+
+#togglePassword {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
