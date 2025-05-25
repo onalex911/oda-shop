@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваш заказ</title>
+</head>
+<body>
+<h2>Детали заказа с сайта odadv.ru</h2>
+<h3>Наименование заказчика: <span th:text="${userRecvisits.getCustomerName()}"/></h3>
+<h3>Адрес заказчика: <span th:text="${orderData.getAddress().isEmpty()} ? ${userRecvisits.getCustomerAddress()} : ${orderData.getAddress()}"/></h3>
+<h3>Телефон заказчика: <span th:text="${orderData.getPhone().isEmpty()} ? ${userRecvisits.getCustomerPhone()} : ${orderData.getPhone()}"/></h3>
+<h3>Контактное лицо: <span th:text="${orderData.getContactName().isEmpty()} ? ${userRecvisits.getRukovoditel()} : ${orderData.getContactName()}"/></h3>
+
+<table border="1">
+    <tr>
+        <th>№</th>
+        <th>Товар</th>
+        <th>Кол-во</th>
+        <th>Цена, ₽</th>
+        <th>Сумма, ₽</th>
+    </tr>
+    <tr th:each="item, iterator : ${cartItems}">
+        <td th:text="${iterator.index + 1}">1</td>
+        <td th:text="${item.getTovar().tovName}"></td>
+        <td style="text-align:center;" th:text="${item.quantity}"></td>
+        <td style="text-align:right;" th:text="${item.getTovar().cena}"></td>
+        <td style="text-align:right;" th:text="${item.getTovar().cena * item.quantity}"></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align:right;">Итого:</td>
+        <td style="text-align:center;" th:text="${totalQuantity}"></td>
+        <td>&nbsp;</td>
+        <td style="text-align:right;" th:text="${totalSum}"></td>
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align:right;">Цена с учетом скидки (<span th:text="${discount}+'%'"/>)</td>
+        <td style="text-align:right;" th:text="${totalSum} / 100 * (100 - ${discount})"></td>
+    </tr>
+</table>
+<h3>Итого: <span th:text="(${totalSum}  / 100 * (100 - ${discount})) + ' ₽'"></span></h3>
+<p>Спасибо за ваш заказ!</p>
+</body>
+</html>

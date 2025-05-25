@@ -1,5 +1,6 @@
 package ru.onalex.odashop.services;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
@@ -33,14 +35,20 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
+    private final CartService cartService;
 
     public CustomerService(
             CustomerRepository customerRepository,
             PasswordEncoder passwordEncoder,
-            RoleRepository roleRepository) {
+            RoleRepository roleRepository,
+            EmailService emailService,
+            CartService cartService) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
+        this.cartService = cartService;
     }
 
     //обертка для получения пользователя (чтобы не обращаться напрямую в репозиторий)
@@ -90,7 +98,23 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    public void doOrder(@Valid OrderRequest request) {
-        System.out.println("order request: " + request);
-    }
+//    public void doOrder(@Valid OrderRequest request,
+//                        Customer customer,
+//                        HttpSession session,
+//                        Model model) {
+//        List<CartItemDTO> cartItems = cartService.getCartItems(session);
+//        double total = cartService.getTotal(session);
+//
+//        // Отправляем email
+//        emailService.sendOrderEmail(
+//                customer.getUsername(),
+//                "Ваш заказ в магазине",
+//                cartItems,
+//                total
+//        );
+//
+//        // Очищаем корзину после отправки
+//        session.removeAttribute("cart");
+//        System.out.println("order request: " + request);
+//    }
 }
