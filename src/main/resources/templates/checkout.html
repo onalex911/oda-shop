@@ -100,7 +100,11 @@
                                         </tr>
                                         <tr>
                                             <td class="text-right">Сумма, руб.:</td>
-                                            <td class="text-right"><span th:text="${total}"/></td>
+                                            <td class="text-right"><span th:text="${totalSum}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">Сумма с учетом скидки (<span th:text="${discount}"/>%), руб.:</td>
+                                            <td class="text-right"><span th:text="${totalSumDisc}"/></td>
                                         </tr>
                                         </tbody>
                                     </table>

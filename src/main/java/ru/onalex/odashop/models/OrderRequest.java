@@ -25,4 +25,11 @@ public class OrderRequest {
     @AssertTrue(message = "Необходимо согласие с условиями")
     private boolean termsAccepted;
 
+    public OrderRequest(String contactName, String address, String email, String phone) {
+        this.contactName = contactName;
+        this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.termsAccepted = false;
+    }
 }

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
+import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
+import ru.onalex.odashop.models.UserInfo;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 
@@ -19,6 +21,7 @@ import java.security.Principal;
 import java.util.List;
 
 import static ru.onalex.odashop.controllers.GlobalControllerAdvice.MAIN_PAGE;
+import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 
 @Controller
 @RequestMapping("/customer")
@@ -52,14 +55,31 @@ public class CustomerController {
     }
 
     @GetMapping("/checkout")
-    public String doCheckout(Model model, HttpSession session) {
+    public String doCheckout(Model model, HttpSession session, Principal principal) {
 
         List<CartItemDTO> items = cartService.getCartItems(session);
-        double total = cartService.getTotal(session);
-        if (total > 0 && items.size() > 0) {
+        double totalSum = cartService.getTotal(session);
+        if (totalSum > 0 && items.size() > 0) {
+//            Customer customer = customerService.findByUsername(principal.getName());
+            String address = "";
+            String phone = "";
+            String email = "";
+            String contactName = "";
+            double discount = 0;
+            UserInfo userInfo = customerService.getUserInfoByUsername(principal.getName());
+            if(!userInfo.getRecvisits().isEmpty()) {
+                Recvisit recvisit = userInfo.getRecvisits().get(0);
+                address = recvisit.getCustomerAddress();
+                phone = recvisit.getCustomerPhone();
+                email = userInfo.getCustomer().getUsername();
+                contactName = userInfo.getCustomer().getContactName();
+                discount = userInfo.getCustomer().getDiscount();
+            }
             model.addAttribute("cartItems", items);
-            model.addAttribute("total", total);
-            model.addAttribute("orderRequest", new OrderRequest());
+            model.addAttribute("totalSum", totalSum);
+            model.addAttribute("discount", discount);
+            model.addAttribute("totalSumDisc", totalSum * (100 - discount) / 100);
+            model.addAttribute("orderRequest", new OrderRequest(contactName, replaceQuotes(address), email, phone));
 
             return "checkout";
         }
