@@ -22,14 +22,18 @@ public class OrderRequest {
     @Size(max = 20, message = "Телефонный номер должен содержать не более 20 символов")
     private String phone;
 
+    @Size(max = 250, message = "Комментарий может содержать не более 250 символов")
+    private String comment;
+
     @AssertTrue(message = "Необходимо согласие с условиями")
     private boolean termsAccepted;
 
-    public OrderRequest(String contactName, String address, String email, String phone) {
+    public OrderRequest(String contactName, String address, String email, String phone, String comment) {
         this.contactName = contactName;
         this.address = address;
         this.email = email;
         this.phone = phone;
+        this.comment = comment;
         this.termsAccepted = false;
     }
 }

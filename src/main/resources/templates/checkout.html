@@ -72,6 +72,13 @@
                                               th:errors="*{phone}" class="error-message"></span>
                                     </div>
                                 </div>
+                                <div class="street-address u-s-m-b-13" th:classappend="${#fields.hasErrors('comment')} ? 'error'">
+                                    <label for="req-st-comment">Комментарий к заказу</label>
+                                    <textarea id="req-st-comment" class="text-area" th:field="*{comment}" ></textarea>
+                                    <span th:if="${#fields.hasErrors('comment')}"
+                                          th:errors="*{comment}" class="error-message"></span>
+
+                                </div>
                             </div>
                             <!-- Billing-&-Shipping-Details /- -->
                             <!-- Checkout -->

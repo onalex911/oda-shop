@@ -65,6 +65,7 @@ public class CustomerController {
             String phone = "";
             String email = "";
             String contactName = "";
+            String comment = "";
             double discount = 0;
             UserInfo userInfo = customerService.getUserInfoByUsername(principal.getName());
             if(!userInfo.getRecvisits().isEmpty()) {
@@ -72,6 +73,7 @@ public class CustomerController {
                 address = recvisit.getCustomerAddress();
                 phone = recvisit.getCustomerPhone();
                 email = userInfo.getCustomer().getUsername();
+                comment = recvisit.getComment();
                 contactName = userInfo.getCustomer().getContactName();
                 discount = userInfo.getCustomer().getDiscount();
             }
@@ -79,7 +81,7 @@ public class CustomerController {
             model.addAttribute("totalSum", totalSum);
             model.addAttribute("discount", discount);
             model.addAttribute("totalSumDisc", totalSum * (100 - discount) / 100);
-            model.addAttribute("orderRequest", new OrderRequest(contactName, replaceQuotes(address), email, phone));
+            model.addAttribute("orderRequest", new OrderRequest(contactName,replaceQuotes(address),email,phone,comment));
 
             return "checkout";
         }
