@@ -1,22 +1,72 @@
 let form = document.getElementById('do-sort');
-form.addEventListener('change', function (event) {
-    if (event.target.classList.contains('select-box')) {
-        let changedEl = event.target;
-        let sourceURL = document.getElementById("src-path").value;
-        let sort_by = document.getElementById("sort-by").value;
-        let pg_size = document.querySelector('select[name="size"]').value;
+if(form) {
+    form.addEventListener('change', function (event) {
+        if (event.target.classList.contains('select-box')) {
+            let changedEl = event.target;
+            let sourceURL = document.getElementById("src-path").value;
+            let sort_by = document.getElementById("sort-by").value;
+            let pg_size = document.querySelector('select[name="size"]').value;
 
-        // Обновляем URL в зависимости от того, какой селектор изменился
-        let url = `${sourceURL}sort=${sort_by}&size=${pg_size}&page=0`;
-        console.log("Redirecting to URL:" + url);
+            // Обновляем URL в зависимости от того, какой селектор изменился
+            let url = `${sourceURL}sort=${sort_by}&size=${pg_size}&page=0`;
+            console.log("Redirecting to URL:" + url);
 
-        // Перенаправляем на новый URL
-        window.location.href = url;
-    }
+            // Перенаправляем на новый URL
+            window.location.href = url;
+        }
+    });
+}
+
+
+// Находим все поля ввода количества
+document.querySelectorAll('.quantity-text-field').forEach(quantityElement => {
+    quantityElement.addEventListener('change', function (event) {
+        // Получаем ID товара из ID поля (формат 'q_123')
+        let fullId = event.target.id;
+        let id = fullId.split('_')[1];
+
+
+        // Получаем введенное количество
+        let quantity = parseInt(this.value);
+        if(isNaN(quantity)){
+            alert("Введено нечисловое значение!");
+            this.value = 1;
+            return;
+        }
+
+        // Находим максимальное значение (data-max находится у элемента с классом plus-a)
+        let maxVal = this.parentElement.querySelector('.plus-a').getAttribute('data-max');
+        maxVal = parseInt(maxVal);
+
+        // Находим элемент для отображения ошибки
+        let err = document.getElementById(`err_${id}`);
+
+        console.log(`Уст. кол-во: ${quantity}`);
+        if (quantity < 1 || quantity > maxVal) {
+            alert(`Количество должно быть от 1 до ${maxVal}!`);
+            this.value = 1; // Устанавливаем значение по умолчанию
+        }
+    });
 });
 
+
+
 async function addTovar(id) {
-    let quantity = parseInt(document.getElementById(`q_${id}`).value);
+    let quantityEl = document.getElementById(`q_${id}`);
+    let quantity = parseInt(quantityEl.value);
+    let maxVal = quantityEl.parentElement.querySelector('.plus-a').getAttribute('data-max');
+
+    maxVal = parseInt(maxVal);
+    if(isNaN(quantity)){
+        alert("Введено нечисловое значение!");
+        quantityEl.value = 1;
+        return;
+    }
+    if(quantity < 1 || quantity > maxVal){
+        alert("Количество должно быть от 1 до ("+maxVal+")");
+        quantityEl.value = 1;
+        return;
+    }
     let price = parseMoneyValue(document.getElementById(`p_${id}`).textContent);
 
     // alert(`Adding /cart/add/${id}/${quantity}`);
