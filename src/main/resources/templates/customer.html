@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+<!--            <div class="row align-items-center top-panel">-->
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, 'Профиль пользователя', 0)}"></div>
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="v-menu v-close">-->
+<!--                            <span class="v-title">-->
+<!--                                <i class="ion ion-md-menu"></i>-->
+<!--                                Все разделы-->
+<!--                                <i class="fas fa-angle-down"></i>-->
+<!--                            </span>-->
+<!--                        <nav>-->
+<!--                            <div class="v-wrapper">-->
+<!--                                <ul class="v-list animated fadeIn">-->
+<!--                                    <li class="js-backdrop" th:each="g : ${menuGroups}">-->
+<!--                                        <a th:href="@{${g.purl}}">-->
+<!--                                            <i class="ion ion-md-folder"></i>-->
+<!--                                            <span th:text="${g.normalName}">-->
+<!--&lt;!&ndash;                                                <i class="ion ion-ios-arrow-forward"></i>&ndash;&gt;-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </nav>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-9">-->
+<!--                    <h3>Профиль пользователя</h3>-->
+<!--                </div>-->
+<!--            </div>-->
+            <!-- Cart-Page -->
+            <div class="page-cart u-s-p-t-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2></h2>
+                            <p th:text="${customer.username}"></p>
+                            <p th:text="${customer.discount}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart-Page /- -->
+        </div>
+    </div>
+</div>
+    <!-- Custom-Deal-Page -->
+    <!-- Вставляем фрагмент футера -->
+    <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</body>
+</html>

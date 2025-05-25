@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Checkout-Page -->
+    <div class="page-checkout u-s-p-t-80">
+        <div class="container">
+            <div class="row top-panel"><h3>ОФОРМЛЕНИЕ ЗАКАЗА</h3></div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <form th:action="@{/customer/order}"
+                          th:object="${orderRequest}"
+                          th:with="type=${T(ru.onalex.odashop.models.OrderRequest)}" method="post">
+
+                    <div class="row">
+                            <!-- Billing-&-Shipping-Details -->
+                            <div class="col-lg-6">
+                                <h4 class="section-h4">Реквизиты заказчика</h4>
+                                <!-- Form-Fields -->
+                                <div class="group-inline u-s-m-b-13" th:classappend="${#fields.hasErrors('contactName')} ? 'error'">
+                                        <label for="first-name">Ф.И.О. контактного лица
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input th:field="*{contactName}" type="text" id="first-name" class="text-field">
+<!--                                               th:value="${userData.getCustomer().getContactName()}"-->
+                                    <span th:if="${#fields.hasErrors('contactName')}"
+                                          th:errors="*{contactName}" class="error-message"></span>
+
+                                </div>
+                                <div class="street-address u-s-m-b-13" th:classappend="${#fields.hasErrors('address')} ? 'error'">
+                                    <label for="req-st-address">Почтовый адрес
+                                        <span class="astk">*</span>
+                                    </label>
+                                    <input th:field="*{address}" type="text" id="req-st-address" class="text-field"
+                                           placeholder="Укажите адрес доставки">
+                                    <span th:if="${#fields.hasErrors('address')}"
+                                          th:errors="*{address}" class="error-message"></span>
+
+                                </div>
+<!--                                <div class="u-s-m-b-13">-->
+<!--                                    <label for="town-city">Town / City-->
+<!--                                        <span class="astk">*</span>-->
+<!--                                    </label>-->
+<!--                                    <input type="text" id="town-city" class="text-field">-->
+<!--                                </div>-->
+                                <div class="group-inline u-s-m-b-13">
+                                    <div class="group-1 u-s-p-r-16" th:classappend="${#fields.hasErrors('email')} ? 'error'">
+                                        <label for="email">Email для отправки заказа
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input th:field="*{email}" type="text" id="email" class="text-field">
+<!--                                        th:value="${userData.getCustomer().getUsername()}">-->
+                                        <span th:if="${#fields.hasErrors('email')}"
+                                              th:errors="*{email}" class="error-message"></span>
+                                    </div>
+                                    <div class="group-2" th:classappend="${#fields.hasErrors('phone')} ? 'error'">
+                                        <label for="phone">Контактный телефон
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input th:field="*{phone}" type="text" id="phone" class="text-field" placeholder="+7 (___) ___-__-__">
+                                        <span th:if="${#fields.hasErrors('phone')}"
+                                              th:errors="*{phone}" class="error-message"></span>
+                                    </div>
+                                </div>
+                                <div class="street-address u-s-m-b-13" th:classappend="${#fields.hasErrors('comment')} ? 'error'">
+                                    <label for="req-st-comment">Комментарий к заказу</label>
+                                    <textarea id="req-st-comment" class="text-area" th:field="*{comment}" ></textarea>
+                                    <span th:if="${#fields.hasErrors('comment')}"
+                                          th:errors="*{comment}" class="error-message"></span>
+
+                                </div>
+                            </div>
+                            <!-- Billing-&-Shipping-Details /- -->
+                            <!-- Checkout -->
+                            <div class="col-lg-6">
+                                <h4 class="section-h4">Выбранные товары</h4>
+                                <div class="order-table">
+                                    <table class="u-s-m-b-13">
+                                        <thead>
+                                        <tr>
+                                            <th>Наименование</th>
+                                            <th>Итог</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
+                                            <td>
+                                                <a th:href="@{${item.tovar.purl}}">
+                                                    <h6 th:text="${item.tovar.normalTovName}"></h6>
+                                                    <span class="order-span-quantity">x <span
+                                                            th:text="${item.quantity}"></span></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h6 class="order-h6" th:text="${item.tovar.cena * item.quantity}"></h6>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">Сумма, руб.:</td>
+                                            <td class="text-right"><span th:text="${totalSum}"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">Сумма с учетом скидки (<span th:text="${discount}"/>%), руб.:</td>
+                                            <td class="text-right"><span th:text="${totalSumDisc}"/></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="u-s-m-b-13">
+                                        <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
+                                            <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
+                                            <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
+                                                <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="button button-outline-secondary">Отправить</button>
+                                </div>
+                            </div>
+                            <!-- Checkout /- -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout-Page /- -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</body>
+</html>

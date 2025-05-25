@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+            <div class="row align-items-center top-panel">
+                <div class="col-lg-3">
+                    <div class="v-menu v-close">
+                            <span class="v-title">
+                                <i class="ion ion-md-menu"></i>
+                                Все разделы
+                                <i class="fas fa-angle-down"></i>
+                            </span>
+                        <nav>
+                            <div class="v-wrapper">
+                                <ul class="v-list animated fadeIn">
+                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
+                                        <a th:href="@{${g.purl}}">
+                                            <i class="ion ion-md-folder"></i>
+                                            <span th:text="${g.normalName}"/>
+                                            <!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h3>Корзина</h3>
+                </div>
+            </div>
+            <!-- Cart-Page -->
+            <div class="page-cart u-s-p-t-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form>
+                                <!-- Products-List-Wrapper -->
+                                <div class="table-wrapper u-s-m-b-60">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>Наименование</th>
+                                            <th>Цена</th>
+                                            <th>Количество</th>
+                                            <th>Сумма,&nbsp;руб.</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
+                                            <td>
+                                                <div class="cart-anchor-image">
+                                                    <a th:href="@{${item.tovar.purl}}">
+                                                        <img alt="Product" th:src="${item.tovar.realPreview}"/>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{${item.tovar.purl}}">
+                                                    <h6 th:text="${item.tovar.normalTovName}"></h6>
+                                                </a>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="cart-price" th:text="${item.tovar.cena}"></div>
+                                            </td>
+                                            <td>
+                                                <div class="cart-quantity">
+                                                    <div class="quantity">
+                                                        <input type="text" th:id="'q_'+${item.tovar.id}"
+                                                               class="quantity-text-field" name="quantity"
+                                                               th:value="${item.quantity}">
+                                                        <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
+                                                        <a class="minus-a" data-min="1">&#45;</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <div class="cart-price">
+                                                    <div class="quantity" th:id="'s_'+${item.tovar.id}"
+                                                         th:text="${item.tovar.cena * item.quantity}"></div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-wrapper">
+                                                    <button class="button button-outline-secondary fas fa-sync"
+                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
+                                                    <button class="button button-outline-secondary fas fa-trash"
+                                                            th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">Итого:</td>
+                                            <td class="text-center"><span class="calc-text" th:text="${totalQuantity}"/></td>
+                                            <td class="text-right"><span class="calc-text" th:text="${totalSum}"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">Скидка:</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-right"><span class="calc-text" th:text="(${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0) + '%'"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">Сумма со скидкой:</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-right"><span class="calc-text" th:text="${totalSum} / 100 * (100 - (${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0))"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Products-List-Wrapper /- -->
+                                <!-- Coupon -->
+                                <div class="coupon-continue-checkout u-s-m-b-60">
+                                    <div class="coupon-area">
+                                    </div>
+                                    <div class="button-area">
+                                        <a href="javascript:goBackAndReload()" class="continue">Продолжить покупки</a>
+                                        <a href="/customer/checkout" class="checkout">Оформить заказ</a>
+                                    </div>
+                                </div>
+                                <!-- Coupon /- -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart-Page /- -->
+        </div>
+    </div>
+</div>
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script src="/assets/js/cart.js"></script>
+</body>
+</html>

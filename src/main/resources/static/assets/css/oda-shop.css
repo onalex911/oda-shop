@@ -1,0 +1,129 @@
+.page-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.total-items, .form-selectors {
+    margin: 0;
+}
+
+.total-items h6 {
+    margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    .page-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .total-items, .form-selectors {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+.product-info-row{
+    margin-bottom:6px;
+}
+.item-art, .item-ost{
+    font-size:0.75em;
+}
+
+
+.cart-oda-button, .cart-oda-button-big{
+
+    font-size:x-large;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 2px solid #1b1e21;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cart-oda-button{
+    width:102px;
+    height:36px;
+}
+.cart-oda-button-big{
+    width:120px;
+    height:50px;
+}
+
+.active{
+    background-color: #ccc;
+    color:#999;
+    border: 2px solid #999;
+}
+.cart-oda-button:hover, .cart-oda-button-big:hover{
+    background-color: #b60c0d;
+    color:white;
+}
+
+.icon-button:hover {
+    background-color: #f5f5f5;
+    border: 2px solid #b60c0d;
+}
+
+.icon-button.active {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+    color: #2E7D32;
+}
+
+.ion {
+    /*margin-right: 8px;*/
+    font-size: 1.2em;
+    position:relative;
+    top: 1px;
+}
+
+.go-back{
+    font-size: x-large;
+}
+/*.bag-add-outline::before {*/
+/*    content: "+"; !* или ваш иконка *!*/
+/*}*/
+
+/*.bag-check-outline::before {*/
+/*    content: "✓"; !* или ваш иконка *!*/
+/*}*/
+
+.password-container {
+    position: relative;
+    display: inline-block;
+}
+
+#login-password, #reg-password {
+    padding-right: 30px; /* Чтобы кнопка не накладывалась на текст */
+}
+
+#togglePassword {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    display: block;
+}
+
+.calc-text { 
+	font-weight: 700;
+}

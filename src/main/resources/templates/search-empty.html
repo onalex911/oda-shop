@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups},${sectTitle},0)}"></div>
+            <!-- Cart-Page -->
+            <div class="page-cart u-s-p-t-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 mt-16 text-center">
+                           <h2>По вашему запросу ничего не найдено</h2>
+                            <div class="error-message" th:if="!${error_message.isEmpty()}">
+                                <h3><ion-icon name="warning-outline"></ion-icon> <span th:text="${error_message}"/></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart-Page /- -->
+        </div>
+    </div>
+</div>
+    <!-- Custom-Deal-Page -->
+    <!-- Вставляем фрагмент футера -->
+    <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--begin::Head-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Панель администратора</title>
+    <!--begin::Primary Meta Tags-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="title" content="Панель администратора"/>
+    <meta name="author" content="ColorlibHQ"/>
+    <meta
+            name="description"
+            content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS."
+    />
+    <meta
+            name="keywords"
+            content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard"
+    />
+    <!--end::Primary Meta Tags-->
+    <!--begin::Fonts-->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+            integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q="
+            crossorigin="anonymous"
+    />
+    <!--end::Fonts-->
+    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css"
+            integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg="
+            crossorigin="anonymous"
+    />
+    <!--end::Third Party Plugin(OverlayScrollbars)-->
+    <!--begin::Third Party Plugin(Bootstrap Icons)-->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI="
+            crossorigin="anonymous"
+    />
+    <!--end::Third Party Plugin(Bootstrap Icons)-->
+    <!--begin::Required Plugin(AdminLTE)-->
+    <link rel="stylesheet" href="/assets-admin/css/adminlte.css"/>
+    <!--end::Required Plugin(AdminLTE)-->
+    <!-- apexcharts -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css"
+            integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0="
+            crossorigin="anonymous"
+    />
+    <!-- jsvectormap -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css"
+            integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
+            crossorigin="anonymous"
+    />
+    <script src="/assets-admin/js/script.js" defer></script>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<!--begin::App Wrapper-->
+<div class="app-wrapper">
+    <!--begin::Header-->
+    <nav class="app-header navbar navbar-expand bg-body">
+        <!--begin::Container-->
+        <div class="container-fluid">
+            <!--begin::Start Navbar Links-->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                        <i class="bi bi-list"></i>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-md-block"><a th:href="@{${mainAdminPage}}" class="nav-link">Home</a></li>
+            </ul>
+            <!--end::Start Navbar Links-->
+            <!--begin::End Navbar Links-->
+            <ul class="navbar-nav ms-auto">
+                <!--begin::Navbar Search-->
+                <!--            <li class="nav-item">-->
+                <!--              <a class="nav-link" data-widget="navbar-search" href="#" role="button">-->
+                <!--                <i class="bi bi-search"></i>-->
+                <!--              </a>-->
+                <!--            </li>-->
+                <!--end::Navbar Search-->
+                <!--begin::Fullscreen Toggle-->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-lte-toggle="fullscreen">
+                        <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen"></i>
+                        <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none"></i>
+                    </a>
+                </li>
+                <!--end::Fullscreen Toggle-->
+                <!--begin::User Menu Dropdown-->
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img
+                                src="/assets-admin/img/user6-128x128.jpg"
+                                class="user-image rounded-circle shadow"
+                                alt="User Image"
+                        />
+                        <span class="d-none d-md-inline" th:text="${userData.getCustomer().getUsername()}"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+                        <!--begin::User Image-->
+                        <li class="user-header text-bg-primary">
+                            <img
+                                    src="/assets-admin/img/user6-128x128.jpg"
+                                    class="rounded-circle shadow"
+                                    alt="User Image"
+                            />
+                            <p th:text="${userData.getRecvisits().get(0).getCustomerName()}">
+                                <small th:text="${userData.getRecvisits().get(0).getRukovoditel()}"></small>
+                            </p>
+                        </li>
+                        <!--end::User Image-->
+
+                        <!--begin::Menu Footer-->
+                        <li class="user-footer">
+                            <!-- <a href="#" class="btn btn-default btn-flat">Профиль</a> -->
+                            <a  th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
+                        </li>
+                        <!--end::Menu Footer-->
+                    </ul>
+                </li>
+                <!--end::User Menu Dropdown-->
+            </ul>
+            <!--end::End Navbar Links-->
+        </div>
+        <!--end::Container-->
+    </nav>
+    <!--end::Header-->
+    <!--begin::Sidebar-->
+    <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <!--begin::Sidebar Brand-->
+        <div class="sidebar-brand">
+            <!--begin::Brand Link-->
+            <a  th:href="@{${mainAdminPage}}" class="brand-link">
+                <!--begin::Brand Image-->
+                <img
+                        src="/assets-admin/img/AdminLTELogo.png"
+                        alt="AdminLTE Logo"
+                        class="brand-image opacity-75 shadow"
+                />
+                <!--end::Brand Image-->
+                <!--begin::Brand Text-->
+                <span class="brand-text fw-light">AdminLTE 4</span>
+                <!--end::Brand Text-->
+            </a>
+            <!--end::Brand Link-->
+        </div>
+        <!--end::Sidebar Brand-->
+        <!--begin::Sidebar Wrapper-->
+        <div class="sidebar-wrapper">
+            <nav class="mt-2">
+                <!--begin::Sidebar Menu-->
+                <ul
+                        class="nav sidebar-menu flex-column"
+                        data-lte-toggle="treeview"
+                        role="menu"
+                        data-accordion="false"
+                >
+
+                    <!-- <li class="nav-item">
+                      <a href="./generate/theme.html" class="nav-link">
+                        <i class="nav-icon bi bi-palette"></i>
+                        <p>Theme Generate</p>
+                      </a>
+                    </li> -->
+                    <li class="nav-header">КАТАЛОГ</li>
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon bi bi-table"></i>
+                            <p>
+                                Таблицы БД
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: block; box-sizing: border-box;">
+                            <a  th:href="@{${mainAdminPage}+'/categories'}" class="nav-link">
+                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                                <p>
+                                    Группы товаров
+                                </p>
+                            </a>
+                            <a th:href="@{${mainAdminPage}+'/products'}" class="nav-link">
+                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                                <p>
+                                    Товары
+                                </p>
+                            </a>
+                            <a  th:href="@{${mainAdminPage}+'/customers'}" class="nav-link">
+                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
+                                <p>
+                                    Пользователи
+                                </p>
+                            </a>
+                        </ul>
+                    </li>
+                </ul>
+                <!--end::Sidebar Menu-->
+            </nav>
+        </div>
+        <!--end::Sidebar Wrapper-->
+    </aside>
+    <!--end::Sidebar-->
+    <!--begin::App Main-->
+    <main class="app-main">
+        <!--begin::App Content Header-->
+        <div class="app-content-header">
+            <!--begin::Container-->
+            <div class="container-fluid">
+                <!--begin::Row-->
+                <div class="row d-flex">
+                    <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
+                    <div class="col-sm-6">
+                        <h3 class="mb-0" th:text="${title}"></h3>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="float-sm-end" href="/adminpanel/categories/create" title="Добавить группу"><i style="font-size: xx-large;" class="bi bi-plus-square"></i></a>
+                        <!-- <ol class="breadcrumb float-sm-end">
+                          <li class="breadcrumb-item"><a href="#">Home</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                        </ol> -->
+                    </div>
+                </div>
+                <!--end::Row-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::App Content Header-->
+        <!--begin::App Content-->
+        <div class="app-content">
+            <!--begin::Container-->
+            <div class="container-fluid">
+                <!--begin::Row-->
+                <div class="row">
+<!--                    <form>-->
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="col-1">Id</th>
+                            <th class="col-1">Активно</th>
+                            <th class="col-1">Изображение</th>
+                            <th style="cursor: pointer;text-decoration: underline;" class="col-7" onclick="sortTable(3)">Наименование</th>
+                            <th style="cursor: pointer;text-decoration: underline;" class="col-1" onclick="sortTable(4)">Порядок</th>
+                            <th class="col-1">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle" th:each="c : ${categories}">
+                            <td th:text="${c.id}"></td>
+                            <td class="d-flex justify-content-center align-items-center" style="height:66px;">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" th:id="'blok_' + ${c.id}"
+                                           th:checked="${c.blok == 1 ? false: true}"
+                                           th:onclick="'setBlokStatus(\'blok_' + ${c.id}+'\')'">
+                                </div>
+                            </td>
+                            <td>
+                                <img th:src="'/assets/' + ${c.picPreview}" style="width:50px;"/>
+                            </td>
+                            <td><a th:href="@{${mainAdminPage}+'/products/'+${c.id}}"
+                                   th:text="${c.grupName}"></a>
+                            </td>
+                            <td class="text-center" th:text="${c.nomer}"></td>
+                            <td>
+                                <a th:href="@{${mainAdminPage}+'/categories/edit/'+${c.id}}"><i class="bi bi-pencil-square" style="font-size: large;margin-right:10px;"></i></a>
+<!--                                <a th:href="@{${mainAdminPage}+'/categories/delete/'+${c.id}}"><i class="bi bi-trash" style="font-size: large;margin-right:10px;"></i></a>-->
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+<!--                    </form>-->
+                </div>
+                <!--end::Row-->
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::App Content-->
+    </main>
+    <!--end::App Main-->
+    <!--begin::Footer-->
+    <footer class="app-footer">
+        <!--begin::To the end-->
+        <div class="float-end d-none d-sm-inline"><a href="/catalog/bizhuteriya">odadv.ru</a></div>
+        <!--end::To the end-->
+        <!--begin::Copyright-->
+        <strong>
+            Copyright &copy; 2014-2024&nbsp;
+            <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
+        </strong>
+        All rights reserved.
+        <!--end::Copyright-->
+    </footer>
+    <!--end::Footer-->
+</div>
+<!--end::App Wrapper-->
+<!--begin::Script-->
+<!--begin::Third Party Plugin(OverlayScrollbars)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/browser/overlayscrollbars.browser.es6.min.js"
+        integrity="sha256-dghWARbRe2eLlIJ56wNB+b760ywulqK3DzZYEpsg2fQ="
+        crossorigin="anonymous"
+></script>
+<!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+></script>
+<!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"
+></script>
+<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+<script src="/assets-admin/js/adminlte.js"></script>
+<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<script>
+    const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+    const Default = {
+        scrollbarTheme: 'os-theme-light',
+        scrollbarAutoHide: 'leave',
+        scrollbarClickScroll: true,
+    };
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+        if (sidebarWrapper && typeof OverlayScrollbarsGlobal?.OverlayScrollbars !== 'undefined') {
+            OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+                scrollbars: {
+                    theme: Default.scrollbarTheme,
+                    autoHide: Default.scrollbarAutoHide,
+                    clickScroll: Default.scrollbarClickScroll,
+                },
+            });
+        }
+    });
+</script>
+<!--end::OverlayScrollbars Configure-->
+<!-- OPTIONAL SCRIPTS -->
+<!-- sortablejs -->
+<script
+        src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+        integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ="
+        crossorigin="anonymous"
+></script>
+<!-- sortablejs -->
+<script>
+    const connectedSortables = document.querySelectorAll('.connectedSortable');
+    connectedSortables.forEach((connectedSortable) => {
+        let sortable = new Sortable(connectedSortable, {
+            group: 'shared',
+            handle: '.card-header',
+        });
+    });
+
+    const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+    cardHeaders.forEach((cardHeader) => {
+        cardHeader.style.cursor = 'move';
+    });
+</script>
+<!-- apexcharts -->
+<script
+        src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+        integrity="sha256-+vh8GkaU7C9/wbSLIcwq82tQ2wTf44aOHA8HlBMwRI8="
+        crossorigin="anonymous"
+></script>
+<script>
+    async function setBlokStatus(elId) {
+        cb = document.getElementById(elId);
+        let checked = cb.checked;
+        let status = checked ? 0 : 1;
+        let id = elId.substring(5);
+
+        console.error("id: " + id);
+        // alert("id: " + id);
+        try {
+            let response = await fetch(`/adminpanel/categories/block/${id}/${status}`, {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                // Парсим JSON-ответ
+                let result = await response.json();
+
+                if (result.status === 'success'){
+                    console.log("id "+id+" успешно изменен на " + status);
+                    return;
+                }
+                else{
+                    console.error("Ошибка: " + result.message);
+                    // alert("Ошибка: " + result.message);
+                }
+            } else {
+                console.error("Ошибка HTTP: " + response.status);
+                // alert("Ошибка соединения: " + response.status);
+            }
+        } catch (error) {
+            console.error("Исключение: ", error);
+            // alert("Произошла ошибка: " + error.message);
+        }
+        cb.checked = !checked;
+    }
+</script>
+
+</body>
+<!--end::Body-->
+</html>

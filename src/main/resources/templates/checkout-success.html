@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Checkout-Page -->
+    <div class="page-checkout u-s-p-t-80">
+        <div class="container">
+            <div class="row top-panel"><h3>ОФОРМЛЕНИЕ ЗАКАЗА</h3></div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <h2 th:text="${successMessage}"></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Checkout-Page /- -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}">
+</head>
+
+<body>
+
+<!-- app -->
+<div id="app">
+
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+    <!-- Mid-Header /- -->
+    <!-- Responsive-Buttons -->
+    <div class="fixed-responsive-container">
+        <div class="fixed-responsive-wrapper">
+            <button type="button" class="button fas fa-search" id="responsive-search"></button>
+        </div>
+        <div class="fixed-responsive-wrapper">
+            <a href="wishlist.html">
+                <i class="far fa-heart"></i>
+                <span class="fixed-item-counter">4</span>
+            </a>
+        </div>
+    </div>
+    <!-- Responsive-Buttons /- -->
+
+    <!-- Bottom-Header -->
+    <div class="full-layer-bottom-header">
+        <div class="container">
+<!--            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups},${group_name})}"></div>-->
+            <div class="row align-items-end top-panel">
+                <div class="col-lg-3">
+                    <div class="v-menu v-close">
+                            <span class="v-title">
+                                <i class="ion ion-md-menu"></i>
+                                Все разделы
+                                <i class="fas fa-angle-down"></i>
+                            </span>
+                        <nav>
+                            <div class="v-wrapper">
+                                <ul class="v-list animated fadeIn">
+                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
+                                        <a th:href="@{${g.purl}}">
+                                            <i class="ion ion-md-folder"></i>
+                                            <span th:text="${g.normalName}"></span>
+<!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h3>
+                        <a th:href="@{${mainPage} + '/' + ${group_alias}}">
+                            <span th:text="${group_name}"></span>
+                        </a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom-Header /- -->
+    </header>
+    <div class="page-detail u-s-p-t-80">
+        <div class="container">
+            <!-- Product-Detail -->
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <!-- Product-zoom-area -->
+                    <div class="zoom-area">
+                        <img id="zoom-pro" class="img-fluid" th:src="${product.realPicBig}"
+                             th:data-zoom-image="'/' + ${product.realPicBig}" alt="Zoom Image">
+                    </div>
+                    <!-- Product-zoom-area /- -->
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <!-- Product-details -->
+                    <div class="all-information-wrapper">
+                        <div class="section-1-title-breadcrumb-rating">
+                            <div class="product-title">
+                                <h1>
+                                    <span th:text="${product.normalTovName}"></span>
+                                </h1>
+                            </div>
+                        </div>
+                        <div class="section-3-price-original-discount u-s-p-y-14">
+                            <div class="price">
+                                <h4 th:id="'p_'+${product.id}" th:text="${product.cena} + ' руб.'"></h4>
+                            </div>
+                            <!--                            <div class="discount-price">-->
+                            <!--                                <span>Discount:</span>-->
+                            <!--                                <span>8%</span>-->
+                            <!--                            </div>-->
+                        </div>
+                            <div class="section-4-sku-information u-s-p-y-14">
+                                <h6 class="information-heading u-s-m-b-8">Доп. информация:</h6>
+                                <div class="availability">
+                                    <span>Артикул: </span>
+                                    <span th:text="${product.dop}"></span>
+                                </div>
+                                <div class="availability">
+                                    <span>Доступно: </span>
+<!--                                </div>-->
+<!--                                <div class="left">-->
+                                    <span th:text="${product.ostatok} + ' шт.'"></span>
+                                </div>
+                            </div>
+
+                        <div class="section-6-social-media-quantity-actions u-s-p-y-14">
+<!--                            <form action="/cart/add" method="post" class="post-form">-->
+<!--                            <form>-->
+                                <input type="hidden" name="tovarId" th:value="${product.id}"/>
+                                <div class="quantity-wrapper u-s-m-b-22">
+                                    <span>Количество:</span>
+                                    <div class="quantity">
+                                        <input type="text" th:id="'q_'+${product.id}" class="quantity-text-field" name="quantity" value="1">
+                                        <a class="plus-a" th:data-max="${product.ostatok}">&#43;</a>
+                                        <a class="minus-a" data-min="1">&#45;</a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button th:id="'cart-'+${product.id}"
+                                            class="button  cart-oda-button-big" th:classappend="${product.inCart} ? 'active' : ''"
+                                            th:title="${product.inCart} ? 'Перейти к заказу' : 'Добавить в корзину'"
+                                            th:onclick="${product.inCart} ? 'goToCart()' : 'addTovar('+${product.id}+')'">
+                                        <i th:id="'ion-'+${product.id}" class="ion" th:classappend="${product.inCart} ? 'ion-md-checkmark-circle' : 'ion-md-cart'"></i>
+                                    </button>
+                                    <div class="go-back mt-3">
+                                        <a href="javascript:goBackAndReload()"><i class="ion ion-md-arrow-round-back"></i> Назад</a>
+
+                                    </div>
+<!--                                    <button class="button button-outline-secondary" th:onclick="'addTovar('+${product.id}+')'">в Корзину</button>-->
+<!--                                    <button class="button button-outline-secondary far fa-heart u-s-m-l-6"></button>-->
+<!--                                    <button class="button button-outline-secondary far fa-envelope u-s-m-l-6"></button>-->
+                                </div>
+<!--                            </form>-->
+                        </div>
+                    </div>
+                    <!-- Product-details /- -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Single-Product-Full-Width-Page /- -->
+    <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+</div>
+<script src="/assets/js/cart.js"></script>
+</body>
+</html>
