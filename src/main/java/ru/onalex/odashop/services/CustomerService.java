@@ -98,23 +98,23 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    public void doOrder(@Valid OrderRequest request,
-                        Customer customer,
-                        HttpSession session,
-                        Model model) {
-        List<CartItemDTO> cartItems = cartService.getCartItems(session);
-        double total = cartService.getTotal(session);
-
-        // Отправляем email
-        emailService.sendOrderEmail(
-                customer.getUsername(),
-                "Ваш заказ в магазине",
-                cartItems,
-                total
-        );
-
-        // Очищаем корзину после отправки
-        session.removeAttribute("cart");
-        System.out.println("order request: " + request);
-    }
+//    public void doOrder(@Valid OrderRequest request,
+//                        Customer customer,
+//                        HttpSession session,
+//                        Model model) {
+//        List<CartItemDTO> cartItems = cartService.getCartItems(session);
+//        double total = cartService.getTotal(session);
+//
+//        // Отправляем email
+//        emailService.sendOrderEmail(
+//                customer.getUsername(),
+//                "Ваш заказ в магазине",
+//                cartItems,
+//                total
+//        );
+//
+//        // Очищаем корзину после отправки
+//        session.removeAttribute("cart");
+//        System.out.println("order request: " + request);
+//    }
 }

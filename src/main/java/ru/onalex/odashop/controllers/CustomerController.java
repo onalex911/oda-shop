@@ -30,11 +30,13 @@ public class CustomerController {
 
     private final CartService cartService;
     private final CustomerService customerService;
+    private final EmailService emailService;
 
     public CustomerController(CartService cartService,
-                              CustomerService customerService) {
+                              CustomerService customerService, EmailService emailService) {
         this.cartService = cartService;
         this.customerService = customerService;
+        this.emailService = emailService;
 
     }
 
@@ -105,41 +107,71 @@ public class CustomerController {
         }
     }
 
+//    @PostMapping("/order")
+//    public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
+//                            BindingResult bindingResult,
+//                          Principal principal,
+//                          HttpSession session,
+//                            Model model) {
+//        if (bindingResult.hasErrors()) {
+//            // Возвращаем тот же шаблон, где есть форма
+//            return "checkout";
+//        }
+//
+//        try {
+//            Customer customer = customerService.findByUsername(principal.getName());
+//            customerService.doOrder(request,customer,session,model);
+//            return "redirect:/customer/order?success";
+//        } catch (Exception e) {
+//            model.addAttribute("errorMessage", e.getMessage());
+//            return "checkout";
+//        }
+////        return "redirect:" + MAIN_PAGE;
+//    }
+
+
+//    @GetMapping("/order")
+//    public String successOrderPage(
+//            @RequestParam(value = "success", required = false) String success,
+//            Model model) {
+//        if (success != null) {
+//            // Обработка успешного заказа
+//            model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
+//            return "checkout-success"; // Имя шаблона представления
+//        }
+//
+//        // Логика для обычной страницы заказа
+//        return "checkout";
+//    }
+
     @PostMapping("/order")
     public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
                             BindingResult bindingResult,
-                          Principal principal,
-                          HttpSession session,
+                            Principal principal,
+                            HttpSession session,
                             Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
             return "checkout";
         }
-
+        // Получаем данные пользователя и корзины
+        Customer customer = customerService.findByUsername(principal.getName());
+        List<CartItemDTO> cartItems = cartService.getCartItems(session);
+        double total = cartService.getTotal(session);
         try {
-            Customer customer = customerService.findByUsername(principal.getName());
-            customerService.doOrder(request,customer,session,model);
-            return "redirect:/customer/order?success";
-        } catch (Exception e) {
+            // Отправляем письма (пользователю + поставщикам)
+            emailService.sendOrderEmails(customer.getUsername(), cartItems, total);
+
+            // Очищаем корзину
+            session.removeAttribute("cart");
+            model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
+            return "checkout-success"; // Имя шаблона представления
+
+        }catch(Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "checkout";
         }
-//        return "redirect:" + MAIN_PAGE;
-    }
 
-
-    @GetMapping("/order")
-    public String successOrderPage(
-            @RequestParam(value = "success", required = false) String success,
-            Model model) {
-        if (success != null) {
-            // Обработка успешного заказа
-            model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
-            return "checkout-success"; // Имя шаблона представления
-        }
-
-        // Логика для обычной страницы заказа
-        return "checkout";
     }
 
 }

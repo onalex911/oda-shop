@@ -17,6 +17,11 @@
         <div class="container">
             <div class="row top-panel"><h3>ОФОРМЛЕНИЕ ЗАКАЗА</h3></div>
             <div class="row">
+                <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
+                    <div class="ui-state-error" th:text="${errorMessage}"/>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <form th:action="@{/customer/order}"
                           th:object="${orderRequest}"

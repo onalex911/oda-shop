@@ -36,7 +36,7 @@ public class EmailService {
         context.setVariable("total", total);
 
         // Генерация HTML содержимого
-        String htmlContent = templateEngine.process("email/order-template", context);
+        String htmlContent = templateEngine.process("email/order", context);
 
         // 1. Отправка пользователю
         sendEmail(customerEmail, "Ваш заказ", htmlContent);

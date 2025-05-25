@@ -19,7 +19,7 @@
             <!-- Row-of-Product-Container -->
             <div class="row product-container grid-style">
                 <div class="error-message" th:if="${groups == null or groups.size() == 0}">
-                    <h3><ion-icon name="warning-outline"></ion-icon> Произошла какая-то ошибка!</h3>
+                    <h3><ion-icon name="ion-md-warning-outline"></ion-icon> Произошла какая-то ошибка!</h3>
                 </div>
                 <div class="product-item col-lg-3 col-md-6 col-sm-6" th:each="t : ${groups}">
                     <div class="item">
