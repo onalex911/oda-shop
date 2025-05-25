@@ -15,54 +15,61 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-3">
-                    <div class="v-menu v-close">
-                            <span class="v-title">
-                                <i class="ion ion-md-menu"></i>
-                                Все разделы
-                                <i class="fas fa-angle-down"></i>
-                            </span>
-                        <nav>
-                            <div class="v-wrapper">
-                                <ul class="v-list animated fadeIn">
-                                    <li class="js-backdrop" th:each="g : ${menuGroups}">
-                                        <a th:href="@{${g.purl}}">
-                                            <i class="ion ion-md-folder"></i>
-                                            <span th:text="${g.normalName}"/>
-<!--                                                <i class="ion ion-ios-arrow-forward"></i>-->
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <h3>Вход/Регистрация</h3>
-                </div>
-            </div>
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, 'Вход/Регистрация', 0)}"></div>
+<!--            <div class="row align-items-center">-->
+<!--                <div class="col-lg-3">-->
+<!--                    <div class="v-menu v-close">-->
+<!--                            <span class="v-title">-->
+<!--                                <i class="ion ion-md-menu"></i>-->
+<!--                                Все разделы-->
+<!--                                <i class="fas fa-angle-down"></i>-->
+<!--                            </span>-->
+<!--                        <nav>-->
+<!--                            <div class="v-wrapper">-->
+<!--                                <ul class="v-list animated fadeIn">-->
+<!--                                    <li class="js-backdrop" th:each="g : ${menuGroups}">-->
+<!--                                        <a th:href="@{${g.purl}}">-->
+<!--                                            <i class="ion ion-md-folder"></i>-->
+<!--                                            <span th:text="${g.normalName}"/>-->
+<!--&lt;!&ndash;                                                <i class="ion ion-ios-arrow-forward"></i>&ndash;&gt;-->
+<!--                                        </a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </nav>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-9">-->
+<!--                    <h3>Вход/Регистрация</h3>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- Account-Page -->
             <div class="page-account u-s-p-t-80">
                 <div class="container">
+                    <div class="row">
+                        <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
+                            <div class="ui-state-error" th:text="${errorMessage}"/>
+                        </div>
+                    </div>
                     <div class="row">
                         <!-- Login -->
                         <div class="col-lg-6">
                             <div class="login-wrapper">
                                 <h2 class="account-h2 u-s-m-b-20">Вход</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Введите ваш e-mail и пароль, если вы уже зарегистрированы.</h6>
-                                <form action="/login" method="post">
+                                <form action="/login"  method="post">
                                     <div class="u-s-m-b-30">
                                         <label for="user-name-email">E-mail
                                             <span class="astk">*</span>
                                         </label>
                                         <input name="username" type="text" id="user-name-email" class="text-field" placeholder="E-mail">
                                     </div>
-                                    <div class="u-s-m-b-30">
+                                    <div class="u-s-m-b-30"><!-- password-container -->
                                         <label for="login-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="password" type="text" id="login-password" class="text-field" placeholder="Пароль">
+                                        <input name="password" type="password" id="login-password" class="text-field" placeholder="Пароль">
+<!--                                        <button type="button" id="togglePassword"><i class="ion ion-md-eye-off"></i></button>-->
                                     </div>
 <!--                                    <div class="group-inline u-s-m-b-30">-->
 <!--                                        <div class="group-1">-->
@@ -88,27 +95,49 @@
                             <div class="reg-wrapper">
                                 <h2 class="account-h2 u-s-m-b-20">Регистрация</h2>
                                 <h6 class="account-h6 u-s-m-b-30">Регистрация необходима для оформления заказа на сайте.</h6>
-                                <form action="/register" method="post">
-                                    <div class="u-s-m-b-30">
-                                        <label for="email">E-mail
+                                <form th:action="@{/customer/register}"
+                                      th:object="${registerRequest}"
+                                      th:with="type=${T(ru.onalex.odashop.models.RegisterRequest)}" method="post">
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
+                                        <label for="email">E-mail (будет использоваться в качестве логина)
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="username" type="text" id="email" class="text-field" placeholder="Email">
+                                        <input th:field="*{username}" type="text" id="email" class="text-field" placeholder="e-mail"/>
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{username}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30">
-                                        <label for="password">Password
+                                    <div class="u-s-m-b-30"  th:classappend="${#fields.hasErrors('contactName')} ? 'error'">
+                                        <label for="email">Ф.И.О. для контакта
                                             <span class="astk">*</span>
                                         </label>
-                                        <input name="password" type="text" id="password" class="text-field" placeholder="Password">
+                                        <input th:field="*{contactName}" type="text" id="contact-name" class="text-field" placeholder="Ф.И.О.">
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{contactName}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30">
-                                        <input type="checkbox" class="check-box" id="accept">
-                                        <label class="label-text no-color" for="accept">I’ve read and accept the
-                                            <a href="terms-and-conditions.html" class="u-c-brand">terms & conditions</a>
+                                    <div class="u-s-m-b-30"  th:classappend="${#fields.hasErrors('password')} ? 'error'">
+                                        <label for="reg-password">Пароль
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input th:field="*{password}" type="password" id="reg-password" class="text-field" placeholder="Пароль">
+										<span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{password}" class="error-message"></span>
+                                    </div>
+<!--                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">-->
+<!--                                        <input th:field="*{termsAccepted}" type="checkbox" class="check-box" id="accept">-->
+<!--                                        <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с -->
+<!--                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>-->
+<!--                                        </label>-->
+<!--										 <span th:if="${#fields.hasErrors('termsAccepted')}"-->
+<!--                                              th:errors="*{termsAccepted}" class="error-message"></span>-->
+<!--                                    </div>-->
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
+                                        <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
+                                        <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
+                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
                                         </label>
                                     </div>
                                     <div class="u-s-m-b-45">
-                                        <button class="button button-primary w-100">Зарегистрироваться</button>
+                                        <button class="button button-primary w-100" type="submit">Зарегистрироваться</button>
                                     </div>
                                 </form>
                             </div>

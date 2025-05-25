@@ -1,15 +1,18 @@
 package ru.onalex.odashop.services;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.GrupTov;
 import ru.onalex.odashop.entities.Tovar;
+import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.models.MyResponse;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
@@ -24,12 +27,14 @@ public class GroupService {
     private final GrupTovRepository grupTovRepository;
     private final TovarRepository tovarRepository;
     private final ImageService imageService;
+    private final CartService cartService;
 
     @Autowired
-    public GroupService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService) {
+    public GroupService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService,  CartService cartService) {
         this.grupTovRepository = grupTovRepository;
         this.tovarRepository = tovarRepository;
         this.imageService = imageService;
+        this.cartService = cartService;
     }
 
     public List<GrupTov> getGroupsAll() {
@@ -46,7 +51,7 @@ public class GroupService {
         return "groups-page";
     }
 
-    public String getGrupTov(String alias, int page, int size, String sortType, Model model) {
+    public String getGrupTov(String alias, int page, int size, String sortType, Model model, HttpSession session) {
         String sortField = "";
         String sortDirection = "";
         String errorMessage = "";
@@ -67,17 +72,20 @@ public class GroupService {
             errorMessage = "Неверный тип сортировки!";
         }
         if(errorMessage.isEmpty()) {
-            System.out.println("field: "+sortField+", dir: "+sortDirection);
+//            System.out.println("field: "+sortField+", dir: "+sortDirection);
             Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
             String sortParam = "&sort=" + sortType;
 
             try {
-                int pageSize = size == 0 ? 1000 : size;
+                int pageSize = size == 0 ? 1000 : size; //ToDo: найти лучшее решение для вычисления максимального кол-ва товара на странице
                 Page<Tovar> tovarPage = tovarRepository.findTovarByAlias(alias, PageRequest.of(page, pageSize, sort));
                 Page<TovarDTO> products = tovarPage.map(TovarDTO::fromEntity);
                 products.getContent().forEach(product -> {
-                    System.out.println("pic from repo: " + product.getPicBig());
+//                    System.out.println("pic from repo: " + product.getPicBig());
                     product.setRealPicBig(imageService.getImagePath(product.getPicBig()));
+                    int quantity = cartService.getQuantity(product.getId(), session);
+//                    System.out.println("quantity of "+product.getId()+" is "+quantity);
+                    product.setInCart(quantity);
                 });
 
                 GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
@@ -88,7 +96,7 @@ public class GroupService {
                 model.addAttribute("totalPages", products.getTotalPages());
                 model.addAttribute("currentPage", page);
                 model.addAttribute("pageSize", size);
-                model.addAttribute("title", grupTovDTO.getNormalName() + ". ");
+                model.addAttribute("title", grupTovDTO.getNormalName());
                 model.addAttribute("sortparam", sortType);
 
                 return "single-group";

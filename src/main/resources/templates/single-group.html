@@ -64,13 +64,34 @@
                                 <h6 class="item-title">
                                     <a th:href="@{${t.purl}}"><span th:text="${t.normalTovName}"/></a>
                                 </h6>
-                                <div class="row">
-                                    <div class="col-6 item-art" th:text="'Арт.: ' + ${t.dop}"></div>
-                                    <div class="col-6 item-ost" th:text="'Ост.: ' + ${t.ostatok} + ' шт.'"></div>
-                                </div>
                             </div>
-                            <div class="price-template">
-                                <div class="item-new-price" th:text="${t.cena} + ' руб.'"></div>
+                                <div class="row product-info-row">
+                                    <div class="col-6">
+                                        <div class="item-art" th:text="'Арт.: ' + ${t.dop}"></div>
+                                        <div class="item-ost" th:text="'Ост.: ' + ${t.ostatok} + ' шт.'"></div>
+                                    </div>
+                                    <div class="price-template col-6">
+                                        <div class="item-new-price text-right" th:text="${t.cena} + ' руб.'"></div>
+                                    </div>
+                                </div>
+                            <div class="row">
+                                    <div class="col-6">
+                                        <div class="quantity">
+                                            <input th:id="'q_'+${t.id}" type="text" class="quantity-text-field" value="1"/>
+                                            <a class="plus-a" th:data-max="${t.ostatok}">+</a>
+                                            <a class="minus-a" data-min="1">-</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="hidden" th:id="'p_'+${t.id}" th:name="'p_'+${t.id}" th:value="${t.cena}"/>
+
+                                        <button th:id="'cart-'+${t.id}"
+                                                class="button button-outline-secondary cart-oda-button" th:classappend="${t.inCart} ? 'active' : ''"
+                                                th:title="${t.inCart} ? 'Перейти к заказу' : 'Добавить в корзину'"
+                                                th:onclick="${t.inCart} ? 'goToCart()' : 'addTovar('+${t.id}+')'">
+                                            <i th:id="'ion-'+${t.id}" class="ion" th:classappend="${t.inCart} ? 'ion-md-checkmark-circle' : 'ion-md-cart'"></i>
+                                        </button>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -108,23 +129,7 @@
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->
 <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
-<script>
-    let form = document.getElementById('do-sort');
-    form.addEventListener('change', function (event) {
-        if (event.target.classList.contains('select-box')) {
-            let changedEl = event.target;
-            let sourceURL = document.getElementById("src-path").value;
-            let sort_by = document.getElementById("sort-by").value;
-            let pg_size = document.querySelector('select[name="size"]').value;
 
-            // Обновляем URL в зависимости от того, какой селектор изменился
-            let url = `${sourceURL}sort=${sort_by}&size=${pg_size}&page=0`;
-            console.log("Redirecting to URL:" + url);
-
-            // Перенаправляем на новый URL
-            window.location.href = url;
-        }
-    });
-</script>
+<script src="/assets/js/cart.js"></script>
 </body>
 </html>

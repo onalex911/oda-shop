@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title th:text="${title} + 'Бижутерия - Компания «Ода». Товары для ювелиров.'"></title>
+    <title th:text="(${title.isEmpty()} ? '' : ${title}+'. ')  + 'Бижутерия - Компания «Ода». Товары для ювелиров.'"></title>
     <!-- Standard Favicon -->
 <!--    <link href="favicon.ico" rel="shortcut icon">-->
     <!-- Base Google Font for Web-app -->
@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="/assets/css/utility.css">
     <!-- Main -->
     <link rel="stylesheet" href="/assets/css/bundle.css">
+    <link rel="stylesheet" href="/assets/css/oda-shop.css">
 </head>
 <body>
 <!-- Header -->
@@ -68,7 +69,8 @@
                         </a>
                     </li>
                     <li>
-                        <a>Моё
+                        <a><i class="ion ion-md-contact"></i>
+                            <span th:text="${isAuthenticated} ? ${userData.getCustomer().getContactName()} : 'Клиент'"
                             <i class="fas fa-chevron-down u-s-m-l-9"></i>
                         </a>
                         <ul class="g-dropdown" style="width:200px">
@@ -147,7 +149,7 @@
 <!--                            </li>-->
                             <li>
                                 <a id="mini-cart-trigger" href="/cart">
-                                    <i class="ion ion-md-basket"></i>
+                                    <i class="ion ion-md-cart"></i>
                                     <span class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
                                     <span class="item-price" th:text="${cartInfo.getTotalSum}"></span>
                                 </a>

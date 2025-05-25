@@ -38,7 +38,7 @@ public class GrupTovDTO {
                 .keywords(grupTov.getKeywords())
                 .description(grupTov.getDescription())
                 .alias(grupTov.getPurl().substring(grupTov.getPurl().lastIndexOf("/") + 1))
-                .normalName(replaceQuotes(grupTov.getGrupName()))
+                .normalName(replaceQuotes(grupTov.getGrupName()).trim())
                 .build();
     }
 

@@ -898,7 +898,8 @@ body {
 
 /* Checkbox Component */
 .check-box {
-  display: none; }
+  /* display: none;  */
+  }
   .check-box + .label-text {
     position: relative;
     cursor: pointer;
@@ -907,16 +908,16 @@ body {
     color: #292929;
     margin: 0;
     padding-left: 25px; }
-    .check-box + .label-text:after {
-      content: '';
-      position: absolute;
-      z-index: 1;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0;
-      width: 15px;
-      height: 15px;
-      border: 1px solid #DCDCDD; }
+    /* .check-box + .label-text:after { */
+      /* content: ''; */
+      /* position: absolute; */
+      /* z-index: 1; */
+      /* top: 50%; */
+      /* transform: translateY(-50%); */
+      /* left: 0; */
+      /* width: 15px; */
+      /* height: 15px; */
+      /* border: 1px solid #DCDCDD; } */
 
 .check-box:checked + .label-text {
   color: #b60c0d; }
@@ -1212,13 +1213,15 @@ body {
 
 .item-img-wrapper-link {
   display: block;
-  position: relative; }
+  position: relative;
+  /* background-color: rgba(0, 0, 0, 0.3);   */
+  }
   .item-img-wrapper-link:before {
     display: block;
     content: '';
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    /* background-color: rgba(0, 0, 0, 0.5); */
     position: absolute;
     top: 0;
     left: 0;
@@ -1273,9 +1276,15 @@ body {
 .item-content {
   padding: 15px; }
 
-.what-product-is {
+.what-product-is-main { /* наименование групп в лейблах на Главной */
+  margin: 0px;
+  /* border-bottom: 1px solid #DCDCDD;  */
+}
+
+.what-product-is {  
   margin-bottom: 18px;
-  border-bottom: 1px solid #DCDCDD; }
+  border-bottom: 1px solid #DCDCDD; 
+}
 
 .item .bread-crumb > li {
   font-size: 11px; }
@@ -1284,11 +1293,13 @@ body {
     .item .bread-crumb > li > a:hover {
       color: #b60c0d; }
 
-.item-title {
+.item-title-main, .item-title  {
   word-wrap: break-word;
-  display: inline-block;
-  font-size: 13px;
+  display: inline-block;  				  
   font-weight: 700; }
+
+.item-title-main { font-size: 16px; }
+.item-title { font-size: 13px; }
 
 .item-category, .item-title {
   margin-bottom: 5px; }

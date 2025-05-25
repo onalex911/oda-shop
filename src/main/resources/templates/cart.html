@@ -57,23 +57,11 @@
                                             <th>Наименование</th>
                                             <th>Цена</th>
                                             <th>Количество</th>
-                                            <th>Сумма</th>
+                                            <th>Сумма,&nbsp;руб.</th>
                                             <th>&nbsp;</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <!--                                        <tr ">-->
-                                        <!--                                            <td th:text="${item.product.name}"></td>-->
-                                        <!--                                            <td th:text="${item.product.price}"></td>-->
-                                        <!--                                            <td th:text="${item.quantity}"></td>-->
-                                        <!--                                            <td th:text="${item.product.price * item.quantity}"></td>-->
-                                        <!--                                            <td>-->
-                                        <!--                                                <form th:action="@{/cart/remove}" method="post">-->
-                                        <!--                                                    <input type="hidden" name="productId" th:value="${item.product.id}">-->
-                                        <!--                                                    <button type="submit">Удалить</button>-->
-                                        <!--                                                </form>-->
-                                        <!--                                            </td>-->
-                                        <!--                                        </tr>-->
                                         <tr th:each="item : ${cartItems}" th:attr="data-id=${item.tovar.id}">
                                             <td>
                                                 <div class="cart-anchor-image">
@@ -87,7 +75,7 @@
                                                     <h6 th:text="${item.tovar.normalTovName}"></h6>
                                                 </a>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <div class="cart-price" th:text="${item.tovar.cena}"></div>
                                             </td>
                                             <td>
@@ -101,8 +89,8 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>
-                                                <div class="cart-quantity">
+                                            <td class="text-right">
+                                                <div class="cart-price">
                                                     <div class="quantity" th:id="'s_'+${item.tovar.id}"
                                                          th:text="${item.tovar.cena * item.quantity}"></div>
                                                 </div>
@@ -116,7 +104,24 @@
                                                 </div>
                                             </td>
                                         </tr>
-
+                                        <tr>
+                                            <td colspan="3" class="text-right">Итого:</td>
+                                            <td class="text-center"><span class="calc-text" th:text="${totalQuantity}"/></td>
+                                            <td class="text-right"><span class="calc-text" th:text="${totalSum}"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">Скидка:</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-right"><span class="calc-text" th:text="(${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0) + '%'"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="text-right">Сумма со скидкой:</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-right"><span class="calc-text" th:text="${totalSum} / 100 * (100 - (${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0))"/></td>
+                                            <td>&nbsp;</td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -124,65 +129,14 @@
                                 <!-- Coupon -->
                                 <div class="coupon-continue-checkout u-s-m-b-60">
                                     <div class="coupon-area">
-                                        <!--                                        <h6>Enter your coupon code if you have one.</h6>-->
-                                        <!--                                        <div class="coupon-field">-->
-                                        <!--                                            <label class="sr-only" for="coupon-code">Apply Coupon</label>-->
-                                        <!--                                            <input id="coupon-code" type="text" class="text-field" placeholder="Coupon Code">-->
-                                        <!--                                            <button type="submit" class="button">Apply Coupon</button>-->
-                                        <!--                                        </div>-->
                                     </div>
                                     <div class="button-area">
-                                        <a th:href="@{${mainPage}}" class="continue">Продолжить покупки</a>
+                                        <a href="javascript:goBackAndReload()" class="continue">Продолжить покупки</a>
                                         <a href="/customer/checkout" class="checkout">Оформить заказ</a>
                                     </div>
                                 </div>
                                 <!-- Coupon /- -->
                             </form>
-                            <!-- Billing -->
-                            <div class="calculation u-s-m-b-60">
-                                <div class="table-wrapper-2">
-                                    <table>
-                                        <thead>
-                                        <tr>
-                                            <th colspan="2">Содержимое Корзины:</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <h3 class="calc-h3 u-s-m-b-0">Сумма</h3>
-                                            </td>
-                                            <td>
-                                                <span class="calc-text"></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h3 class="calc-h3 u-s-m-b-0" id="tax-heading">Скидка</h3>
-                                            </td>
-                                            <td>
-                                                <span class="calc-text"></span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h3 class="calc-h3 u-s-m-b-0">Сумма со скидкой</h3>
-                                            </td>
-                                            <td>
-                                                <span class="calc-text"></span>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- Billing /- -->
                         </div>
                     </div>
                 </div>

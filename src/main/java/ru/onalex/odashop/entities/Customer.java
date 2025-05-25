@@ -3,7 +3,10 @@ package ru.onalex.odashop.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.onalex.odashop.configs.SecurityConfig;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +14,8 @@ import java.util.Set;
 @Entity
 @Table(name = "customers")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +25,11 @@ public class Customer {
     @NotEmpty
     @Column(name="username")
     private String username;
+
+    @NotNull
+    @NotEmpty
+    @Column(name="contact_name")
+    private String contactName;
 
     @NotNull
     @NotEmpty
@@ -36,4 +46,5 @@ public class Customer {
     joinColumns = @JoinColumn(name="customer_id"),
     inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
+
 }

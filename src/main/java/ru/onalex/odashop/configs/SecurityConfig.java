@@ -1,5 +1,6 @@
 package ru.onalex.odashop.configs;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import ru.onalex.odashop.services.CustomerService;
@@ -18,15 +20,20 @@ import static ru.onalex.odashop.controllers.GlobalControllerAdvice.MAIN_PAGE;
 @Configuration
 //@EnableWebSecurity(debug = true)
 @EnableWebSecurity
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomerService customerService;
+    private final PasswordEncoder passwordEncoder;
 
-    private CustomerService customerService;
-
-    @Autowired
-    public void setCustomerService(CustomerService customerService) {
+    public SecurityConfig(CustomerService customerService, PasswordEncoder passwordEncoder) {
         this.customerService = customerService;
+        this.passwordEncoder = passwordEncoder;
     }
+//    @Autowired
+//    public void setCustomerService(CustomerService customerService) {
+//        this.customerService = customerService;
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,6 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/adminpanel/**").hasRole("ADMIN")
+                        .requestMatchers("/customer/register", "/customer/login").permitAll() // Разрешаем регистрацию без авторизации
                         .requestMatchers("/customer/**").authenticated()
                         .requestMatchers("/customer/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll()
@@ -48,15 +56,15 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         authProvider.setUserDetailsService(customerService); //привязываем процесс получения наших пользователей к провайдеру безопасности
         return authProvider;
     }
@@ -66,5 +74,12 @@ public class SecurityConfig {
         handler.setDefaultTargetUrl(MAIN_PAGE); // куда перенаправлять, если нет сохраненного запроса
         handler.setAlwaysUseDefaultTargetUrl(false); // использовать сохраненный URL, если он есть
         return handler;
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, accessDeniedException) -> {
+            response.sendRedirect("/account");
+        };
     }
 }

@@ -5,9 +5,11 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.GrupTovDTO;
@@ -80,4 +82,10 @@ public class GlobalControllerAdvice {
         }
 
     }
+
+    //для обработки несанкционированного досупа к админке
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public String handleAccessDeniedException() {
+//        return "redirect:/customer/account";
+//    }
 }

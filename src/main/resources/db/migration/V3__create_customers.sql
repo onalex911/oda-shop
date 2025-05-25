@@ -2,6 +2,7 @@ CREATE TABLE public.customers
 (
     id        int          NOT NULL PRIMARY KEY,
     username  varchar(250) NOT NULL UNIQUE,
+    contact_name  varchar(250) NOT NULL,
     password  varchar(250) NOT NULL,
     discount  float,
     is_active boolean DEFAULT true
@@ -11,8 +12,8 @@ CREATE SEQUENCE customers_code_seq;
 
 INSERT INTO customers
 VALUES
-    (1, 'onalex911@gmail.com', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 0, true),
-    (2, 'megatron911@inbox.ru', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 0, true);
+    (1, 'onalex911@gmail.com', 'Виктория', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 0, true),
+    (2, 'megatron911@inbox.ru','Алексей', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 10, true);
 
 SELECT setval('customers_code_seq', (SELECT MAX(id) FROM customers));
 ALTER TABLE customers

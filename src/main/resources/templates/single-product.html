@@ -99,6 +99,10 @@
                             <div class="section-4-sku-information u-s-p-y-14">
                                 <h6 class="information-heading u-s-m-b-8">Доп. информация:</h6>
                                 <div class="availability">
+                                    <span>Артикул: </span>
+                                    <span th:text="${product.dop}"></span>
+                                </div>
+                                <div class="availability">
                                     <span>Доступно: </span>
 <!--                                </div>-->
 <!--                                <div class="left">-->
@@ -119,10 +123,19 @@
                                     </div>
                                 </div>
                                 <div>
-<!--                                    <button class="button button-outline-secondary" type="submit">в Корзину</button>-->
-                                    <button class="button button-outline-secondary" th:onclick="'addTovar('+${product.id}+')'">в Корзину</button>
-                                    <button class="button button-outline-secondary far fa-heart u-s-m-l-6"></button>
-                                    <button class="button button-outline-secondary far fa-envelope u-s-m-l-6"></button>
+                                    <button th:id="'cart-'+${product.id}"
+                                            class="button  cart-oda-button-big" th:classappend="${product.inCart} ? 'active' : ''"
+                                            th:title="${product.inCart} ? 'Перейти к заказу' : 'Добавить в корзину'"
+                                            th:onclick="${product.inCart} ? 'goToCart()' : 'addTovar('+${product.id}+')'">
+                                        <i th:id="'ion-'+${product.id}" class="ion" th:classappend="${product.inCart} ? 'ion-md-checkmark-circle' : 'ion-md-cart'"></i>
+                                    </button>
+                                    <div class="go-back mt-3">
+                                        <a href="javascript:goBackAndReload()"><i class="ion ion-md-arrow-round-back"></i> Назад</a>
+
+                                    </div>
+<!--                                    <button class="button button-outline-secondary" th:onclick="'addTovar('+${product.id}+')'">в Корзину</button>-->
+<!--                                    <button class="button button-outline-secondary far fa-heart u-s-m-l-6"></button>-->
+<!--                                    <button class="button button-outline-secondary far fa-envelope u-s-m-l-6"></button>-->
                                 </div>
 <!--                            </form>-->
                         </div>

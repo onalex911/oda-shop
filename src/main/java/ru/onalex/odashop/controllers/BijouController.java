@@ -1,4 +1,5 @@
 package ru.onalex.odashop.controllers;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,7 @@ public class BijouController {
      * @param page - номер страницы
      * @param size - кол-во позиций на странице
      * @param model - шаблон Thymeleaf
+     * @param session - для определения, какой товар уже есть в корзине
      * @return - шаблон, настроенный в сервисе
      */
     @GetMapping("/bizhuteriya/{alias}")
@@ -54,15 +56,15 @@ public class BijouController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size,
             @RequestParam(defaultValue = "undef") String sort,
-            Model model) {
-        return groupService.getGrupTov(alias, page, size, sort, model);
+            Model model, HttpSession session) {
+        return groupService.getGrupTov(alias, page, size, sort, model, session);
     }
     @GetMapping("/bizhuteriya/{group-alias}/{prod-alias}")
     public String getBjproduct(
             @PathVariable(name="group-alias") String groupAlias,
             @PathVariable(name="prod-alias") String prodAlias,
-            Model model) {
-        return productService.getProductPage(groupAlias,prodAlias,model);
+            Model model, HttpSession session) {
+        return productService.getProductPage(groupAlias,prodAlias,model,session);
     }
 
     @GetMapping("/bizhuteriya/search")

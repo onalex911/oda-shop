@@ -1,5 +1,6 @@
 package ru.onalex.odashop.services;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,16 +38,18 @@ public class ProductService {
     private final GrupTovRepository grupTovRepository;
     private final TovarRepository tovarRepository;
     private final ImageService imageService;
+    private final CartService cartService;
 
     @Autowired
-    public ProductService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService) {
+    public ProductService(GrupTovRepository grupTovRepository, TovarRepository tovarRepository, ImageService imageService,CartService cartService) {
         this.grupTovRepository = grupTovRepository;
         this.tovarRepository = tovarRepository;
         this.imageService = imageService;
+        this.cartService = cartService;
     }
 
 
-    public String getProductPage(String groupAlias, String prodAlias, Model model){
+    public String getProductPage(String groupAlias, String prodAlias, Model model, HttpSession session) {
         try {
             int prodId = getLastNumber(prodAlias);
             Tovar tovar = tovarRepository.findExistTovarByCode(prodId);
@@ -57,6 +60,9 @@ public class ProductService {
 //            String groupName = grupTovRepository.findByAlias(groupAlias).getGrupName();
 //            System.out.println(groupName);
 //            System.out.println(groupAlias);
+            int quantity = cartService.getQuantity(tovarDTO.getId(), session);
+//                    System.out.println("quantity of "+product.getId()+" is "+quantity);
+            tovarDTO.setInCart(quantity);
             model.addAttribute("product", tovarDTO);
             model.addAttribute("group_name", groupName);
             model.addAttribute("group_alias", groupAlias);

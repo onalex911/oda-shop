@@ -15,16 +15,24 @@ import java.security.Principal;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-//    private final ProductService productService;
-//    private final CustomerService customerService;
-//
-//    public AdminController(ProductService productService, CustomerService customerService) {
-//        this.productService = productService;
-//        this.customerService = customerService;
-//    }
+    private final CustomerService customerService;
+
+    public AdminController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @GetMapping
-    public String adminPanel(Model model) {
+    public String adminPanel(Principal principal, Model model) {
+
+        Customer customer = customerService.findByUsername(principal.getName());
+
+        // Дополнительная проверка на случай, если аннотация @PreAuthorize не сработает
+        boolean isAdmin = customer.getRoles().stream()
+                .anyMatch(role -> role.getName().equals("ADMIN"));
+
+        if (!isAdmin) {
+            return "redirect:/account";
+        }
         model.addAttribute("error_message", "It's ok!");
         return "adminpanel/index";
     }
