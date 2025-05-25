@@ -6,15 +6,12 @@ import org.springframework.ui.Model;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.TovarDTO;
 import ru.onalex.odashop.entities.Tovar;
-import ru.onalex.odashop.entities.CartItem;
 import ru.onalex.odashop.models.CartInfo;
-import ru.onalex.odashop.repositories.CartRepository;
 import ru.onalex.odashop.repositories.TovarRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -28,7 +25,7 @@ public class CartService {
 
     public String vewCart(Model model, HttpSession session) {
         List<CartItemDTO> items = getCartItems(session);
-        double totalSum = getTotal(session);
+        double totalSum = getTotalSum(session);
         int totalQuantity = getTotalQuantity(session);
         if (totalSum > 0 && items.size() > 0) {
             model.addAttribute("cartItems", items);
@@ -118,7 +115,7 @@ public class CartService {
         session.removeAttribute("cart");
     }
 
-    public double getTotal(HttpSession session) {
+    public double getTotalSum(HttpSession session) {
         return getCartItems(session).stream()
                 .mapToDouble(item -> item.getTovar().getCena() * item.getQuantity())
                 .sum();

@@ -29,4 +29,8 @@ public class CartInfo {
             this.totalSum = 0;
         }
     }
+
+    public CartInfo() {
+
+    }
 }

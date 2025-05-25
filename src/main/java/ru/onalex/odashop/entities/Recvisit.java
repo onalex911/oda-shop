@@ -38,7 +38,7 @@ public class Recvisit {
     private String raschetnuy_schet;
 //  `postavshik` varchar(250) COLLATE cp1251_bin DEFAULT NULL,
     @Column(name="postavshik", columnDefinition = "varchar(250)")
-    private String custometFullName;
+    private String customerFullName;
 //  `postavshik_adres` varchar(250) COLLATE cp1251_bin DEFAULT NULL,
     @Column(name="postavshik_adres",columnDefinition = "varchar(250)")
     private String customerAddress;

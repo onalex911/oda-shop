@@ -2,15 +2,14 @@ package ru.onalex.odashop.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.onalex.odashop.dtos.CartItemDTO;
-import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
+import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.UserInfo;
@@ -21,7 +20,6 @@ import ru.onalex.odashop.services.EmailService;
 import java.security.Principal;
 import java.util.List;
 
-import static ru.onalex.odashop.controllers.GlobalControllerAdvice.MAIN_PAGE;
 import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 
 @Controller
@@ -52,7 +50,7 @@ public class CustomerController {
     public String doCheckout(Model model, HttpSession session, Principal principal) {
 
         List<CartItemDTO> items = cartService.getCartItems(session);
-        double totalSum = cartService.getTotal(session);
+        double totalSum = cartService.getTotalSum(session);
         if (totalSum > 0 && items.size() > 0) {
 //            Customer customer = customerService.findByUsername(principal.getName());
             String address = "";
@@ -107,43 +105,6 @@ public class CustomerController {
         }
     }
 
-//    @PostMapping("/order")
-//    public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
-//                            BindingResult bindingResult,
-//                          Principal principal,
-//                          HttpSession session,
-//                            Model model) {
-//        if (bindingResult.hasErrors()) {
-//            // Возвращаем тот же шаблон, где есть форма
-//            return "checkout";
-//        }
-//
-//        try {
-//            Customer customer = customerService.findByUsername(principal.getName());
-//            customerService.doOrder(request,customer,session,model);
-//            return "redirect:/customer/order?success";
-//        } catch (Exception e) {
-//            model.addAttribute("errorMessage", e.getMessage());
-//            return "checkout";
-//        }
-////        return "redirect:" + MAIN_PAGE;
-//    }
-
-
-//    @GetMapping("/order")
-//    public String successOrderPage(
-//            @RequestParam(value = "success", required = false) String success,
-//            Model model) {
-//        if (success != null) {
-//            // Обработка успешного заказа
-//            model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
-//            return "checkout-success"; // Имя шаблона представления
-//        }
-//
-//        // Логика для обычной страницы заказа
-//        return "checkout";
-//    }
-
     @PostMapping("/order")
     public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
                             BindingResult bindingResult,
@@ -155,16 +116,21 @@ public class CustomerController {
             return "checkout";
         }
         // Получаем данные пользователя и корзины
-        Customer customer = customerService.findByUsername(principal.getName());
+        UserInfo customer = customerService.getUserInfoByUsername(principal.getName());
         List<CartItemDTO> cartItems = cartService.getCartItems(session);
-        double total = cartService.getTotal(session);
+        double totalSum = cartService.getTotalSum(session);
+        double totalQuantity = cartService.getTotalQuantity(session);
         try {
             // Отправляем письма (пользователю + поставщикам)
-            emailService.sendOrderEmails(customer.getUsername(), cartItems, total);
+            String to = request.getEmail();
+            System.out.println("Attempt to send email to:" + to);
+            emailService.sendOrderEmails(request, customer, cartItems, session);
 
             // Очищаем корзину
             session.removeAttribute("cart");
+
             model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
+            model.addAttribute("cartInfo",new CartInfo());
             return "checkout-success"; // Имя шаблона представления
 
         }catch(Exception e) {
