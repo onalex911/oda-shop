@@ -97,58 +97,69 @@ async function addTovar(id) {
     }
 }
 
-async function refreshTovar(id,price) {
+function refreshTovar(id, price) {
     let newQuantity = parseInt(document.getElementById(`q_${id}`).value);
 
-    let response = await fetch(`/cart/refresh/${id}/${newQuantity}`,{
-        method:'POST'
-    });
-
-    if (response.ok){
-        let result = await response.json();
-        // alert("Обновлен " + id);
-        console.log(result);
-        document.querySelector(`#s_${id}`).textContent = formatMoneyValue(result.sumPos);//formatMoneyValue(newQuantity * parseMoneyValue(price));
-        document.querySelector(`#total-quantity`).textContent = result.totalQuantity;//formatMoneyValue(newQuantity * parseMoneyValue(price));
-        document.querySelector(`#total-sum`).textContent = formatMoneyValue(result.totalSum);//formatMoneyValue(newQuantity * parseMoneyValue(price));
-        document.querySelector(`#total-sum-disc`).textContent = formatMoneyValue(result.totalSumDisc);//formatMoneyValue(newQuantity * parseMoneyValue(price));
-        document.querySelector(`#total-counter`).textContent = result.amountPos;//formatMoneyValue(newQuantity * parseMoneyValue(price));
-        document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSumDisc);//formatMoneyValue(newQuantity * parseMoneyValue(price));
-
-    }else{
-        console.log("error")
-    }
+    fetch(`/cart/refresh/${id}/${newQuantity}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // Парсим JSON, если ответ успешный
+            } else {
+                throw new Error('Ошибка при обновлении товара'); // Генерируем ошибку, если ответ не успешный
+            }
+        })
+        .then(result => {
+            // console.log(result);
+            document.querySelector(`#s_${id}`).textContent = formatMoneyValue(result.sumPos);
+            document.querySelector(`#total-quantity`).textContent = result.totalQuantity;
+            document.querySelector(`#total-sum`).textContent = formatMoneyValue(result.totalSum);
+            document.querySelector(`#total-sum-disc`).textContent = formatMoneyValue(result.totalSumDisc);
+            document.querySelector(`#total-counter`).textContent = result.amountPos;
+            document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSumDisc);
+        })
+        .catch(error => {
+            console.log(error.message); // Обработка ошибок, если что-то пошло не так
+        });
 }
-async function delTovar(id) {
-    //сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
+
+function delTovar(id) {
+    // Сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
     let sum = parseMoneyValue(document.getElementById(`s_${id}`).textContent);
 
-    let response = await fetch(`/cart/remove/${id}`,{
-        method:'DELETE'
-    });
+    fetch(`/cart/remove/${id}`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.text(); // Парсим текст ответа, если успешный
+            } else {
+                throw new Error("Ошибка при удалении товара"); // Генерируем ошибку, если ответ не успешный
+            }
+        })
+        .then(responseText => {
+            console.log(responseText); // Логируем текст ответа
+            // Удаляем строку товара в таблице Корзины
+            document.querySelector(`tr[data-id='${id}']`).remove();
+            // Уменьшаем количество позиций в Корзине
+            let amount = document.querySelector('.item-counter');
+            amount.innerText = parseInt(amount.textContent) - 1;
+            // Получаем общую сумму
+            let totalSumEl = document.querySelector('.item-price');
+            let totalSum = parseMoneyValue(totalSumEl.textContent);
 
-    if (response.ok){
-        // console.log(`Удален ${id} на сумму ${sum}`);
-        console.log(await response.text())
-        //удаляем строку товара в таблице Корзины
-        document.querySelector(`tr[data-id='${id}']`).remove();
-        //уменьшаем кол-во позиций в Корзине
-        let amount = document.querySelector('.item-counter');
-        amount.innerText = parseInt(amount.textContent) - 1;
-        //получаем общую сумму
-        let totalSumEl = document.querySelector('.item-price');
-        let totalSum = parseMoneyValue(totalSumEl.textContent);
-
-        // Проверяем, что оба значения - числа
-        if (!isNaN(totalSum) && !isNaN(sum)) {
-            //корректируем общую сумму
-            totlalSum.textContent = formatMoneyValue(totalSum - sum);
-        } else {
-            console.error('Один из элементов содержит нечисловое значение');
-        }
-    }else{
-        console.log("error")
-    }
+            // Проверяем, что оба значения - числа
+            if (!isNaN(totalSum) && !isNaN(sum)) {
+                // Корректируем общую сумму
+                totalSumEl.textContent = formatMoneyValue(totalSum - sum);
+            } else {
+                console.error('Один из элементов содержит нечисловое значение');
+            }
+        })
+        .catch(error => {
+            console.log(error.message); // Обработка ошибок, если что-то пошло не так
+        });
 }
 
 // Функция для преобразования строки в денежное значение (учитывает возможные разделители)

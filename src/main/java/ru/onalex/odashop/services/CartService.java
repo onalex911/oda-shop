@@ -88,8 +88,9 @@ public class CartService {
         }
     }
 
-    public String removeFromCartContr(Long id, HttpSession session) {
+    public String removeFromCartContr(Long id, HttpSession session,Principal principal) {
         removeFromCart(session, id);
+        CartInfo cartInfo = new CartInfo(getCartItems(session),getDiscountByUser(principal));
         if(getCartItems(session).isEmpty()) {
             return "cart-empty";
         }else{
@@ -101,6 +102,11 @@ public class CartService {
         List<CartItemDTO> cart = getCartItems(session);
         cart.removeIf(item -> item.getTovar().getId() == tovarId);
     }
+//    public List<CartItemDTO> removeFromCart(HttpSession session, Long tovarId) {
+//        List<CartItemDTO> cart = getCartItems(session);
+//        cart.removeIf(item -> item.getTovar().getId() == tovarId);
+//        return cart;
+//    }
 
     public List<CartItemDTO> refreshCart(HttpSession session, TovarDTO tovar, int quantity) {
         List<CartItemDTO> cart = getCartItems(session);
@@ -159,7 +165,7 @@ public class CartService {
     public CartInfo refreshCartContr(Long id, int quantity, HttpSession session,Principal principal) {
         Tovar tovar = tovarRepository.findById(Math.toIntExact(id)).orElseThrow();
         List<CartItemDTO> cart = refreshCart(session, TovarDTO.fromEntity(tovar), quantity);
-        System.out.println("Refreshed id: " + id + " new quantity: " + quantity);
+//        System.out.println("Refreshed id: " + id + " new quantity: " + quantity);
         CartInfo cartInfo = new CartInfo(getCartItems(session),getDiscountByUser(principal));
         cartInfo.setSumPos(cart.stream() .filter(t -> t.getTovar().getId() == id) // Фильтруем по id
                 .mapToDouble(c -> c.getTovar().getCena()) // Получаем цену товара

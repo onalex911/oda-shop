@@ -57,9 +57,9 @@ public class CartController {
     }
 
     @DeleteMapping("/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, HttpSession session) {
+    public String removeFromCart(@PathVariable Long id, HttpSession session, Principal principal) {
 //        System.out.println("removing: "+id);
-        return cartService.removeFromCartContr(id,session);
+        return cartService.removeFromCartContr(id,session,principal);
     }
 
     @PostMapping("/clear")
