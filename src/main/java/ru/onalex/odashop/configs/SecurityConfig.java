@@ -39,6 +39,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+                /* ---на случай включения CSRF---
+                csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())  */
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                         .requestMatchers("/customer/register", "/customer/login").permitAll() // Разрешаем регистрацию без авторизации

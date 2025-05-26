@@ -78,6 +78,9 @@ public class CustomerService implements UserDetailsService {
         if (customerRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Пользователь с таким логином уже существует");
         }
+        if (!request.getPassword().equals(request.getPassword2())) {
+            throw new RuntimeException("Пароли должны совпадать!");
+        }
 
         Customer customer = new Customer();
         customer.setUsername(request.getUsername());
