@@ -15,10 +15,10 @@
                 <div class="col-12">
                     <!-- Page-Bar -->
                     <div class="page-bar clearfix">
-                        <div class="total-items">
+                        <div class="total-items col-9">
                             <h6 th:text="'Всего позиций: '+${totalItems}"/>
                         </div>
-                        <div class="form-selectors">
+                        <div class="form-selectors col-3">
                             <input type="hidden" id="src-path" th:value="${mainPage}+'/'+${alias}+'?'"/>
                             <form id="do-sort">
                                 <input type="hidden" name="page" id="page-param" value="0"/>

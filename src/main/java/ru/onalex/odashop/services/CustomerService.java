@@ -1,9 +1,7 @@
 package ru.onalex.odashop.services;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,15 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
-import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
-import ru.onalex.odashop.models.UserInfo;
+import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.repositories.CustomerRepository;
 import ru.onalex.odashop.repositories.RoleRepository;
 
@@ -28,6 +22,7 @@ import java.util.stream.Collectors;
 
 //получение инф. о пользователе по его имени, с которым он авторизовался
 @Service
+@RequiredArgsConstructor
 public class CustomerService implements UserDetailsService {
 
     private static final String DEFAULT_ROLE = "USER";
@@ -35,21 +30,21 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final EmailService emailService;
-    private final CartService cartService;
+//    private final EmailService emailService;
+//    private final CartService cartService;
 
-    public CustomerService(
-            CustomerRepository customerRepository,
-            PasswordEncoder passwordEncoder,
-            RoleRepository roleRepository,
-            EmailService emailService,
-            CartService cartService) {
-        this.customerRepository = customerRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-        this.emailService = emailService;
-        this.cartService = cartService;
-    }
+//    public CustomerService(
+//            CustomerRepository customerRepository,
+//            PasswordEncoder passwordEncoder,
+//            RoleRepository roleRepository,
+//            EmailService emailService,
+//            CartService cartService) {
+//        this.customerRepository = customerRepository;
+//        this.passwordEncoder = passwordEncoder;
+//        this.roleRepository = roleRepository;
+//        this.emailService = emailService;
+//        this.cartService = cartService;
+//    }
 
     //обертка для получения пользователя (чтобы не обращаться напрямую в репозиторий)
     public Customer findByUsername(String username) {
@@ -72,10 +67,10 @@ public class CustomerService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-    public UserInfo getUserInfoByUsername(String username){
+    public CustomerData getUserInfoByUsername(String username){
         Customer customer = findByUsername(username);
         List<Recvisit> recvisits = customerRepository.getRecvisitsByUsername(username);
-        return new UserInfo(customer,recvisits);
+        return new CustomerData(customer,recvisits);
 
     }
 
@@ -117,4 +112,5 @@ public class CustomerService implements UserDetailsService {
 //        session.removeAttribute("cart");
 //        System.out.println("order request: " + request);
 //    }
+
 }

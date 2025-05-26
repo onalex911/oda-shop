@@ -62,12 +62,14 @@ function doSearch(formId,field){
     let searchField = document.getElementById("field-to-search");
 
     if (searchText.length < 2) {
-        alert('Введите минимум 2 символа для поиска');
+        showNotification('Введите минимум 2 символа для поиска');
+        // alert('Введите минимум 2 символа для поиска');
         return;
     }
 
     if (field === 'tovName' && searchText.length <= 3) {
-        alert('Для поиска по наименованию введите минимум 4 символа');
+        showNotification('Для поиска по наименованию введите минимум 4 символа');
+        // alert('Для поиска по наименованию введите минимум 4 символа');
         return;
     }
     searchField.value = field;
@@ -76,4 +78,18 @@ function doSearch(formId,field){
     console.log("Form action = " + form.getAttribute('action'));
     form.submit();
 
+}
+
+function showNotification(message) {
+    let notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+    notification.style.opacity = 1;
+
+    setTimeout(() => {
+        notification.style.opacity = 0;
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 300); // время для исчезновения
+    }, 3000); // время отображения уведомления
 }

@@ -38,6 +38,7 @@
 <body>
 <!-- Header -->
 <header th:fragment="header(isAuthenticated,cartInfo)">
+    <div id="notification" class="notification" style="display: none;"></div>
     <!-- Top-Header -->
     <div class="full-layer-outer-header">
         <div class="container clearfix">
@@ -150,8 +151,8 @@
                             <li>
                                 <a id="mini-cart-trigger" href="/cart">
                                     <i class="ion ion-md-cart"></i>
-                                    <span class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
-                                    <span class="item-price" th:text="${cartInfo.getTotalSum}"></span>
+                                    <span id="total-counter" class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
+                                    <span id="total-price" class="item-price" th:text="${cartInfo.getTotalSum}"></span>
                                 </a>
                             </li>
                         </ul>

@@ -2,27 +2,20 @@ package ru.onalex.odashop.controllers;
 
 
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.dtos.GrupTovDTO;
 import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.models.SortField;
-import ru.onalex.odashop.repositories.CartItemRepository;
+import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.repositories.GrupTovRepository;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +27,7 @@ public class GlobalControllerAdvice {
     private final GrupTovRepository grupTovRepository;
     private CartService cartService;
     private CustomerService customerService;
+    public static boolean isAuthenticated;
     public static final String MAIN_PAGE = "/catalog/bizhuteriya";
     public static final String MAIN_ADMIN_PAGE = "/adminpanel";
     public static final List<SortField> SORT_FIELDS = List.of(
@@ -57,11 +51,12 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void addAttributes(Model model, Authentication authentication, HttpSession session, Principal principal) {
-        boolean isAuthenticated = (authentication != null && authentication.isAuthenticated());
+        isAuthenticated = (authentication != null && authentication.isAuthenticated());
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        CustomerData customerData = isAuthenticated ? customerService.getUserInfoByUsername(principal.getName()) : null;
 
         model.addAttribute("isAuthenticated", isAuthenticated);
-        model.addAttribute("userData", isAuthenticated ? customerService.getUserInfoByUsername(principal.getName()) : null );
+        model.addAttribute("userData", customerData);
         model.addAttribute("currentYear", currentYear);
         model.addAttribute("title", "");
         model.addAttribute("mainPage", MAIN_PAGE);
@@ -75,7 +70,9 @@ public class GlobalControllerAdvice {
                     .collect(Collectors.toList());
             model.addAttribute("menuGroups", groups);
 
-            model.addAttribute("cartInfo", new CartInfo(cartService.getCartItems(session)));
+            double discount = customerData != null ? customerData.getCustomer().getDiscount() : 0.0;
+            model.addAttribute("cartInfo",
+                    new CartInfo(cartService.getCartItems(session),discount));
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -11,7 +11,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.models.OrderRequest;
-import ru.onalex.odashop.models.UserInfo;
+import ru.onalex.odashop.models.CustomerData;
 
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class EmailService {
     @Value("${app.mail.supplier.addresses}")
     private List<String> supplierEmails;
 
-    public void sendOrderEmails(OrderRequest request, UserInfo customer,
+    public void sendOrderEmails(OrderRequest request, CustomerData customer,
                                 List<CartItemDTO> cartItems,
                                 HttpSession session) {
         String customerEmail = request.getEmail().isEmpty() ? customer.getCustomer().getUsername() : request.getEmail();

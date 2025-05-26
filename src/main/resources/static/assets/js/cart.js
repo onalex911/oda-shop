@@ -29,7 +29,8 @@ document.querySelectorAll('.quantity-text-field').forEach(quantityElement => {
         // Получаем введенное количество
         let quantity = parseInt(this.value);
         if(isNaN(quantity)){
-            alert("Введено нечисловое значение!");
+            // alert("Введено нечисловое значение!");
+            showNotification("Введено нечисловое значение!");
             this.value = 1;
             return;
         }
@@ -43,9 +44,11 @@ document.querySelectorAll('.quantity-text-field').forEach(quantityElement => {
 
         console.log(`Уст. кол-во: ${quantity}`);
         if (quantity < 1 || quantity > maxVal) {
-            alert(`Количество должно быть от 1 до ${maxVal}!`);
+            showNotification(`Количество должно быть от 1 до ${maxVal}!`);
+            // alert(`Количество должно быть от 1 до ${maxVal}!`);
             this.value = 1; // Устанавливаем значение по умолчанию
         }
+        refreshTovar(id,this.dataset.cena);
     });
 });
 
@@ -58,12 +61,14 @@ async function addTovar(id) {
 
     maxVal = parseInt(maxVal);
     if(isNaN(quantity)){
-        alert("Введено нечисловое значение!");
+        showNotification("Введено нечисловое значение!");
+        // alert("Введено нечисловое значение!");
         quantityEl.value = 1;
         return;
     }
     if(quantity < 1 || quantity > maxVal){
-        alert("Количество должно быть от 1 до ("+maxVal+")");
+        showNotification(`Количество должно быть от 1 до ${maxVal}!`);
+        // alert("Количество должно быть от 1 до ("+maxVal+")");
         quantityEl.value = 1;
         return;
     }
@@ -100,9 +105,16 @@ async function refreshTovar(id,price) {
     });
 
     if (response.ok){
+        let result = await response.json();
         // alert("Обновлен " + id);
-        console.log(await response.text())
-        document.querySelector(`#s_${id}`).textContent = formatMoneyValue(newQuantity * parseMoneyValue(price));
+        console.log(result);
+        document.querySelector(`#s_${id}`).textContent = formatMoneyValue(result.sumPos);//formatMoneyValue(newQuantity * parseMoneyValue(price));
+        document.querySelector(`#total-quantity`).textContent = result.totalQuantity;//formatMoneyValue(newQuantity * parseMoneyValue(price));
+        document.querySelector(`#total-sum`).textContent = formatMoneyValue(result.totalSum);//formatMoneyValue(newQuantity * parseMoneyValue(price));
+        document.querySelector(`#total-sum-disc`).textContent = formatMoneyValue(result.totalSumDisc);//formatMoneyValue(newQuantity * parseMoneyValue(price));
+        document.querySelector(`#total-counter`).textContent = result.amountPos;//formatMoneyValue(newQuantity * parseMoneyValue(price));
+        document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSumDisc);//formatMoneyValue(newQuantity * parseMoneyValue(price));
+
     }else{
         console.log("error")
     }
@@ -142,7 +154,9 @@ async function delTovar(id) {
 // Функция для преобразования строки в денежное значение (учитывает возможные разделители)
 function parseMoneyValue(value) {
     // Удаляем все пробелы, заменяем запятые на точки
+    console.log(value);
     const cleanValue = value.replace(/[а-яА-Я\s\.]+/g, '').replace(',', '.');
+    console.log(parseFloat(cleanValue));
     return parseFloat(cleanValue);
 }
 
@@ -160,4 +174,18 @@ function goBackAndReload() {
     setTimeout(() => {
         location.reload();
     }, 100); // небольшая задержка для гарантии возврата
+}
+
+function showNotification(message) {
+    let notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+    notification.style.opacity = 1;
+
+    setTimeout(() => {
+        notification.style.opacity = 0;
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 300); // время для исчезновения
+    }, 3000); // время отображения уведомления
 }

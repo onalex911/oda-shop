@@ -47,7 +47,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form>
+<!--                            <form>-->
                                 <!-- Products-List-Wrapper -->
                                 <div class="table-wrapper u-s-m-b-60">
                                     <table>
@@ -76,13 +76,14 @@
                                                 </a>
                                             </td>
                                             <td class="text-right">
-                                                <div class="cart-price" th:text="${item.tovar.cena}"></div>
+                                                <div class="cart-price" th:text="${#numbers.formatDecimal(item.tovar.cena, 1, 2)}"></div>
                                             </td>
                                             <td>
                                                 <div class="cart-quantity">
                                                     <div class="quantity">
                                                         <input type="text" th:id="'q_'+${item.tovar.id}"
                                                                class="quantity-text-field" name="quantity"
+                                                               th:data-cena="${#numbers.formatDecimal(item.tovar.cena, 1, 2)}"
                                                                th:value="${item.quantity}">
                                                         <a class="plus-a" th:data-max="${item.tovar.ostatok}">&#43;</a>
                                                         <a class="minus-a" data-min="1">&#45;</a>
@@ -92,13 +93,13 @@
                                             <td class="text-right">
                                                 <div class="cart-price">
                                                     <div class="quantity" th:id="'s_'+${item.tovar.id}"
-                                                         th:text="${item.tovar.cena * item.quantity}"></div>
+                                                         th:text="${#numbers.formatDecimal(item.sumPos, 1, 2)}"></div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="action-wrapper">
-                                                    <button class="button button-outline-secondary fas fa-sync"
-                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
+<!--                                                    <button class="button button-outline-secondary fas fa-sync"-->
+<!--                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>-->
                                                     <button class="button button-outline-secondary fas fa-trash"
                                                             th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
                                                 </div>
@@ -106,20 +107,20 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-right">Итого:</td>
-                                            <td class="text-center"><span class="calc-text" th:text="${totalQuantity}"/></td>
-                                            <td class="text-right"><span class="calc-text" th:text="${totalSum}"/></td>
+                                            <td class="text-center"><span id="total-quantity" class="calc-text" th:text="${totalQuantity}"/></td>
+                                            <td class="text-right"><span id="total-sum" class="calc-text" th:text="${#numbers.formatDecimal(totalSum, 1, 2)}"/></td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-right">Скидка:</td>
                                             <td>&nbsp;</td>
-                                            <td class="text-right"><span class="calc-text" th:text="(${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0) + '%'"/></td>
+                                            <td class="text-right"><span id="discount" class="calc-text" th:text="${#numbers.formatDecimal((isAuthenticated ? userData.getCustomer().getDiscount : 0), 1, 2)} + '%'"/></td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-right">Сумма со скидкой:</td>
                                             <td>&nbsp;</td>
-                                            <td class="text-right"><span class="calc-text" th:text="${totalSum} / 100 * (100 - (${isAuthenticated} ? ${userData.getCustomer().getDiscount} : 0))"/></td>
+                                            <td class="text-right"><span id="total-sum-disc" class="calc-text" th:text="${#numbers.formatDecimal(totalSumDisc,2,2)}"/></td>
                                             <td>&nbsp;</td>
                                         </tr>
                                         </tbody>
@@ -136,7 +137,7 @@
                                     </div>
                                 </div>
                                 <!-- Coupon /- -->
-                            </form>
+<!--                            </form>-->
                         </div>
                     </div>
                 </div>

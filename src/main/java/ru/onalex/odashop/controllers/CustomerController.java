@@ -12,7 +12,7 @@ import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.models.CartInfo;
 import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.RegisterRequest;
-import ru.onalex.odashop.models.UserInfo;
+import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.EmailService;
@@ -59,7 +59,7 @@ public class CustomerController {
             String contactName = "";
             String comment = "";
             double discount = 0;
-            UserInfo userInfo = customerService.getUserInfoByUsername(principal.getName());
+            CustomerData userInfo = customerService.getUserInfoByUsername(principal.getName());
             if(!userInfo.getRecvisits().isEmpty()) {
                 Recvisit recvisit = userInfo.getRecvisits().get(0);
                 address = recvisit.getCustomerAddress();
@@ -116,7 +116,7 @@ public class CustomerController {
             return "checkout";
         }
         // Получаем данные пользователя и корзины
-        UserInfo customer = customerService.getUserInfoByUsername(principal.getName());
+        CustomerData customer = customerService.getUserInfoByUsername(principal.getName());
         List<CartItemDTO> cartItems = cartService.getCartItems(session);
         double totalSum = cartService.getTotalSum(session);
         double totalQuantity = cartService.getTotalQuantity(session);

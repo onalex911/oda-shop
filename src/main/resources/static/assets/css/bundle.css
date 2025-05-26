@@ -973,7 +973,7 @@ body {
     .g-nav > li > a {
       display: block;
       font-size: 13px;
-      padding: 14px 10px; }
+      padding: 5px 10px; }
       .g-nav > li > a > i.fas.fa-chevron-down {
         font-size: 6px;
         color: #aeaeae; }
@@ -1757,7 +1757,9 @@ body {
   float: left; }
 
 .secondary-nav {
-  float: right; }
+  float: right;
+  margin-top:10px;
+}
 
 /* 7.2 Mid-Header */
 .full-layer-mid-header {
