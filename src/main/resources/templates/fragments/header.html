@@ -155,8 +155,8 @@
                             <li>
                                 <a id="mini-cart-trigger" href="/cart">
                                     <i class="ion ion-md-cart"></i>
-                                    <span id="total-counter" class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
-                                    <span id="total-price" class="item-price" th:text="${cartInfo.getTotalSum}"></span>
+                                    <span title="Количество позиций товара" id="total-counter" class="item-counter" th:text="${cartInfo.getAmountPos}"></span>
+                                    <span title="Сумма заказа без скидки" id="total-price" class="item-price" th:text="${cartInfo.getTotalSum}"></span>
                                 </a>
                             </li>
                         </ul>

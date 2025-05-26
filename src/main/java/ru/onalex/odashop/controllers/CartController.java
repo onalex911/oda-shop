@@ -2,6 +2,7 @@ package ru.onalex.odashop.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,10 @@ public class CartController {
     public String viewCart(Model model, HttpSession session,Principal principal) {
         return cartService.vewCart(model,session,principal);
     }
+    @GetMapping("/empty")
+    public String viewCartEmpty() {
+        return "cart-empty";
+    }
 
     @PostMapping("/add")
     public String addToCart(@RequestParam Long tovarId,
@@ -57,9 +62,13 @@ public class CartController {
     }
 
     @DeleteMapping("/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, HttpSession session, Principal principal) {
+    public ResponseEntity<?> removeFromCart(@PathVariable Long id, HttpSession session, Principal principal) {
 //        System.out.println("removing: "+id);
-        return cartService.removeFromCartContr(id,session,principal);
+        if(cartService.removeFromCartContr(id,session,principal)){
+            return ResponseEntity.ok().body("RELOAD"); // Сигнал для перезагрузки
+        }else {
+            return ResponseEntity.ok().body("REDIRECT_EMPTY"); // Сигнал для перенаправления
+        }
     }
 
     @PostMapping("/clear")

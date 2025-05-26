@@ -88,14 +88,11 @@ public class CartService {
         }
     }
 
-    public String removeFromCartContr(Long id, HttpSession session,Principal principal) {
+    public boolean removeFromCartContr(Long id, HttpSession session,Principal principal) {
         removeFromCart(session, id);
-        CartInfo cartInfo = new CartInfo(getCartItems(session),getDiscountByUser(principal));
-        if(getCartItems(session).isEmpty()) {
-            return "cart-empty";
-        }else{
-            return "";
-        }
+//        CartInfo cartInfo = new CartInfo(getCartItems(session),getDiscountByUser(principal));
+        return !getCartItems(session).isEmpty();
+
     }
 
     public void removeFromCart(HttpSession session, Long tovarId) {

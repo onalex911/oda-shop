@@ -117,7 +117,7 @@ function refreshTovar(id, price) {
             document.querySelector(`#total-sum`).textContent = formatMoneyValue(result.totalSum);
             document.querySelector(`#total-sum-disc`).textContent = formatMoneyValue(result.totalSumDisc);
             document.querySelector(`#total-counter`).textContent = result.amountPos;
-            document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSumDisc);
+            document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSum);
         })
         .catch(error => {
             console.log(error.message); // Обработка ошибок, если что-то пошло не так
@@ -125,41 +125,28 @@ function refreshTovar(id, price) {
 }
 
 function delTovar(id) {
+    /* на случай включения CSRF
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;*/
     // Сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
     let sum = parseMoneyValue(document.getElementById(`s_${id}`).textContent);
 
     fetch(`/cart/remove/${id}`, {
         method: 'DELETE'
+        /* на случай включения CSRF
+        ,
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }*/
     })
-        .then(response => {
-            if (response.ok) {
-                return response.text(); // Парсим текст ответа, если успешный
-            } else {
-                throw new Error("Ошибка при удалении товара"); // Генерируем ошибку, если ответ не успешный
+        .then(response => response.text())
+        .then(data => {
+            if (data === "RELOAD") {
+                window.location.href = "/cart"; // Перезагрузить корзину
+            } else if (data === "REDIRECT_EMPTY") {
+                window.location.href = "/cart/empty"; // Перенаправить на пустую корзину
             }
-        })
-        .then(responseText => {
-            console.log(responseText); // Логируем текст ответа
-            // Удаляем строку товара в таблице Корзины
-            document.querySelector(`tr[data-id='${id}']`).remove();
-            // Уменьшаем количество позиций в Корзине
-            let amount = document.querySelector('.item-counter');
-            amount.innerText = parseInt(amount.textContent) - 1;
-            // Получаем общую сумму
-            let totalSumEl = document.querySelector('.item-price');
-            let totalSum = parseMoneyValue(totalSumEl.textContent);
-
-            // Проверяем, что оба значения - числа
-            if (!isNaN(totalSum) && !isNaN(sum)) {
-                // Корректируем общую сумму
-                totalSumEl.textContent = formatMoneyValue(totalSum - sum);
-            } else {
-                console.error('Один из элементов содержит нечисловое значение');
-            }
-        })
-        .catch(error => {
-            console.log(error.message); // Обработка ошибок, если что-то пошло не так
         });
+
 }
 
 // Функция для преобразования строки в денежное значение (учитывает возможные разделители)
