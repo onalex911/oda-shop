@@ -20,6 +20,13 @@
             <div class="page-cart u-s-p-t-80">
                 <div class="container">
                     <div class="row">
+                        <div class="page-bar clearfix">
+                            <div class="total-items col-12">
+                                <h6 th:text="'Всего позиций: '+${totalItems}+', from='+${pgFrom}+', until='+${pgUntil}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-12">
                                 <!-- Products-List-Wrapper -->
                                 <div class="table-wrapper u-s-m-b-60">
@@ -68,21 +75,46 @@
                                 </div>
                             <!-- Shop-Pagination -->
                             <div class="pagination-area">
+<!--                                <div class="pagination-number">-->
+<!--                                    <ul th:if="${totalPages > 1}">-->
+<!--                                        <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}"-->
+<!--                                               title="Предыдущая">-->
+<!--                                                <i class="fa fa-angle-left"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}"-->
+<!--                                               th:text="${i + 1}"></a>-->
+<!--                                        </li>-->
+<!--                                        <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}"-->
+<!--                                               title="Следующая">-->
+<!--                                                <i class="fa fa-angle-right"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
                                 <div class="pagination-number">
                                     <ul th:if="${totalPages > 1}">
                                         <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}"
-                                               title="Предыдущая">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}" title="Предыдущая">
                                                 <i class="fa fa-angle-left"></i>
                                             </a>
                                         </li>
-                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}"
-                                               th:text="${i + 1}"></a>
+                                        <li th:style="${currentPage > 2 or totalPages > 2} ? 'display:inline' : 'display:none'" th:class="${currentPage == 0} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=0, size=${pageSize})}">1</a>
+                                        </li>
+                                        <li th:if="${currentPage > 3}"><span>...</span></li>
+                                        <li th:each="i : ${#numbers.sequence(pgFrom, pgUntil)}" th:class="${i == currentPage} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}" th:text="${i + 1}"></a>
+                                        </li>
+                                        <li th:if="${currentPage < totalPages - 3}"><span>...</span></li>
+                                        <li th:style="${totalPages > 1} ? 'display:inline' : 'display:none'" th:class="${currentPage == (totalPages - 1)} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${totalPages - 1}, size=${pageSize})}" th:text="${totalPages}"></a>
                                         </li>
                                         <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}"
-                                               title="Следующая">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}" title="Следующая">
                                                 <i class="fa fa-angle-right"></i>
                                             </a>
                                         </li>

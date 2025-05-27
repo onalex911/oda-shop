@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.onalex.odashop.dtos.ProfileDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
@@ -97,73 +98,33 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    @Transactional
-    public void testRecvisits(String username) {
-        Customer customer = customerRepository.findByUsername(username);
-        if (customer == null) {
-            throw new RuntimeException("Customer not found");
-        }
-
-        // Создаем копию коллекции для безопасной работы
-        Set<Recvisit> recvisits = new HashSet<>(customer.getRecvisitSet());
-        System.out.println("Recvisits size: " + recvisits.size());
-
-        // Пример безопасного перебора
-        synchronized (customer.getRecvisitSet()) {
-            for (Recvisit r : recvisits) {
-                System.out.println(r.getCustomerName());
-            }
-        }
-    }
+//    @Transactional
+//    public void testRecvisits(String username) {
+//        Customer customer = customerRepository.findByUsername(username);
+//        if (customer == null) {
+//            throw new RuntimeException("Customer not found");
+//        }
+//
+//        // Создаем копию коллекции для безопасной работы
+//        Set<Recvisit> recvisits = new HashSet<>(customer.getRecvisitSet());
+//        System.out.println("Recvisits size: " + recvisits.size());
+//
+//        // Пример безопасного перебора
+//        synchronized (customer.getRecvisitSet()) {
+//            for (Recvisit r : recvisits) {
+//                System.out.println(r.getCustomerName());
+//            }
+//        }
+//    }
 
     @Transactional
     public ProfileRequest getProfileRequest(String name) {
+
         // Получаем клиента с реквизитами
-        Customer customer = customerRepository.findByIdWithRecvisits(name)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        List<ProfileDTO> preqDTO = customerRepository.getProfileDataByUsername(name);
 
-        // Создаем DTO
-        ProfileRequest profileRequest = new ProfileRequest();
-        profileRequest.setUsername(customer.getUsername());
-        profileRequest.setContactName(customer.getContactName());
-
-        // Обрабатываем реквизиты (может быть null)
-        Optional<Recvisit> firstRecvisit = customer.getRecvisitSet().stream().findFirst();
-
-        if (firstRecvisit.isPresent()) {
-            Recvisit recvisits = firstRecvisit.get();
-            profileRequest.setOrganization(recvisits.getCustomerName());
-            profileRequest.setAddress(recvisits.getCustomerAddress());
-            profileRequest.setPhone(recvisits.getCustomerPhone());
-            profileRequest.setComment(recvisits.getComment());
-        } else {
-            // Устанавливаем значения по умолчанию, если реквизитов нет
-            profileRequest.setOrganization("");
-            profileRequest.setAddress("");
-            profileRequest.setPhone("");
-            profileRequest.setComment("");
-        }
-        return profileRequest;
+        return ProfileRequest.fromDTO(preqDTO.get(0));
     }
 
-//    public void doOrder(@Valid OrderRequest request,
-//                        Customer customer,
-//                        HttpSession session,
-//                        Model model) {
-//        List<CartItemDTO> cartItems = cartService.getCartItems(session);
-//        double total = cartService.getTotal(session);
-//
-//        // Отправляем email
-//        emailService.sendOrderEmail(
-//                customer.getUsername(),
-//                "Ваш заказ в магазине",
-//                cartItems,
-//                total
-//        );
-//
-//        // Очищаем корзину после отправки
-//        session.removeAttribute("cart");
-//        System.out.println("order request: " + request);
-//    }
 
 }

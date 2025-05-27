@@ -89,13 +89,17 @@ public class GroupService {
                 });
 
                 GrupTovDTO grupTovDTO = fromEntity(grupTovRepository.findByAlias(alias));
-
+                int pgFrom = Math.max(page - 2, 1);
+                int pgUntil = Math.min(page + 2, products.getTotalPages() - 2);
+                if(pgFrom > pgUntil) pgUntil = pgFrom = 0;
                 model.addAttribute("products", products);
                 model.addAttribute("group_name", grupTovDTO.getNormalName());
                 model.addAttribute("totalItems", products.getTotalElements());
                 model.addAttribute("totalPages", products.getTotalPages());
                 model.addAttribute("currentPage", page);
                 model.addAttribute("pageSize", size);
+                model.addAttribute("pgFrom", pgFrom);
+                model.addAttribute("pgUntil", pgUntil);
                 model.addAttribute("title", grupTovDTO.getNormalName());
                 model.addAttribute("sortparam", sortType);
 
