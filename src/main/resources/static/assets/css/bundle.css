@@ -1309,7 +1309,10 @@ body {
   margin-bottom: 8px; }
 
 .price-template {
-  font-weight: 600; }
+  font-weight: 600; 
+  width: 100%;
+    display: flex;
+    justify-content: flex-end;}
   .price-template:after {
     content: '';
     display: block;

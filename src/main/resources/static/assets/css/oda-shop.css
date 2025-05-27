@@ -141,7 +141,13 @@
 }
 
 .discount-info{
-	font-size:1.2em;
+	width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.discount-info span{
+	font-size:110%;
 	color:#b60c0d;
-	font-weight:700;
+	font-weight:700;	
+	margin-left:10px;
 }

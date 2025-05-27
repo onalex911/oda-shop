@@ -16,7 +16,7 @@
     <div class="page-deal u-s-p-t-80">
         <div class="container">
             <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, 'Редактирование профиля', 0)}"></div>
-            <div class="page-account u-s-p-t-80">
+            <div class="page-checkout u-s-p-t-80">
                 <div class="container">
                     <div class="row">
                         <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
@@ -30,7 +30,7 @@
                         <div class="row">
                             <!-- Recvisits -->
                             <div class="col-lg-6">
-                                <h3 class="section-h3">Реквизиты заказчика</h3>
+                                <h4 class="section-h4">Реквизиты заказчика</h4>
                                 <!-- Form-Fields -->
                                 <div class="group-inline u-s-m-b-13"
                                      th:classappend="${#fields.hasErrors('orgName')} ? 'error'">
@@ -95,8 +95,8 @@
                             <!-- Register -->
                             <div class="col-lg-6">
                                 <div class="reg-wrapper">
-                                    <h3 class="section-h3 u-s-m-b-20">Регистрационные данные</h3>
-                                    <div class="discount-info">Ваша скидка: <span th:text="${profileRequest.discount}+' %'"></span></div>
+                                    <h4 class="section-h4 u-s-m-b-20">Регистрационные данные</h4>
+                                    <div class="discount-info" th:if="${profileRequest.discount} > 0">Ваша скидка: <span th:text="${profileRequest.discount}+' %'"></span></div>
                                     <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
                                         <label for="email">E-mail (используется в качестве логина)
                                             <span class="astk">*</span>
