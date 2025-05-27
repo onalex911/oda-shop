@@ -169,11 +169,16 @@ public class ProductService {
                 System.out.println("pic from repo: " + product.getPicPreview());
                 product.setRealPreview(imageService.getImagePath(product.getPicPreview()));
             });
+            int pgFrom = Math.max(page - 2, 1);
+            int pgUntil = Math.min(page + 2, products.getTotalPages() - 2);
+            if(pgFrom > pgUntil) pgUntil = pgFrom = 0;
             model.addAttribute("products", productsDTO);
             model.addAttribute("title", "Результаты поиска");
             model.addAttribute("totalItems", productsDTO.getTotalElements());
             model.addAttribute("totalPages", productsDTO.getTotalPages());
             model.addAttribute("currentPage", page);
+            model.addAttribute("pgFrom", pgFrom);
+            model.addAttribute("pgUntil", pgUntil);
             model.addAttribute("textToSearch", textToSearch);
             model.addAttribute("fieldToSearch", fieldToSearch);
             model.addAttribute("pageSize", size);
