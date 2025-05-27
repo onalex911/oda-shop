@@ -83,18 +83,17 @@ public class CustomerController {
         model.addAttribute("registerRequest", new RegisterRequest());
         return "account";
     }
-//    @GetMapping("/profile")
-//    public String openProfile(Model model,Principal principal) {
-//        customerService.testRecvisits(principal.getName());
-//        ProfileRequest preq = customerService.getProfileRequest(principal.getName());
-//        model.addAttribute("profileRequest", preq);
-//        model.addAttribute("title", "Профиль");
-//        return "profile";
-//    }
     @GetMapping("/profile")
-    public void openProfile(Model model,Principal principal) {
-        customerService.testRecvisits(principal.getName());
+    public String openProfile(Model model,Principal principal) {
+
+        model.addAttribute("profileRequest", customerService.getProfileRequest(principal.getName()));
+        model.addAttribute("title", "Профиль");
+        return "profile";
     }
+//    @GetMapping("/profile")
+//    public void openProfile(Model model,Principal principal) {
+//        customerService.testRecvisits(principal.getName());
+//    }
 //    @GetMapping("/login")
 //    public String doPageSuccess(@RequestParam String success, Model model) {
 //        model.addAttribute("title", "Успешная регистрация/авторизация!");

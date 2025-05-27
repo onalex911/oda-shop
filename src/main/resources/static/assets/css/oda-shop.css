@@ -139,3 +139,9 @@
     z-index: 1000;
     transition: opacity 0.3s ease;
 }
+
+.discount-info{
+	font-size:1.2em;
+	color:#b60c0d;
+	font-weight:700;
+}

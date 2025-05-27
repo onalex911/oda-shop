@@ -15,7 +15,7 @@
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
         <div class="container">
-            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, 'Вход/Регистрация', 0)}"></div>
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, 'Редактирование профиля', 0)}"></div>
             <div class="page-account u-s-p-t-80">
                 <div class="container">
                     <div class="row">
@@ -23,23 +23,35 @@
                             <div class="ui-state-error" th:text="${errorMessage}"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <!-- Recvisits -->
-                        <form th:action="@{/customer/register}"
-                              th:object="${profileRequest}"
-                              th:with="type=${T(ru.onalex.odashop.models.RegisterRequest)}" method="post">
+                    <form th:action="@{/customer/profile}"
+                          th:object="${profileRequest}"
+                          th:with="type=${T(ru.onalex.odashop.models.ProfileRequest)}" method="post">
+                        <input type="hidden" th:field="*{customerId}">
+                        <div class="row">
+                            <!-- Recvisits -->
                             <div class="col-lg-6">
-                                <h4 class="section-h4">Реквизиты заказчика</h4>
+                                <h3 class="section-h3">Реквизиты заказчика</h3>
                                 <!-- Form-Fields -->
                                 <div class="group-inline u-s-m-b-13"
-                                     th:classappend="${#fields.hasErrors('organization')} ? 'error'">
-                                    <label for="first-name">Наименование предприятия
+                                     th:classappend="${#fields.hasErrors('orgName')} ? 'error'">
+                                    <label for="org-name">Наименование предприятия
                                         <span class="astk">*</span>
                                     </label>
-                                    <input th:field="*{organization}" type="text" id="first-name" class="text-field">
+                                    <input th:field="*{orgName}" type="text" id="org-name" class="text-field">
                                     <!--                                               th:value="${userData.getCustomer().getContactName()}"-->
-                                    <span th:if="${#fields.hasErrors('organization')}"
-                                          th:errors="*{organization}" class="error-message"></span>
+                                    <span th:if="${#fields.hasErrors('orgName')}"
+                                          th:errors="*{orgName}" class="error-message"></span>
+
+                                </div>
+                                <div class="group-inline u-s-m-b-13"
+                                     th:classappend="${#fields.hasErrors('headName')} ? 'error'">
+                                    <label for="head-name">Ф.И.О. руководителя
+<!--                                        <span class="astk">*</span>-->
+                                    </label>
+                                    <input th:field="*{headName}" type="text" id="head-name" class="text-field">
+                                    <!--                                               th:value="${userData.getCustomer().getContactName()}"-->
+                                    <span th:if="${#fields.hasErrors('headName')}"
+                                          th:errors="*{headName}" class="error-message"></span>
 
                                 </div>
                                 <div class="street-address u-s-m-b-13"
@@ -83,8 +95,8 @@
                             <!-- Register -->
                             <div class="col-lg-6">
                                 <div class="reg-wrapper">
-                                    <h2 class="account-h2 u-s-m-b-20">Регистрационные данные</h2>
-
+                                    <h3 class="section-h3 u-s-m-b-20">Регистрационные данные</h3>
+                                    <div class="discount-info">Ваша скидка: <span th:text="${profileRequest.discount}+' %'"></span></div>
                                     <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
                                         <label for="email">E-mail (используется в качестве логина)
                                             <span class="astk">*</span>
@@ -129,9 +141,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!-- Profile /- -->
-                    </div>
+                            <!-- Profile /- -->
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- Account-Page /- -->
