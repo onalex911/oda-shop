@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
+import ru.onalex.odashop.models.ProfileRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.repositories.CustomerRepository;
@@ -94,6 +95,55 @@ public class CustomerService implements UserDetailsService {
 
         customerRepository.save(customer);
 
+    }
+
+    @Transactional
+    public void testRecvisits(String username) {
+        Customer customer = customerRepository.findByUsername(username);
+        if (customer == null) {
+            throw new RuntimeException("Customer not found");
+        }
+
+        // Создаем копию коллекции для безопасной работы
+        Set<Recvisit> recvisits = new HashSet<>(customer.getRecvisitSet());
+        System.out.println("Recvisits size: " + recvisits.size());
+
+        // Пример безопасного перебора
+        synchronized (customer.getRecvisitSet()) {
+            for (Recvisit r : recvisits) {
+                System.out.println(r.getCustomerName());
+            }
+        }
+    }
+
+    @Transactional
+    public ProfileRequest getProfileRequest(String name) {
+        // Получаем клиента с реквизитами
+        Customer customer = customerRepository.findByIdWithRecvisits(name)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        // Создаем DTO
+        ProfileRequest profileRequest = new ProfileRequest();
+        profileRequest.setUsername(customer.getUsername());
+        profileRequest.setContactName(customer.getContactName());
+
+        // Обрабатываем реквизиты (может быть null)
+        Optional<Recvisit> firstRecvisit = customer.getRecvisitSet().stream().findFirst();
+
+        if (firstRecvisit.isPresent()) {
+            Recvisit recvisits = firstRecvisit.get();
+            profileRequest.setOrganization(recvisits.getCustomerName());
+            profileRequest.setAddress(recvisits.getCustomerAddress());
+            profileRequest.setPhone(recvisits.getCustomerPhone());
+            profileRequest.setComment(recvisits.getComment());
+        } else {
+            // Устанавливаем значения по умолчанию, если реквизитов нет
+            profileRequest.setOrganization("");
+            profileRequest.setAddress("");
+            profileRequest.setPhone("");
+            profileRequest.setComment("");
+        }
+        return profileRequest;
     }
 
 //    public void doOrder(@Valid OrderRequest request,

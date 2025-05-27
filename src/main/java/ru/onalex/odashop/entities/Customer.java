@@ -37,7 +37,7 @@ public class Customer {
     private double discount;
 
 //   у клиента может быть несколько реквизитов
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY) // Или EAGER
     private Set<Recvisit> recvisitSet = new HashSet<>();
 
     //у клиента (пользователя) м.б. много ролей; роль, в свою очередь м.б. назначена множеству пользователей

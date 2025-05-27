@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
-import ru.onalex.odashop.models.CartInfo;
-import ru.onalex.odashop.models.OrderRequest;
-import ru.onalex.odashop.models.RegisterRequest;
-import ru.onalex.odashop.models.CustomerData;
+import ru.onalex.odashop.models.*;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.EmailService;
@@ -86,6 +83,23 @@ public class CustomerController {
         model.addAttribute("registerRequest", new RegisterRequest());
         return "account";
     }
+//    @GetMapping("/profile")
+//    public String openProfile(Model model,Principal principal) {
+//        customerService.testRecvisits(principal.getName());
+//        ProfileRequest preq = customerService.getProfileRequest(principal.getName());
+//        model.addAttribute("profileRequest", preq);
+//        model.addAttribute("title", "Профиль");
+//        return "profile";
+//    }
+    @GetMapping("/profile")
+    public void openProfile(Model model,Principal principal) {
+        customerService.testRecvisits(principal.getName());
+    }
+//    @GetMapping("/login")
+//    public String doPageSuccess(@RequestParam String success, Model model) {
+//        model.addAttribute("title", "Успешная регистрация/авторизация!");
+//        return "account-success";
+//    }
 
     @PostMapping("/register")
     public String doRegistration(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
@@ -139,5 +153,6 @@ public class CustomerController {
         }
 
     }
+
 
 }
