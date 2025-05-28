@@ -1,3 +1,10 @@
+.top-panel{
+  border-bottom: 3px solid #b60c0d;
+  margin-bottom: 1rem;
+}
+.top-panel-h3{
+	margin-top:10px;
+}
 .page-bar {
     display: flex;
     align-items: center;
@@ -45,10 +52,11 @@
     color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
+	margin-left:5px;
 }
 
 .cart-oda-button{
-    width:102px;
+    width:100%;
     height:36px;
 }
 .cart-oda-button-big{
@@ -56,10 +64,11 @@
     height:50px;
 }
 
-.cart-oda-button .active{
-    background-color: #ccc;
-    color:#999;
-    border: 2px solid #999;
+/* .cart-oda-button .active, .cart-oda-button-big .active{ */
+.active{
+    background-color: white;
+    color:#b60c0d;
+    border: 2px solid #b60c0d;
 }
 .cart-oda-button:hover, .cart-oda-button-big:hover{
     background-color: #b60c0d;
@@ -151,3 +160,14 @@
 	font-weight:700;	
 	margin-left:10px;
 }
+
+.form-selectors{
+	display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* flex-wrap: wrap; */
+}
+
+.pagination-list .active{
+	border: none;
+	background: transparent;
