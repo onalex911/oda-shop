@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.onalex.odashop.dtos.ProfileDTO;
+import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
@@ -17,6 +18,7 @@ import ru.onalex.odashop.models.ProfileRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.repositories.CustomerRepository;
+import ru.onalex.odashop.repositories.RecvisitRepository;
 import ru.onalex.odashop.repositories.RoleRepository;
 
 import java.util.*;
@@ -32,6 +34,8 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final RecvisitRepository revisitRepository;
+    private final RecvisitRepository recvisitRepository;
 //    private final EmailService emailService;
 //    private final CartService cartService;
 
@@ -76,7 +80,7 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    public void doRegistration(RegisterRequest request) {
+    public void doRegistration(RegisterRequest request, RecvisitDTO recvisitDTO) {
         if (customerRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Пользователь с таким логином уже существует");
         }
@@ -95,6 +99,9 @@ public class CustomerService implements UserDetailsService {
         customer.getRoles().add(userRole);
 
         customerRepository.save(customer);
+        Recvisit recvisit = new Recvisit();
+            recvisit.setCustomer(customer);
+        recvisitRepository.save(recvisit);
 
     }
 

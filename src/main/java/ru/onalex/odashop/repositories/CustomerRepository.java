@@ -26,7 +26,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             c.contact_name as contactName,
             c.discount as discount,
             r.poluchatel as orgName,
-            r.rukovoditel as headName,
+            r.inn as inn,
             r.postavshik_adres as address,
             r.postavshik_telefon as phone,
             r.comment as comment

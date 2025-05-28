@@ -17,31 +17,12 @@ import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 public class ProfileRequest {
     //hidden
     private int customerId;
-    private double discount;
-
-    //not hidden
-    @NotBlank(message = "Email не может быть пустым")
-    @Email(message = "Некорректный формат email")
-    @Size(max = 250, message = "Email может содержать не более 250 символов")
-    private String username;
-
-    @NotBlank(message = "Контактное имя не должно быть пустым")
-    @Size(max = 250, message = "Контактное имя может содержать не более 250 символов")
-    private String contactName;
-
-//    @NotBlank(message = "Пароль не может быть пустым")
-//    @Size(min = 6, max=250, message = "Пароль должен содержать минимум 6, максимум 250 символов")
-    private String password;
-
-//    @NotBlank(message = "Пароль не может быть пустым")
-//    @Size(min = 6, max=250, message = "Пароль 2 должен содержать минимум 6, максимум 250 символов")
-    private String password2;
 
     @Size(max = 250, message = "Название организации может содержать не более 250 символов")
     private String orgName;
 
-    @Size(max = 250, message = "Ф.И.О. руководителя может содержать не более 250 символов")
-    private String headName;
+    @Size(max = 20, message = "ИНН может содержать не более 20 символов")
+    private String inn;
 
     @Size(max = 250, message = "Адрес может содержать не более 250 символов")
     private String address;
@@ -59,11 +40,8 @@ public class ProfileRequest {
     public static ProfileRequest fromDTO(ProfileDTO dto) {
         return ProfileRequest.builder()
                 .customerId(dto.getCustomerId())
-                .username(dto.getUsername())
-                .contactName(dto.getContactName())
-                .discount(dto.getDiscount())
                 .orgName(dto.getOrgName())
-                .headName(dto.getHeadName())
+                .inn(dto.getInn())
                 .address(dto.getAddress())
                 .phone(dto.getPhone())
                 .comment(dto.getComment())

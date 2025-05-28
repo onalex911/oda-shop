@@ -78,16 +78,36 @@ public class CustomerController {
     }
 
     @GetMapping("/login")
-//    public String doLogin(@RequestParam(required = false) String error,
-    public String doLogin(Model model) {
-//        if (error != null) {
-//            model.addAttribute("errorMessage", "Invalid username or password.");
-//        }
+    public String doLogin( Model model) {
         // Добавляем пустой объект для формы регистрации
         model.addAttribute("registerRequest", new RegisterRequest());
 //        model.addAttribute("session", session);
         return "account";
     }
+//public String doLogin(
+//        @RequestParam(name = "error", required = false) String error,
+//        @ModelAttribute("loginRequest") LoginRequest loginRequest,
+//        BindingResult bindingResult,
+//        Model model) {
+//
+//    // Обработка ошибок аутентификации
+//    if (error != null) {
+//        model.addAttribute("loginError", "Неверный email или пароль");
+//    }
+//
+//    // Если есть ошибки валидации из предыдущего POST-запроса
+//    if (bindingResult.hasErrors()) {
+//        // Переносим ошибки в модель для отображения в thymeleaf
+//        model.addAttribute("org.springframework.validation.BindingResult.loginRequest", bindingResult);
+//
+//        // Добавляем дополнительные атрибуты ошибок для удобства
+//        model.addAttribute("usernameError", bindingResult.getFieldError("username"));
+//        model.addAttribute("passwordError", bindingResult.getFieldError("password"));
+//    }
+//
+//    return "account";
+//}
+
     @GetMapping("/profile")
     public String openProfile(Model model,Principal principal) {
 
@@ -116,13 +136,29 @@ public class CustomerController {
         }
 
         try {
-            customerService.doRegistration(request);
-            return "redirect:/customer/login?success";
+            customerService.doRegistration(request,null);
+            // Отправляем письма (пользователю + поставщикам)
+//            System.out.println("Attempt to send email to:" + request.getUsername());
+            emailService.sendRegEmail(request);
+            return "redirect:/customer/register?success=true";
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "account";
         }
     }
+
+
+//    @GetMapping("/register/error")
+//    public String errorLogin(
+//                             BindingResult bindingResult,
+//                             Model model) {
+//        if (bindingResult.hasErrors()) {
+//            // Возвращаем тот же шаблон, где есть форма
+//            model.addAttribute("errorMessage","Неверные данные авторизации!");
+//            return "account";
+//        }
+//        return "account";
+//    }
 
     @PostMapping("/order")
     public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,

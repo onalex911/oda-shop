@@ -7,10 +7,11 @@ import ru.onalex.odashop.entities.Customer;
 @Data
 public class RecvisitDTO {
     private long id;
-    private String customerName;
-    private String custometFullName;
+    private String orgName;
+    // private String custometFullName;
     private String customerAddress;
     private String customerPhone;
+    private String inn;
     private String comment;
 
 }
