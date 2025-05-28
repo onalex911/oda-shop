@@ -22,7 +22,8 @@
                     <div class="row">
                         <div class="page-bar clearfix">
                             <div class="total-items col-12">
-                                <h6 th:text="'Всего позиций: '+${totalItems}+', from='+${pgFrom}+', until='+${pgUntil}"/>
+                                <h6 th:text="'Найдено позиций: '+${totalItems}"/>
+<!--                                <h6 th:text="'Всего позиций: '+${totalItems}+', from='+${pgFrom}+', until='+${pgUntil}"/>-->
                             </div>
                         </div>
                     </div>
@@ -96,7 +97,7 @@
 <!--                                    </ul>-->
 <!--                                </div>-->
                                 <div class="pagination-number">
-                                    <ul th:if="${totalPages > 1}">
+                                    <ul class="pagination-list" th:if="${totalPages > 1}">
                                         <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
                                             <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}" title="Предыдущая">
                                                 <i class="fa fa-angle-left"></i>
