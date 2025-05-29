@@ -20,8 +20,11 @@
             <div class="page-account u-s-p-t-80">
                 <div class="container">
                     <div class="row">
-                        <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
-                            <div class="ui-state-error" th:text="${errorMessage}"/>
+                        <div th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']}" class="alert alert-danger col-sm-12 mt-3" role="alert">
+                            Неверное имя или пароль!
+                        </div>
+                        <div th:if="${errorMessage != null and !errorMessage.isEmpty()}" class="alert alert-danger col-sm-12 mt-3" role="alert">
+                            <span th:text="${errorMessage}"></span>
                         </div>
                     </div>
                     <div class="row">

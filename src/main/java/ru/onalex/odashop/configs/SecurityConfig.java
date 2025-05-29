@@ -45,13 +45,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                         .requestMatchers("/customer/register", "/customer/login").permitAll() // Разрешаем регистрацию без авторизации
-                        .requestMatchers("/customer/**").authenticated()
                         .requestMatchers("/customer/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/customer/login")
                         .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/customer/account")
                         .failureUrl("/customer/login?error=true")
                         .successHandler(savedRequestAwareAuthenticationSuccessHandler())
                         .permitAll()

@@ -168,6 +168,24 @@
     /* flex-wrap: wrap; */
 }
 
-.pagination-list .active{
-	border: none;
-	background: transparent;
+.pagination-list .active {
+    border: none;
+    background: transparent;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius
+    Defines the radii of the outer border edge.
+    Learn more
+    Don't show
+: .25rem;
+}
