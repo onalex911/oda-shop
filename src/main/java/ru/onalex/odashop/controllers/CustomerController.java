@@ -78,9 +78,14 @@ public class CustomerController {
     }
 
     @GetMapping("/login")
+//    public String doLogin(@RequestParam(required = false) String error,
     public String doLogin(Model model) {
+//        if (error != null) {
+//            model.addAttribute("errorMessage", "Invalid username or password.");
+//        }
         // Добавляем пустой объект для формы регистрации
         model.addAttribute("registerRequest", new RegisterRequest());
+//        model.addAttribute("session", session);
         return "account";
     }
     @GetMapping("/profile")
@@ -106,6 +111,7 @@ public class CustomerController {
                                  Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
+            model.addAttribute("errorMessage", "Введены неверные данные для регистрации!");
             return "account";
         }
 
