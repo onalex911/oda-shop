@@ -20,4 +20,8 @@ public class ServiceUtils {
         return withQuotes.replace("\\", "");
     }
 
+    public static double getSumWithDiscount(double sum, double discount) {
+        return sum * (100 - discount) / 100;
+    }
+
 }

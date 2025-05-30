@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/header :: head(${title})}"></head>
-
 <body>
 <!-- app -->
 <div id="app">
     <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated и данные Корзины -->
+
     <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
 
     <!-- Custom-Deal-Page -->
@@ -15,6 +15,7 @@
             <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, ${title}, ${totalItems})}"></div>
             <p><strong><u>Наши адреса и контакты:</u></strong></p>
             <p>&nbsp;</p>
+
             <ul>
                 <li><strong><u>Хабаровск</u></strong></li>
             </ul>

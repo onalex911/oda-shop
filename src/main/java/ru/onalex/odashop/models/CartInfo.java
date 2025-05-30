@@ -7,6 +7,8 @@ import ru.onalex.odashop.entities.CartItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.onalex.odashop.utils.ServiceUtils.getSumWithDiscount;
+
 //структура для вывода данных Корзины на любых страницах
 @Data
 public class CartInfo {
@@ -35,7 +37,7 @@ public class CartInfo {
                     .mapToDouble(item -> item.getTovar().getCena() * item.getQuantity())
                     .sum();
             this.totalQuantity = cart.stream().mapToInt(item -> item.getQuantity()).sum();
-            this.totalSumDisc = this.totalSum / 100 * (100 - discount);
+            this.totalSumDisc = getSumWithDiscount(this.totalSum,discount);
 
         }else{
             this.amountPos = 0;

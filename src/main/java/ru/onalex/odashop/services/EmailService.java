@@ -13,6 +13,7 @@ import org.thymeleaf.context.Context;
 import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.models.OrderRequest;
 import ru.onalex.odashop.models.CustomerData;
+import ru.onalex.odashop.models.RegisterRequest;
 
 
 import java.util.List;
@@ -59,6 +60,28 @@ public class EmailService {
         for (String supplierEmail : supplierEmails) {
 //            System.out.println("we're sending to suppliers: " + supplierEmail);
             sendEmail(supplierEmail, "Новый заказ от клиента", htmlContent);
+        }
+    }
+
+    public void sendRegEmail(RegisterRequest request) {
+        String customerEmail = request.getUsername(); //он обязательно должен быть - его наличие проверяет контроллер
+        // Контекст для шаблона (общий для всех писем)
+        Context context = new Context();
+        context.setVariable("username", request.getUsername());
+        context.setVariable("contactName", request.getContactName());
+
+        // Генерация HTML содержимого
+        String htmlContentUser = templateEngine.process("email/register-user", context);
+        String htmlContentAdmin = templateEngine.process("email/register-admin", context);
+
+        // 1. Отправка пользователю
+//        System.out.println("we're sending to client: " + customerEmail);
+        sendEmail(customerEmail, "Вы зарегистрировались на сайте odadv.ru", htmlContentUser);
+
+        // 2. Отправка всем поставщикам
+        for (String supplierEmail : supplierEmails) {
+//            System.out.println("we're sending to suppliers: " + supplierEmail);
+            sendEmail(supplierEmail, "Новая регистрация на сайте odadv.ru", htmlContentAdmin);
         }
     }
 

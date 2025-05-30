@@ -43,9 +43,9 @@ public class SecurityConfig {
                 csrf(csrf -> csrf
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())  */
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                         .requestMatchers("/customer/register", "/customer/login").permitAll() // Разрешаем регистрацию без авторизации
                         .requestMatchers("/customer/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form

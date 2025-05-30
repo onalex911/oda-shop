@@ -6,10 +6,12 @@
 </head>
 <body>
 <h2>Детали заказа с сайта odadv.ru</h2>
-<h3>Наименование заказчика: <span th:text="${userRecvisits.getCustomerName()}"/></h3>
+<h3>Наименование заказчика: <span th:text="${userRecvisits.getOrgName()}"/></h3>
+<!--<h3>ИНН: <span th:text="${orderData.getInn().isEmpty()} ? '' : ${orderData.getInn()}"/></h3>-->
 <h3>Адрес заказчика: <span th:text="${orderData.getAddress().isEmpty()} ? ${userRecvisits.getCustomerAddress()} : ${orderData.getAddress()}"/></h3>
 <h3>Телефон заказчика: <span th:text="${orderData.getPhone().isEmpty()} ? ${userRecvisits.getCustomerPhone()} : ${orderData.getPhone()}"/></h3>
 <h3>Контактное лицо: <span th:text="${orderData.getContactName().isEmpty()} ? ${userRecvisits.getRukovoditel()} : ${orderData.getContactName()}"/></h3>
+<h3>Комментарий: <span th:text="${orderData.getComment()}"/></h3>
 
 <table border="1">
     <tr>

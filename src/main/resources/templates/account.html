@@ -26,6 +26,9 @@
                         <div th:if="${errorMessage != null and !errorMessage.isEmpty()}" class="alert alert-danger col-sm-12 mt-3" role="alert">
                             <span th:text="${errorMessage}"></span>
                         </div>
+                        <div th:if="${success != null and !success.isEmpty()}" class="alert alert-success col-sm-12 mt-3" role="alert">
+                            <span th:text="${success}"></span>
+                        </div>
                     </div>
                     <div class="row">
                         <!-- Login -->
@@ -117,7 +120,7 @@
                                     <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
                                         <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
                                         <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
-                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
+                                            <a href="/pravila" class="u-c-brand">правилами и условиями</a>
                                         </label>
                                         <span th:if="${#fields.hasErrors('termsAccepted')}"
                                               th:errors="*{termsAccepted}" class="error-message"></span>

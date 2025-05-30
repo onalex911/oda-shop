@@ -2,6 +2,7 @@ package ru.onalex.odashop.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.onalex.odashop.dtos.ProfileDTO;
+import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.entities.Role;
@@ -17,6 +19,7 @@ import ru.onalex.odashop.models.ProfileRequest;
 import ru.onalex.odashop.models.RegisterRequest;
 import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.repositories.CustomerRepository;
+import ru.onalex.odashop.repositories.RecvisitRepository;
 import ru.onalex.odashop.repositories.RoleRepository;
 
 import java.util.*;
@@ -32,21 +35,7 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-//    private final EmailService emailService;
-//    private final CartService cartService;
-
-//    public CustomerService(
-//            CustomerRepository customerRepository,
-//            PasswordEncoder passwordEncoder,
-//            RoleRepository roleRepository,
-//            EmailService emailService,
-//            CartService cartService) {
-//        this.customerRepository = customerRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.roleRepository = roleRepository;
-//        this.emailService = emailService;
-//        this.cartService = cartService;
-//    }
+    private final RecvisitRepository recvisitRepository;
 
     //обертка для получения пользователя (чтобы не обращаться напрямую в репозиторий)
     public Customer findByUsername(String username) {
@@ -56,17 +45,43 @@ public class CustomerService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+//        Customer customer = customerRepository.findByUsername(username);
+//        if(customer == null) {
+//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
+//        }
+//        return new org.springframework.security.core.userdetails.User(
+//                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
+//        );
+        //ИИ совет 1
+//        Customer customer = customerRepository.findByUsernameWithRoles(username);
+//        if (customer == null) {
+//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
+//        }
+//        return new org.springframework.security.core.userdetails.User(
+//                customer.getUsername(),
+//                customer.getPassword(),
+//                mapRolesToAuthorities(customer.getRoles())
+//        );
+        // ИИ совет 2
         Customer customer = customerRepository.findByUsername(username);
-        if(customer == null) {
+        if (customer == null) {
             throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
         }
+
+        // Инициализация коллекции ролей
+        Hibernate.initialize(customer.getRoles());
+
         return new org.springframework.security.core.userdetails.User(
-                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
+                customer.getUsername(),
+                customer.getPassword(),
+                mapRolesToAuthorities(customer.getRoles())
         );
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     public CustomerData getUserInfoByUsername(String username){
@@ -76,7 +91,7 @@ public class CustomerService implements UserDetailsService {
 
     }
 
-    public void doRegistration(RegisterRequest request) {
+    public void doRegistration(RegisterRequest request, RecvisitDTO recvisitDTO) {
         if (customerRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Пользователь с таким логином уже существует");
         }
@@ -89,14 +104,31 @@ public class CustomerService implements UserDetailsService {
         customer.setContactName(request.getContactName());
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
         customer.setDiscount(0.0);
+        try {
+            Role userRole = roleRepository.findByName("ROLE_" + DEFAULT_ROLE)
+                    .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
 
-        Role userRole = roleRepository.findByName(DEFAULT_ROLE);
-//                .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
-        customer.getRoles().add(userRole);
+// Создаем коллекцию, если она null
+            if (customer.getRoles() == null) {
+                customer.setRoles(new HashSet<>());
+            }
 
-        customerRepository.save(customer);
+// Добавляем роль
+            customer.getRoles().add(userRole);
+
+// Сохраняем клиента (если нужно)
+            customerRepository.save(customer);
+            System.out.println("Customer: " + customer.getUsername() + " saved to DB");
+            Recvisit recvisit = new Recvisit();
+            recvisit.setCustomer(customer);
+            recvisitRepository.save(recvisit);
+        }catch (Exception e){
+            throw new RuntimeException("Ошибка при сохранении нового пользователя: " + e.getMessage());
+        }
 
     }
+
+
 
 //    @Transactional
 //    public void testRecvisits(String username) {

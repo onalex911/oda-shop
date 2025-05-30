@@ -33,7 +33,6 @@ public class Tovar {
     private int nomer;      // порядковый номер при выводе по-умолчанию
     //    gruptov integer DEFAULT NULL,
     @NotNull
-    @NotEmpty
     @Column(name = "gruptov")
     private int grupTov;    // id группы, которой принадлежит товар
     //    name varchar(250),

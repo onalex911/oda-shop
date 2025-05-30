@@ -32,6 +32,13 @@ public class HomeController {
         return "contacts";
     }
 
+    @GetMapping("/pravila")
+    public String getPravila(Model model) {
+        model.addAttribute("grupTov", grupTovRepository.findAll());
+        model.addAttribute("title","Правила пользования настоящим сайтом");
+        return "pravila";
+    }
+
 //    @GetMapping("/ping")
 //    public String ping() {
 //        return "pong";

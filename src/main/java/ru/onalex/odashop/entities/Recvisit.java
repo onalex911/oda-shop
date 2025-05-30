@@ -17,7 +17,7 @@ public class Recvisit {
     private int nds;
 //  `poluchatel` varchar(250) COLLATE cp1251_bin DEFAULT NULL,
     @Column(name="poluchatel", columnDefinition = "varchar(250)")
-    private String customerName;
+    private String orgName;
 //  `inn` varchar(20) COLLATE cp1251_bin DEFAULT NULL,
     @Column(columnDefinition = "varchar(20)")
     private String inn;
@@ -38,7 +38,7 @@ public class Recvisit {
     private String raschetnuy_schet;
 //  `postavshik` varchar(250) COLLATE cp1251_bin DEFAULT NULL,
     @Column(name="postavshik", columnDefinition = "varchar(250)")
-    private String customerFullName;
+    private String orgFullName;
 //  `postavshik_adres` varchar(250) COLLATE cp1251_bin DEFAULT NULL,
     @Column(name="postavshik_adres",columnDefinition = "varchar(250)")
     private String customerAddress;
@@ -71,5 +71,7 @@ public class Recvisit {
     @ManyToOne
     @JoinColumn(name = "customer")
     private Customer customer;
+
+
 
 }
