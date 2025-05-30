@@ -38,6 +38,15 @@ public class GlobalControllerAdvice {
             new SortField("rem_down","остаток убыв."),
             new SortField("dop","артикул")
     );
+    public static final List<SortField> SEARCH_FIELDS = List.of(
+            new SortField("tovName","наименов."),
+            new SortField("tovName_","наименов. нач."),
+            new SortField("dop","артикул сод."),
+            new SortField("dop_","артикул нач."),
+            new SortField("cena_ot","цена от..."),
+            new SortField("cena_do","цена до..."),
+            new SortField("cena_ot_do","цена от-до")
+    );
 
     @Autowired
     public void setCartService(CartService cartService, CustomerService customerService) {
@@ -62,6 +71,7 @@ public class GlobalControllerAdvice {
         model.addAttribute("mainPage", MAIN_PAGE);
         model.addAttribute("mainAdminPage", MAIN_ADMIN_PAGE);
         model.addAttribute("sortFields", SORT_FIELDS);
+        model.addAttribute("searchFields", SEARCH_FIELDS);
 
         try {
             // Добавляем список групп товаров

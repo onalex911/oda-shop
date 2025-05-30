@@ -140,14 +140,17 @@
                                                         <div class="select-box-wrapper select-hide">
                                                             <label class="sr-only" for="select-category">Искать&#133;</label>
                                                             <select name="fieldToSearch" class="select-box" id="select-category">
-<!--                                                                <option selected="selected" value="">Везде</option>-->
-                                                                <option selected="selected" value="tovName">наименов.</option>
-                                                                <option value="tovName_">наименов. нач.</option>
-                                                                <option value="dop">артикул сод.</option>
-                                                                <option value="dop_">артикул нач.</option>
-                                                                <option value="cena_ot">цена ОТ</option>
-                                                                <option value="cena_do">цена ДО</option>
-                                                                <option value="ceny_ot_do">цена ОТ-ДО</option>
+                                                                <option th:each="f : ${searchFields}"
+                                                                        th:value="${f.field}"
+                                                                        th:text="${f.caption}"
+                                                                        th:selected="${f.field == 'tovName'}"></option>
+<!--                                                                 <option selected="selected" value="tovName">наименов.</option> -->
+<!--                                                                 <option value="tovName_">наименов. нач.</option> -->
+<!--                                                                 <option value="dop">артикул сод.</option> -->
+<!--                                                                 <option value="dop_">артикул нач.</option> -->
+<!--                                                                 <option value="cena_ot">цена ОТ</option> -->
+<!--                                                                 <option value="cena_do">цена ДО</option> -->
+<!--                                                                 <option value="ceny_ot_do">цена ОТ-ДО</option> -->
                                                             </select>
                                                         </div>
                                                     </div>
