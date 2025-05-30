@@ -45,7 +45,7 @@ public class GlobalControllerAdvice {
             new SortField("dop_","артикул нач."),
             new SortField("cena_ot","цена от..."),
             new SortField("cena_do","цена до..."),
-            new SortField("cena_ot_do","цена от-до")
+            new SortField("ceny_ot_do","цена от-до")
     );
 
     @Autowired
