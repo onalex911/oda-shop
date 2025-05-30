@@ -12,6 +12,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.onalex.odashop.entities.Tovar;
 
 import java.util.List;
+import java.util.Optional;
 
 //@Repository
 @RepositoryRestResource(path = "tovar")
@@ -27,8 +28,8 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer>, JpaSpeci
     @Query(value="SELECT * FROM tovar t WHERE t.code=:code AND t.ostatok > 0 ORDER BY t.nomer",nativeQuery = true)
     Tovar findExistTovarByCode(int code);
 
-    @Query(value="SELECT * FROM tovar t WHERE t.code=:id",nativeQuery = true)
-    Tovar findTovarById(int id);
+//    @Query(value="SELECT * FROM tovar t WHERE t.code=:id",nativeQuery = true)
+    Optional<Tovar> findTovarById(int id);
 
     @Query(value="SELECT * FROM tovar t WHERE t.gruptov = :groupId ORDER BY t.nomer",nativeQuery = true)
     List<Tovar> findTovarByGroupId(int groupId);
