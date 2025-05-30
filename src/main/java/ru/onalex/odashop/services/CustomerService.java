@@ -1,8 +1,9 @@
 package ru.onalex.odashop.services;
 
-import jakarta.transaction.Transactional;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.onalex.odashop.dtos.ProfileDTO;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import ru.onalex.odashop.dtos.RecvisitDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
@@ -22,12 +24,14 @@ import ru.onalex.odashop.repositories.CustomerRepository;
 import ru.onalex.odashop.repositories.RecvisitRepository;
 import ru.onalex.odashop.repositories.RoleRepository;
 
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 //получение инф. о пользователе по его имени, с которым он авторизовался
 @Service
 @RequiredArgsConstructor
+
 public class CustomerService implements UserDetailsService {
 
     private static final String DEFAULT_ROLE = "USER";
@@ -37,44 +41,23 @@ public class CustomerService implements UserDetailsService {
     private final RoleRepository roleRepository;
     private final RecvisitRepository recvisitRepository;
 
+
     //обертка для получения пользователя (чтобы не обращаться напрямую в репозиторий)
     public Customer findByUsername(String username) {
-        return customerRepository.findByUsername(username);
+        return customerRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Не найден клиент с именем: " + username));
     }
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    @Transactional(readOnly = true)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        Customer customer = customerRepository.findByUsername(username);
-//        if(customer == null) {
-//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
-//        }
-//        return new org.springframework.security.core.userdetails.User(
-//                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
-//        );
-        //ИИ совет 1
-//        Customer customer = customerRepository.findByUsernameWithRoles(username);
-//        if (customer == null) {
-//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
-//        }
-//        return new org.springframework.security.core.userdetails.User(
-//                customer.getUsername(),
-//                customer.getPassword(),
-//                mapRolesToAuthorities(customer.getRoles())
-//        );
-        // ИИ совет 2
-        Customer customer = customerRepository.findByUsername(username);
+        Customer customer = customerRepository.findByUsernameWithRecvisits(username);
         if (customer == null) {
             throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
         }
-
-        // Инициализация коллекции ролей
-        Hibernate.initialize(customer.getRoles());
-
         return new org.springframework.security.core.userdetails.User(
-                customer.getUsername(),
-                customer.getPassword(),
-                mapRolesToAuthorities(customer.getRoles())
+                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
         );
     }
 
@@ -84,10 +67,10 @@ public class CustomerService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-    public CustomerData getUserInfoByUsername(String username){
+    public CustomerData getUserInfoByUsername(String username) {
         Customer customer = findByUsername(username);
         List<Recvisit> recvisits = customerRepository.getRecvisitsByUsername(username);
-        return new CustomerData(customer,recvisits);
+        return new CustomerData(customer, recvisits);
 
     }
 
@@ -108,55 +91,84 @@ public class CustomerService implements UserDetailsService {
             Role userRole = roleRepository.findByName("ROLE_" + DEFAULT_ROLE)
                     .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
 
-// Создаем коллекцию, если она null
+            // Создаем коллекцию, если она null
             if (customer.getRoles() == null) {
                 customer.setRoles(new HashSet<>());
             }
 
-// Добавляем роль
+            // Добавляем роль
             customer.getRoles().add(userRole);
 
-// Сохраняем клиента (если нужно)
+            // Сохраняем клиента (если нужно)
             customerRepository.save(customer);
             System.out.println("Customer: " + customer.getUsername() + " saved to DB");
             Recvisit recvisit = new Recvisit();
             recvisit.setCustomer(customer);
             recvisitRepository.save(recvisit);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Ошибка при сохранении нового пользователя: " + e.getMessage());
         }
 
     }
 
-
-
-//    @Transactional
-//    public void testRecvisits(String username) {
-//        Customer customer = customerRepository.findByUsername(username);
-//        if (customer == null) {
-//            throw new RuntimeException("Customer not found");
-//        }
-//
-//        // Создаем копию коллекции для безопасной работы
-//        Set<Recvisit> recvisits = new HashSet<>(customer.getRecvisitSet());
-//        System.out.println("Recvisits size: " + recvisits.size());
-//
-//        // Пример безопасного перебора
-//        synchronized (customer.getRecvisitSet()) {
-//            for (Recvisit r : recvisits) {
-//                System.out.println(r.getCustomerName());
-//            }
-//        }
-//    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public ProfileRequest getProfileRequest(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Имя пользователя не может быть пустым");
+        }
 
-        // Получаем клиента с реквизитами
-        List<ProfileDTO> preqDTO = customerRepository.getProfileDataByUsername(name);
+//        Customer customer = customerRepository.findByUsernameWithRecvisits(name);
+        Customer customer = findByUsername(name);
+        if (customer == null) {
+            throw new EntityNotFoundException("Клиент с именем " + name + " не найден");
+        }
 
-        return ProfileRequest.fromDTO(preqDTO.get(0));
+        List<Recvisit> recvisits = customerRepository.getRecvisitsByUsername(name);
+        if(!recvisits.isEmpty()) {
+            Recvisit recvisit = recvisits.get(0);
+            return ProfileRequest.builder()
+                    .username(customer.getUsername())
+                    .contactName(customer.getContactName())
+                    .discount(customer.getDiscount())
+                    .customerId(customer.getId())
+                    .recvisitId(recvisit.getId())
+                    .address(recvisit.getCustomerAddress())
+                    .phone(recvisit.getCustomerPhone())
+                    .comment(recvisit.getComment())
+                    .build();
+        }else{
+            return ProfileRequest.builder()
+                    .username(customer.getUsername())
+                    .contactName(customer.getContactName())
+                    .discount(customer.getDiscount())
+                    .customerId(customer.getId())
+                    .build();
+        }
     }
 
+    public String editProfile(@Valid ProfileRequest request, Model model) {
+        try {
+            // Получаем данные пользователя
+            Customer customer = findByUsername(request.getUsername());
+            customer.setContactName(request.getContactName());
+            customerRepository.save(customer);
+
+            Recvisit recvisit = recvisitRepository.findById(request.getRecvisitId()).orElse(null);
+            if (recvisit != null) {
+                recvisit.setCustomerPhone(request.getPhone());
+                recvisit.setCustomerAddress(request.getAddress());
+                recvisit.setComment(request.getComment());
+
+                recvisitRepository.save(recvisit);
+                model.addAttribute("success", "Ваши реквизиты успешно обновлены!");
+            }else{
+                model.addAttribute("errorMessage", "Не найдены еквизиты успешно обновлены!");
+
+            }
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        return "profile";
+    }
 
 }

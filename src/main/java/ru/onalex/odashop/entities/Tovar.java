@@ -1,7 +1,7 @@
 package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
@@ -17,8 +17,7 @@ public class Tovar {
     private int id;
 
     //    purl varchar(250)
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name = "purl")  // url товара
     private String purl;
     //    flpurl integer DEFAULT NULL,
@@ -36,8 +35,7 @@ public class Tovar {
     @Column(name = "gruptov")
     private int grupTov;    // id группы, которой принадлежит товар
     //    name varchar(250),
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name = "name")
     private String tovName; // наименование товара
     //    pic varchar(250),

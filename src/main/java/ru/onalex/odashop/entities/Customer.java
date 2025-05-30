@@ -1,6 +1,7 @@
 package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,18 +22,15 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name="username")
     private String username;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name="contact_name")
     private String contactName;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String password;
     private double discount;
 
@@ -46,7 +44,6 @@ public class Customer {
     @JoinTable(name = "customers_roles",
     joinColumns = @JoinColumn(name="customer_id"),
     inverseJoinColumns = @JoinColumn(name="role_id"))
-//    private Set<Role> roles = new HashSet<>();
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
 }

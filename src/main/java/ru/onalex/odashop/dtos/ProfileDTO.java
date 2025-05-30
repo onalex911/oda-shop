@@ -20,14 +20,14 @@ public class ProfileDTO {
     private String phone;               // Телефон
     private String comment;
 
-    public static ProfileDTO toDTO(ProfileRequest request) {
-        return ProfileDTO.builder()
-                .customerId(request.getCustomerId())
-                .orgName(request.getOrgName())
-                .inn(request.getInn())
-                .address(request.getAddress())
-                .phone(request.getPhone())
-                .comment(request.getComment())
-                .build();
-    }
+//    public static ProfileDTO toDTO(ProfileRequest request) {
+//        return ProfileDTO.builder()
+//                .customerId(request.getCustomerId())
+//                .orgName(request.getOrgName())
+//                .inn(request.getInn())
+//                .address(request.getAddress())
+//                .phone(request.getPhone())
+//                .comment(request.getComment())
+//                .build();
+//    }
 }

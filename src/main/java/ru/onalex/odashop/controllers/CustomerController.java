@@ -2,6 +2,7 @@ package ru.onalex.odashop.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +11,7 @@ import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.models.*;
+import ru.onalex.odashop.repositories.CustomerRepository;
 import ru.onalex.odashop.repositories.RecvisitRepository;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
@@ -23,20 +25,14 @@ import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 
 @Controller
 @RequestMapping("/customer")
+@RequiredArgsConstructor
 public class CustomerController {
 
     private final CartService cartService;
     private final CustomerService customerService;
     private final EmailService emailService;
     private final RecvisitRepository recvisitRepository;
-
-    public CustomerController(CartService cartService,
-                              CustomerService customerService, EmailService emailService, RecvisitRepository recvisitRepository) {
-        this.cartService = cartService;
-        this.customerService = customerService;
-        this.emailService = emailService;
-        this.recvisitRepository = recvisitRepository;
-    }
+    private final CustomerRepository customerRepository;
 
     @GetMapping
     public String customer(Principal principal, Model model) {
@@ -61,7 +57,7 @@ public class CustomerController {
             double discount = 0;
             long recvisitId = 0;
             CustomerData userInfo = customerService.getUserInfoByUsername(principal.getName());
-            if(!userInfo.getRecvisits().isEmpty()) {
+            if (!userInfo.getRecvisits().isEmpty()) {
                 Recvisit recvisit = userInfo.getRecvisits().get(0);
                 address = recvisit.getCustomerAddress();
                 phone = recvisit.getCustomerPhone();
@@ -74,8 +70,8 @@ public class CustomerController {
             model.addAttribute("cartItems", items);
             model.addAttribute("totalSum", totalSum);
             model.addAttribute("discount", discount);
-            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum,discount));
-            model.addAttribute("orderRequest", new OrderRequest(contactName,replaceQuotes(address),email,phone,comment,recvisitId));
+            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum, discount));
+            model.addAttribute("orderRequest", new OrderRequest(contactName, replaceQuotes(address), email, phone, comment, recvisitId));
 
             return "checkout";
         }
@@ -95,23 +91,6 @@ public class CustomerController {
         return "account";
     }
 
-    @GetMapping("/profile")
-    public String openProfile(Model model,Principal principal) {
-
-        model.addAttribute("profileRequest", customerService.getProfileRequest(principal.getName()));
-        model.addAttribute("title", "Профиль");
-        return "profile";
-    }
-//    @GetMapping("/profile")
-//    public void openProfile(Model model,Principal principal) {
-//        customerService.testRecvisits(principal.getName());
-//    }
-//    @GetMapping("/login")
-//    public String doPageSuccess(@RequestParam String success, Model model) {
-//        model.addAttribute("title", "Успешная регистрация/авторизация!");
-//        return "account-success";
-//    }
-
     @PostMapping("/register")
     public String doRegistration(@Valid @ModelAttribute("registerRequest") RegisterRequest request,
                                  BindingResult bindingResult,
@@ -125,7 +104,7 @@ public class CustomerController {
         }
 
         try {
-            customerService.doRegistration(request,null);
+            customerService.doRegistration(request, null);
             // Отправляем письма (пользователю + поставщикам)
 //            System.out.println("Attempt to send email to:" + request.getUsername());
             emailService.sendRegEmail(request);
@@ -136,19 +115,47 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/profile")
+    public String openProfile(Model model, Principal principal) {
+
+        model.addAttribute("title", "Профиль");
+        try {
+            model.addAttribute("profileRequest", customerService.getProfileRequest(principal.getName()));
+        } catch (Exception e) {
+
+            model.addAttribute("profileRequest", new RegisterRequest());
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String editProfile(@Valid @ModelAttribute("profileRequest") ProfileRequest request,
+                              BindingResult bindingResult,
+                              Model model) {
+
+        if (bindingResult.hasErrors()) {
+            // Возвращаем тот же шаблон, где есть форма
+            model.addAttribute("profleRequest", request);
+            return "profile";
+        }
+        return customerService.editProfile(request,model);
+    }
+
     @PostMapping("/order")
     public String doOrder(@Valid @ModelAttribute("orderRequest") OrderRequest request,
-                            BindingResult bindingResult,
-                            Principal principal,
-                            HttpSession session,
-                            Model model) {
+                          BindingResult bindingResult,
+                          Principal principal,
+                          HttpSession session,
+                          Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
             double totalSum = cartService.getTotalSum(session);
             double discount = customerService.findByUsername(principal.getName()).getDiscount();
             model.addAttribute("totalSum", totalSum);
             model.addAttribute("discount", discount);
-            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum,discount));
+            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum, discount));
             model.addAttribute("cartItems", cartService.getCartItems(session));
             return "checkout";
         }
@@ -158,9 +165,9 @@ public class CustomerController {
         double totalSum = cartService.getTotalSum(session);
         double totalQuantity = cartService.getTotalQuantity(session);
         try {
-            if(request.isSaveRecvisits() && request.getRecvisitId() > 0) {
+            if (request.isSaveRecvisits() && request.getRecvisitId() > 0) {
                 Recvisit recvisit = recvisitRepository.findById(request.getRecvisitId()).orElse(null);
-                if(recvisit != null) {
+                if (recvisit != null) {
                     recvisit.setCustomerPhone(request.getPhone());
                     recvisit.setCustomerAddress(request.getAddress());
                     recvisit.setComment(request.getComment());
@@ -178,10 +185,10 @@ public class CustomerController {
             session.removeAttribute("cart");
 
             model.addAttribute("successMessage", "Ваш заказ успешно оформлен!");
-            model.addAttribute("cartInfo",new CartInfo());
+            model.addAttribute("cartInfo", new CartInfo());
             return "checkout-success"; // Имя шаблона представления
 
-        }catch(Exception e) {
+        } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "checkout";
         }

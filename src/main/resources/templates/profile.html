@@ -19,45 +19,49 @@
             <div class="page-checkout u-s-p-t-80">
                 <div class="container">
                     <div class="row">
-                        <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
-                            <div class="ui-state-error" th:text="${errorMessage}"/>
+                        <div th:if="${errorMessage != null and !errorMessage.isEmpty()}" class="alert alert-danger col-sm-12 mt-3" role="alert">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+                        <div th:if="${success != null and !success.isEmpty()}" class="alert alert-success col-sm-12 mt-3" role="alert">
+                            <span th:text="${success}"></span>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <!-- Recvisits -->
-                        <div class="col-lg-6">
-                            <form th:action="@{/customer/profile}"
-                                  th:object="${profileRequest}"
-                                  th:with="type=${T(ru.onalex.odashop.models.ProfileRequest)}" method="post">
+                    <form th:action="@{/customer/profile}"
+                          th:object="${profileRequest}"
+                          th:with="type=${T(ru.onalex.odashop.models.ProfileRequest)}" method="post">
+                        <div class="row">
+                            <!-- Recvisits -->
+                            <div class="col-lg-6">
                                 <input type="hidden" th:field="*{customerId}">
+                                <input type="hidden" th:field="*{recvisitId}">
                                 <h4 class="section-h4">Реквизиты заказчика</h4>
                                 <!-- Form-Fields -->
-                                <div class="group-inline u-s-m-b-13"
-                                     th:classappend="${#fields.hasErrors('orgName')} ? 'error'">
-                                    <label for="org-name">Наименование предприятия
-                                        <!--                                        <span class="astk">*</span>-->
-                                    </label>
-                                    <input th:field="*{orgName}" type="text" id="org-name" class="text-field">
-                                    <!--                                               th:value="${userData.getCustomer().getContactName()}"-->
-                                    <span th:if="${#fields.hasErrors('orgName')}"
-                                          th:errors="*{orgName}" class="error-message"></span>
+                                <!--                                <div class="group-inline u-s-m-b-13"-->
+                                <!--                                     th:classappend="${#fields.hasErrors('orgName')} ? 'error'">-->
+                                <!--                                    <label for="org-name">Наименование предприятия-->
+                                <!--                                        &lt;!&ndash;                                        <span class="astk">*</span>&ndash;&gt;-->
+                                <!--                                    </label>-->
+                                <!--                                    <input th:field="*{orgName}" type="text" id="org-name" class="text-field">-->
+                                <!--                                    &lt;!&ndash;                                               th:value="${userData.getCustomer().getContactName()}"&ndash;&gt;-->
+                                <!--                                    <span th:if="${#fields.hasErrors('orgName')}"-->
+                                <!--                                          th:errors="*{orgName}" class="error-message"></span>-->
 
-                                </div>
-                                <div class="group-inline u-s-m-b-13"
-                                     th:classappend="${#fields.hasErrors('inn')} ? 'error'">
-                                    <label for="head-name">ИНН
-                                        <!--                                        <span class="astk">*</span>-->
-                                    </label>
-                                    <input th:field="*{inn}" type="text" id="head-name" class="text-field">
-                                    <!--                                               th:value="${userData.getCustomer().getContactName()}"-->
-                                    <span th:if="${#fields.hasErrors('inn')}"
-                                          th:errors="*{inn}" class="error-message"></span>
-                                </div>
+                                <!--                                </div>-->
+                                <!--                                <div class="group-inline u-s-m-b-13"-->
+                                <!--                                     th:classappend="${#fields.hasErrors('inn')} ? 'error'">-->
+                                <!--                                    <label for="head-name">ИНН-->
+                                <!--                                        &lt;!&ndash;                                        <span class="astk">*</span>&ndash;&gt;-->
+                                <!--                                    </label>-->
+                                <!--                                    <input th:field="*{inn}" type="text" id="head-name" class="text-field">-->
+                                <!--                                    &lt;!&ndash;                                               th:value="${userData.getCustomer().getContactName()}"&ndash;&gt;-->
+                                <!--                                    <span th:if="${#fields.hasErrors('inn')}"-->
+                                <!--                                          th:errors="*{inn}" class="error-message"></span>-->
+                                <!--                                </div>-->
                                 <div class="street-address u-s-m-b-13"
                                      th:classappend="${#fields.hasErrors('address')} ? 'error'">
                                     <label for="req-st-address">Почтовый адрес
-                                        <!--                                        <span class="astk">*</span>-->
+                                                                                <span class="astk">*</span>
                                     </label>
                                     <input th:field="*{address}" type="text" id="req-st-address" class="text-field"
                                            placeholder="Укажите адрес доставки">
@@ -90,61 +94,63 @@
                                           th:errors="*{comment}" class="error-message"></span>
 
                                 </div>
-                            </form>
-                        </div>
-                        <!-- Recvisits /- -->
-                        <!-- Register -->
-                        <div class="col-lg-6">
-                            <div class="reg-wrapper">
-                                <h4 class="section-h4 u-s-m-b-20">Регистрационные данные</h4>
-                                <div class="discount-info" th:if="${profileRequest.discount} > 0">Ваша скидка: <span
-                                        th:text="${profileRequest.discount}+' %'"></span></div>
-                                <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
-                                    <label for="email">E-mail (используется в качестве логина)
-                                        <span class="astk">*</span>
-                                    </label>
-                                    <input disabled th:field="*{username}" type="text" id="email"
-                                           class="text-field"/>
-                                    <span th:if="${#fields.hasErrors('username')}"
-                                          th:errors="*{username}" class="error-message"></span>
-                                </div>
-                                <div class="u-s-m-b-30"
-                                     th:classappend="${#fields.hasErrors('contactName')} ? 'error'">
-                                    <label for="email">Ф.И.О. для контакта
-                                        <span class="astk">*</span>
-                                    </label>
-                                    <input th:field="*{contactName}" type="text" id="contact-name"
-                                           class="text-field" placeholder="Ф.И.О.">
-                                    <span th:if="${#fields.hasErrors('contactName')}"
-                                          th:errors="*{contactName}" class="error-message"></span>
-                                </div>
-                                <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('password')} ? 'error'">
-                                    <label for="reg-password">Новый пароль
-                                        <span class="astk">*</span>
-                                    </label>
-                                    <input th:field="*{password}" type="password" id="reg-password"
-                                           class="text-field" placeholder="Пароль">
-                                    <span th:if="${#fields.hasErrors('password')}"
-                                          th:errors="*{password}" class="error-message"></span>
-                                </div>
-                                <div class="u-s-m-b-30"
-                                     th:classappend="${#fields.hasErrors('password2')} ? 'error'">
-                                    <label for="reg-password">Введите пароль еще раз
-                                        <span class="astk">*</span>
-                                    </label>
-                                    <input th:field="*{password2}" type="password" id="reg-password2"
-                                           class="text-field" placeholder="Пароль">
-                                    <span th:if="${#fields.hasErrors('password2')}"
-                                          th:errors="*{password2}" class="error-message"></span>
-                                </div>
-                                <div class="u-s-m-b-45">
-                                    <button class="button button-primary w-100" type="submit">Обновить данные
-                                    </button>
+
+                            </div>
+                            <!-- Recvisits /- -->
+                            <!-- Register -->
+                            <div class="col-lg-6">
+                                <div class="reg-wrapper">
+                                    <h4 class="section-h4 u-s-m-b-20">Регистрационные данные</h4>
+                                    <div class="discount-info" th:if="${profileRequest.discount} > 0">Ваша скидка: <span
+                                            th:text="${profileRequest.discount}+' %'"></span></div>
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('username')} ? 'error'">
+                                        <label for="email">E-mail (меняется по запросу)
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input disabled th:value="*{username}" type="text" id="email"
+                                               class="text-field"/>
+                                        <input type="hidden" th:field="*{username}">
+                                        <span th:if="${#fields.hasErrors('username')}"
+                                              th:errors="*{username}" class="error-message"></span>
+                                    </div>
+                                    <div class="u-s-m-b-30"
+                                         th:classappend="${#fields.hasErrors('contactName')} ? 'error'">
+                                        <label for="email">Ф.И.О. для контакта
+                                            <span class="astk">*</span>
+                                        </label>
+                                        <input th:field="*{contactName}" type="text" id="contact-name"
+                                               class="text-field" placeholder="Ф.И.О.">
+                                        <span th:if="${#fields.hasErrors('contactName')}"
+                                              th:errors="*{contactName}" class="error-message"></span>
+                                    </div>
+                                    <!--                                <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('password')} ? 'error'">-->
+                                    <!--                                    <label for="reg-password">Новый пароль-->
+                                    <!--                                        <span class="astk">*</span>-->
+                                    <!--                                    </label>-->
+                                    <!--                                    <input th:field="*{password}" type="password" id="reg-password"-->
+                                    <!--                                           class="text-field" placeholder="Пароль">-->
+                                    <!--                                    <span th:if="${#fields.hasErrors('password')}"-->
+                                    <!--                                          th:errors="*{password}" class="error-message"></span>-->
+                                    <!--                                </div>-->
+                                    <!--                                <div class="u-s-m-b-30"-->
+                                    <!--                                     th:classappend="${#fields.hasErrors('password2')} ? 'error'">-->
+                                    <!--                                    <label for="reg-password">Введите пароль еще раз-->
+                                    <!--                                        <span class="astk">*</span>-->
+                                    <!--                                    </label>-->
+                                    <!--                                    <input th:field="*{password2}" type="password" id="reg-password2"-->
+                                    <!--                                           class="text-field" placeholder="Пароль">-->
+                                    <!--                                    <span th:if="${#fields.hasErrors('password2')}"-->
+                                    <!--                                          th:errors="*{password2}" class="error-message"></span>-->
+                                    <!--                                </div>-->
+                                    <div class="u-s-m-b-45">
+                                        <button class="button button-primary w-100" type="submit">Обновить данные
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- Profile /- -->
                         </div>
-                        <!-- Profile /- -->
-                    </div>
+                    </form>
 
                 </div>
             </div>
