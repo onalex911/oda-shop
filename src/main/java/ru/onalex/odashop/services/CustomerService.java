@@ -104,17 +104,31 @@ public class CustomerService implements UserDetailsService {
         customer.setContactName(request.getContactName());
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
         customer.setDiscount(0.0);
+        try {
+            Role userRole = roleRepository.findByName("ROLE_" + DEFAULT_ROLE)
+                    .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
 
-        Role userRole = roleRepository.findByName(DEFAULT_ROLE);
-//                .orElseThrow(() -> new RuntimeException("Роль USER не найдена"));
-        customer.getRoles().add(userRole);
+// Создаем коллекцию, если она null
+            if (customer.getRoles() == null) {
+                customer.setRoles(new HashSet<>());
+            }
 
-        customerRepository.save(customer);
-        Recvisit recvisit = new Recvisit();
+// Добавляем роль
+            customer.getRoles().add(userRole);
+
+// Сохраняем клиента (если нужно)
+            customerRepository.save(customer);
+            System.out.println("Customer: " + customer.getUsername() + " saved to DB");
+            Recvisit recvisit = new Recvisit();
             recvisit.setCustomer(customer);
-        recvisitRepository.save(recvisit);
+            recvisitRepository.save(recvisit);
+        }catch (Exception e){
+            throw new RuntimeException("Ошибка при сохранении нового пользователя: " + e.getMessage());
+        }
 
     }
+
+
 
 //    @Transactional
 //    public void testRecvisits(String username) {

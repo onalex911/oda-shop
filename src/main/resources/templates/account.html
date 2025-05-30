@@ -26,6 +26,9 @@
                         <div th:if="${errorMessage != null and !errorMessage.isEmpty()}" class="alert alert-danger col-sm-12 mt-3" role="alert">
                             <span th:text="${errorMessage}"></span>
                         </div>
+                        <div th:if="${success != null and !success.isEmpty()}" class="alert alert-success col-sm-12 mt-3" role="alert">
+                            <span th:text="${success}"></span>
+                        </div>
                     </div>
                     <div class="row">
                         <!-- Login -->
