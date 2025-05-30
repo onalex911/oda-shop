@@ -2,6 +2,7 @@ package ru.onalex.odashop.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,10 +52,25 @@ public class CustomerService implements UserDetailsService {
 //        return new org.springframework.security.core.userdetails.User(
 //                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
 //        );
-        Customer customer = customerRepository.findByUsernameWithRoles(username);
+        //ИИ совет 1
+//        Customer customer = customerRepository.findByUsernameWithRoles(username);
+//        if (customer == null) {
+//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
+//        }
+//        return new org.springframework.security.core.userdetails.User(
+//                customer.getUsername(),
+//                customer.getPassword(),
+//                mapRolesToAuthorities(customer.getRoles())
+//        );
+        // ИИ совет 2
+        Customer customer = customerRepository.findByUsername(username);
         if (customer == null) {
             throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
         }
+
+        // Инициализация коллекции ролей
+        Hibernate.initialize(customer.getRoles());
+
         return new org.springframework.security.core.userdetails.User(
                 customer.getUsername(),
                 customer.getPassword(),
@@ -62,8 +78,10 @@ public class CustomerService implements UserDetailsService {
         );
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     public CustomerData getUserInfoByUsername(String username){
