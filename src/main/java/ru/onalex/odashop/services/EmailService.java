@@ -1,5 +1,6 @@
 package ru.onalex.odashop.services;
 
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
