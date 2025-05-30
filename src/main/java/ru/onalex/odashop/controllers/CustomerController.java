@@ -18,6 +18,7 @@ import ru.onalex.odashop.services.EmailService;
 import java.security.Principal;
 import java.util.List;
 
+import static ru.onalex.odashop.utils.ServiceUtils.getSumWithDiscount;
 import static ru.onalex.odashop.utils.ServiceUtils.replaceQuotes;
 
 @Controller
@@ -73,7 +74,7 @@ public class CustomerController {
             model.addAttribute("cartItems", items);
             model.addAttribute("totalSum", totalSum);
             model.addAttribute("discount", discount);
-            model.addAttribute("totalSumDisc", totalSum * (100 - discount) / 100);
+            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum,discount));
             model.addAttribute("orderRequest", new OrderRequest(contactName,replaceQuotes(address),email,phone,comment,recvisitId));
 
             return "checkout";
@@ -118,6 +119,7 @@ public class CustomerController {
 
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
+
             model.addAttribute("errorMessage", "Введены неверные данные для регистрации!");
             return "account";
         }
@@ -142,6 +144,11 @@ public class CustomerController {
                             Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
+            double totalSum = cartService.getTotalSum(session);
+            double discount = customerService.findByUsername(principal.getName()).getDiscount();
+            model.addAttribute("totalSum", totalSum);
+            model.addAttribute("discount", discount);
+            model.addAttribute("totalSumDisc", getSumWithDiscount(totalSum,discount));
             model.addAttribute("cartItems", cartService.getCartItems(session));
             return "checkout";
         }
