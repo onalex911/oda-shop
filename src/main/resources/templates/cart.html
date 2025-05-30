@@ -54,6 +54,7 @@
                                         <thead>
                                         <tr>
                                             <th>&nbsp;</th>
+                                            <th>Артикул</th>
                                             <th>Наименование</th>
                                             <th>Цена</th>
                                             <th>Количество</th>
@@ -66,9 +67,14 @@
                                             <td>
                                                 <div class="cart-anchor-image">
                                                     <a th:href="@{${item.tovar.purl}}">
-                                                        <img alt="Product" th:src="${item.tovar.realPreview}"/>
+                                                        <img th:alt="${item.tovar.normalTovName}" th:src="${item.tovar.realPreview}"/>
                                                     </a>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <a th:href="@{${item.tovar.purl}}">
+                                                    <h6 th:text="${item.tovar.dop}"></h6>
+                                                </a>
                                             </td>
                                             <td>
                                                 <a th:href="@{${item.tovar.purl}}">
@@ -98,8 +104,8 @@
                                             </td>
                                             <td>
                                                 <div class="action-wrapper">
-                                                    <button class="button button-outline-secondary fas fa-sync"
-                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>
+<!--                                                    <button class="button button-outline-secondary fas fa-sync"-->
+<!--                                                            th:onclick="'refreshTovar('+${item.tovar.id}+','+${item.tovar.cena}+')'"></button>-->
                                                     <button class="button button-outline-secondary fas fa-trash"
                                                             th:onclick="'delTovar('+${item.tovar.id}+')'"></button>
                                                 </div>
