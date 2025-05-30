@@ -3329,7 +3329,8 @@ body {
 /* 23.2 Page-Bar-Options */
 .page-bar {
   border-bottom: 1px solid #DCDCDD;
-  margin: 0 0 30px;
+  /* margin: 0 0 30px; */
+  margin: 0;
   /*padding: 15px 0;*/
   padding: 0;
   width: 100%; }

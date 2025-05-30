@@ -41,7 +41,7 @@
 </head>
 <body>
 <!-- Header -->
-<header th:fragment="header(isAuthenticated,cartInfo)">
+<header th:fragment="header(isAuthenticated,cartInfo,textToSearch,fieldToSearch)">
     <div id="notification" class="notification" style="display: none;"></div>
     <!-- Top-Header -->
     <div class="full-layer-outer-header">
@@ -135,11 +135,11 @@
                 <div class="col-lg-6 u-d-none-lg">
                     <form th:action="@{${mainPage}+'/search'}" method="get" class="form-searchbox">
                         <label class="sr-only" for="search-landscape">Поиск</label>
-                        <input name="textToSearch" id="search-landscape" type="text" class="text-field" placeholder="Искать по всем разделам">
+                        <input th:value="${textToSearch}" name="textToSearch" id="search-landscape" type="text" class="text-field" placeholder="Искать по всем разделам">
                                                     <div class="select-box-position">
                                                         <div class="select-box-wrapper select-hide">
                                                             <label class="sr-only" for="select-category">Искать&#133;</label>
-                                                            <select name="fieldToSearch" class="select-box" id="select-category">
+                                                            <select name="fieldToSearch" th:value="${fieldToSearch}" class="select-box" id="select-category">
 <!--                                                                <option selected="selected" value="">Везде</option>-->
                                                                 <option selected="selected" value="tovName">наименов.</option>
                                                                 <option value="tovName_">наименов. нач.</option>

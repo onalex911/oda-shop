@@ -13,7 +13,7 @@
 }
 
 .total-items, .form-selectors {
-    margin: 0;
+    margin: 0 0 1rem 0;
 }
 
 .total-items h6 {

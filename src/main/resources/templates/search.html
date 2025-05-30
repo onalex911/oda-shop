@@ -10,7 +10,7 @@
 <div id="app">
 
     <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
-    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+    <div th:replace="~{fragments/header-search :: header(${isAuthenticated},${cartInfo},${textToSearch},${fieldToSearch})}"></div>
 
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="page-bar clearfix">
                             <div class="total-items col-12">
-                                <h6 th:text="'Найдено позиций: '+${totalItems}"/>
+                                <h6 th:text="'По вашему запросу «'+${textToSearch}+'» найдено позиций: '+${totalItems}"/>
 <!--                                <h6 th:text="'Всего позиций: '+${totalItems}+', from='+${pgFrom}+', until='+${pgUntil}"/>-->
                             </div>
                         </div>
