@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-    Customer findByUsername(String username);
+    Optional<Customer> findByUsername(String username);
 
     @Query(value="SELECT r.* from customers c " +
             "left join rekvizitu_schet r on c.id = r.customer WHERE c.username=:username", nativeQuery=true)
@@ -36,11 +36,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
             nativeQuery = true)
     List<ProfileDTO> getProfileDataByUsername(@Param("username") String username);
 
-//    @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.recvisitSet WHERE c.username = :username")
-//    Optional<Customer> findByIdWithRecvisits(@Param("username") String username);
 
     boolean existsByUsername(String username);
 
     @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.roles WHERE c.username = :username")
     Customer findByUsernameWithRoles(@Param("username") String username);
+
+    @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.recvisitSet WHERE c.username = :username")
+    Customer findByUsernameWithRecvisits(@Param("username") String username);
 }
