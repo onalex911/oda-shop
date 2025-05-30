@@ -34,23 +34,7 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final RecvisitRepository revisitRepository;
     private final RecvisitRepository recvisitRepository;
-//    private final EmailService emailService;
-//    private final CartService cartService;
-
-//    public CustomerService(
-//            CustomerRepository customerRepository,
-//            PasswordEncoder passwordEncoder,
-//            RoleRepository roleRepository,
-//            EmailService emailService,
-//            CartService cartService) {
-//        this.customerRepository = customerRepository;
-//        this.passwordEncoder = passwordEncoder;
-//        this.roleRepository = roleRepository;
-//        this.emailService = emailService;
-//        this.cartService = cartService;
-//    }
 
     //обертка для получения пользователя (чтобы не обращаться напрямую в репозиторий)
     public Customer findByUsername(String username) {
@@ -60,12 +44,21 @@ public class CustomerService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Customer customer = customerRepository.findByUsername(username);
-        if(customer == null) {
+//        Customer customer = customerRepository.findByUsername(username);
+//        if(customer == null) {
+//            throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
+//        }
+//        return new org.springframework.security.core.userdetails.User(
+//                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
+//        );
+        Customer customer = customerRepository.findByUsernameWithRoles(username);
+        if (customer == null) {
             throw new UsernameNotFoundException(String.format("Пользователь с логином %s не найден!", username));
         }
         return new org.springframework.security.core.userdetails.User(
-                customer.getUsername(), customer.getPassword(), mapRolesToAuthorities(customer.getRoles())
+                customer.getUsername(),
+                customer.getPassword(),
+                mapRolesToAuthorities(customer.getRoles())
         );
     }
 

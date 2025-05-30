@@ -41,5 +41,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     boolean existsByUsername(String username);
 
-
+    @Query("SELECT c FROM Customer c LEFT JOIN FETCH c.roles WHERE c.username = :username")
+    Customer findByUsernameWithRoles(@Param("username") String username);
 }

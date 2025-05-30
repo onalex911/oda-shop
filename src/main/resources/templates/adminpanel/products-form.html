@@ -116,8 +116,8 @@
                                     class="rounded-circle shadow"
                                     alt="User Image"
                             />
-                            <p th:text="${userData.getRecvisits().get(0).getCustomerName()}">
-                                <small th:text="${userData.getRecvisits().get(0).getRukovoditel()}"></small>
+                            <p th:text="${userData.getCustomer().getContactName()}">
+                                <small th:text="${userData.getCustomer().getUsername()}"></small>
                             </p>
                         </li>
                         <!--end::User Image-->
