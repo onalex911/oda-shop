@@ -26,6 +26,7 @@
                     <form th:action="@{/customer/order}"
                           th:object="${orderRequest}"
                           th:with="type=${T(ru.onalex.odashop.models.OrderRequest)}" method="post">
+                        <input type="hidden" th:field="*{recvisitId}">
 
                     <div class="row">
                             <!-- Billing-&-Shipping-Details -->
@@ -84,6 +85,10 @@
                                           th:errors="*{comment}" class="error-message"></span>
 
                                 </div>
+                                <div class="u-s-m-b-30" >
+                                    <input th:field="*{saveRecvisits}" type="checkbox" th:class="'check-box'" id="save-rtecvisits">
+                                    <label class="label-text no-color" for="accept">Сохранить введенные данные в Профиль</label>
+                                </div>
                             </div>
                             <!-- Billing-&-Shipping-Details /- -->
                             <!-- Checkout -->
@@ -124,7 +129,7 @@
                                         <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
                                             <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
                                             <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
-                                                <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
+                                                <a href="/pravila" class="u-c-brand">правилами и условиями</a>
                                             </label>
                                         </div>
                                     </div>

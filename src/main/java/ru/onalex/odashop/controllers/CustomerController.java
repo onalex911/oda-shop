@@ -10,6 +10,7 @@ import ru.onalex.odashop.dtos.CartItemDTO;
 import ru.onalex.odashop.entities.Customer;
 import ru.onalex.odashop.entities.Recvisit;
 import ru.onalex.odashop.models.*;
+import ru.onalex.odashop.repositories.RecvisitRepository;
 import ru.onalex.odashop.services.CartService;
 import ru.onalex.odashop.services.CustomerService;
 import ru.onalex.odashop.services.EmailService;
@@ -26,13 +27,14 @@ public class CustomerController {
     private final CartService cartService;
     private final CustomerService customerService;
     private final EmailService emailService;
+    private final RecvisitRepository recvisitRepository;
 
     public CustomerController(CartService cartService,
-                              CustomerService customerService, EmailService emailService) {
+                              CustomerService customerService, EmailService emailService, RecvisitRepository recvisitRepository) {
         this.cartService = cartService;
         this.customerService = customerService;
         this.emailService = emailService;
-
+        this.recvisitRepository = recvisitRepository;
     }
 
     @GetMapping
@@ -56,6 +58,7 @@ public class CustomerController {
             String contactName = "";
             String comment = "";
             double discount = 0;
+            long recvisitId = 0;
             CustomerData userInfo = customerService.getUserInfoByUsername(principal.getName());
             if(!userInfo.getRecvisits().isEmpty()) {
                 Recvisit recvisit = userInfo.getRecvisits().get(0);
@@ -65,12 +68,13 @@ public class CustomerController {
                 comment = recvisit.getComment();
                 contactName = userInfo.getCustomer().getContactName();
                 discount = userInfo.getCustomer().getDiscount();
+                recvisitId = recvisit.getId();
             }
             model.addAttribute("cartItems", items);
             model.addAttribute("totalSum", totalSum);
             model.addAttribute("discount", discount);
             model.addAttribute("totalSumDisc", totalSum * (100 - discount) / 100);
-            model.addAttribute("orderRequest", new OrderRequest(contactName,replaceQuotes(address),email,phone,comment));
+            model.addAttribute("orderRequest", new OrderRequest(contactName,replaceQuotes(address),email,phone,comment,recvisitId));
 
             return "checkout";
         }
@@ -138,6 +142,7 @@ public class CustomerController {
                             Model model) {
         if (bindingResult.hasErrors()) {
             // Возвращаем тот же шаблон, где есть форма
+            model.addAttribute("cartItems", cartService.getCartItems(session));
             return "checkout";
         }
         // Получаем данные пользователя и корзины
@@ -146,6 +151,17 @@ public class CustomerController {
         double totalSum = cartService.getTotalSum(session);
         double totalQuantity = cartService.getTotalQuantity(session);
         try {
+            if(request.isSaveRecvisits() && request.getRecvisitId() > 0) {
+                Recvisit recvisit = recvisitRepository.findById(request.getRecvisitId()).orElse(null);
+                if(recvisit != null) {
+                    recvisit.setCustomerPhone(request.getPhone());
+                    recvisit.setCustomerAddress(request.getAddress());
+                    recvisit.setComment(request.getComment());
+
+                    recvisitRepository.save(recvisit);
+//                recvisitRepository.updateById(request.getRecvisitId(),recvisits);
+                }
+            }
             // Отправляем письма (пользователю + поставщикам)
             String to = request.getEmail();
             System.out.println("Attempt to send email to:" + to);

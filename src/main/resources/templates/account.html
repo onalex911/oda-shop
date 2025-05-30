@@ -120,7 +120,7 @@
                                     <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
                                         <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
                                         <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
-                                            <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
+                                            <a href="/pravila" class="u-c-brand">правилами и условиями</a>
                                         </label>
                                         <span th:if="${#fields.hasErrors('termsAccepted')}"
                                               th:errors="*{termsAccepted}" class="error-message"></span>
