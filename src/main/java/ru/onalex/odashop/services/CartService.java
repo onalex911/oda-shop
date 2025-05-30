@@ -106,6 +106,7 @@ public class CartService {
 //    }
 
     public List<CartItemDTO> refreshCart(HttpSession session, TovarDTO tovar, int quantity) {
+
         List<CartItemDTO> cart = getCartItems(session);
 
         // Проверяем, есть ли товар уже в корзине
@@ -113,10 +114,13 @@ public class CartService {
                 .filter(item -> item.getTovar().getId() == tovar.getId())
                 .findFirst();
 
+        int ostatok = existingItem.get().getTovar().getOstatok();
+        int newQuantity = Math.min(quantity, ostatok);
+
         if (existingItem.isPresent()) {
-            existingItem.get().setQuantity(quantity);
+            existingItem.get().setQuantity(newQuantity);
         } else {
-            cart.add(new CartItemDTO(tovar, quantity));
+            cart.add(new CartItemDTO(tovar, newQuantity));
         }
         return cart;
     }
