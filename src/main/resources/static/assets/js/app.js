@@ -263,6 +263,7 @@ $(function () {
                 if (currentVal < $(this).data('max')) {
                     newVal = currentVal + 1;
                 }
+                console.log("quantity after +: " + newVal);
                 $currentTextField.val(newVal);
                 /*--------- oda-shop ---------------*/
                 let id = $(this).prev().attr('id').split('_')[1];
@@ -290,7 +291,8 @@ $(function () {
                 // else
                     if (currentVal > $(this).data('min')) {
                         newVal = currentVal - 1;
-                }
+                    }
+                    console.log("quantity after -: " + newVal);
                     $currentTextField.val(newVal);
                 /*--------- oda-shop ---------------*/
                 let id = $(this).closest('div').find('input').attr('id').split('_')[1];

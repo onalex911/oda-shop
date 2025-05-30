@@ -39,7 +39,6 @@
                                             <th>Наименование</th>
                                             <th>Цена</th>
                                             <th>Остаток</th>
-                                            <th>&nbsp;</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -61,13 +60,12 @@
                                                     <h6 th:text="${p.normalTovName}"></h6>
                                                 </a>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <div class="cart-price" th:text="${p.cena}"></div>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <div class="cart-price" th:text="${p.ostatok}"></div>
                                             </td>
-                                            <td>?</td>
 
                                         </tr>
 
