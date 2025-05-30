@@ -27,19 +27,19 @@ public class AdminController {
 
     @GetMapping
     public String adminPanel(Principal principal, Model model) {
-        System.out.println("Principal: " + principal.getName());
-//        Customer customer = customerService.findByUsername(principal.getName());
-        Customer customer = customerRepository.findByUsernameWithRoles(principal.getName());
-        System.out.println(customer.toString());
-        // Дополнительная проверка на случай, если аннотация @PreAuthorize не сработает
-        boolean isAdmin = customer.getRoles().stream()
-                .anyMatch(role -> role.getName().equals("ADMIN"));
-
-        System.out.println("isAdmin = " + isAdmin);
-
-        if (!isAdmin) {
-            return "redirect:/account";
-        }
+//        System.out.println("Principal: " + principal.getName());
+////        Customer customer = customerService.findByUsername(principal.getName());
+//        Customer customer = customerRepository.findByUsernameWithRoles(principal.getName());
+//        System.out.println(customer.toString());
+//        // Дополнительная проверка на случай, если аннотация @PreAuthorize не сработает
+//        boolean isAdmin = customer.getRoles().stream()
+//                .anyMatch(role -> role.getName().equals("ADMIN"));
+//
+//        System.out.println("isAdmin = " + isAdmin);
+//
+//        if (!isAdmin) {
+//            return "redirect:/account";
+//        }
         model.addAttribute("error_message", "It's ok!");
         return "adminpanel/index";
     }
