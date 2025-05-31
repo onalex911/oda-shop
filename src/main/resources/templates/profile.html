@@ -29,7 +29,7 @@
 
                     <form th:action="@{/customer/profile}"
                           th:object="${profileRequest}"
-                          th:with="type=${T(ru.onalex.odashop.models.ProfileRequest)}" method="post">
+                          th:with="type=${T(ru.onalex.odashop.models.ProfileRequest)}" id="profile-edit" method="post">
                         <div class="row">
                             <!-- Recvisits -->
                             <div class="col-lg-6">
@@ -143,7 +143,7 @@
                                     <!--                                          th:errors="*{password2}" class="error-message"></span>-->
                                     <!--                                </div>-->
                                     <div class="u-s-m-b-45">
-                                        <button class="button button-primary w-100" type="submit">Обновить данные
+                                        <button class="button button-area w-100" disabled type="submit" id="refresh-button">Обновить данные
                                         </button>
                                     </div>
                                 </div>
@@ -161,5 +161,6 @@
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->
 <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script src="/assets/js/oda-shop.js"></script>
 </body>
 </html>
