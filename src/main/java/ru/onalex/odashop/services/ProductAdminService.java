@@ -77,9 +77,9 @@ public class ProductAdminService {
 
     public String editProductForm(int id, Model model) {
         try {
-            Tovar product = tovarRepository.findTovarById(id);
+            Tovar product = tovarRepository.findTovarById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Товар не найден: " + id));
             //Todo реализовать проверку на возврат пустого результата и/или ошибки и вывести информацию в лог или пользователю
-//                .orElseThrow(() -> new IllegalArgumentException("Категория не найдена: " + id));
 
 //            List<GrupTov> groups = grupTovRepository.findBijou();
 //            model.addAttribute("groups", groups);

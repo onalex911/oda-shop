@@ -12,7 +12,7 @@ CREATE SEQUENCE customers_code_seq;
 
 INSERT INTO customers
 VALUES
-    (1, 'onalex911@gmail.com', 'Виктория', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 0, true),
+    (1, 'v_narolskaya@inbox.ru', 'Виктория', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 0, true),
     (2, 'megatron911@inbox.ru','Алексей', '$2a$12$mYKtaLUYD8fNDvhDNpsKxOSMipG8Q6vIwIdaCqSh.uLNhd8tH2GW2', 10, true);
 
 SELECT setval('customers_code_seq', (SELECT MAX(id) FROM customers));
@@ -67,16 +67,16 @@ VALUES (1, 1, 1,
 
 INSERT INTO rekvizitu_schet
 VALUES (2, 1, 1,
-        'Алексей Оноприенко',
+        'Уксусов Петр Петрович',
         '',
         '',
         '',
         '',
         '',
         '',
-        'Алексей Оноприенко',
-        '',
-        '+7 912 238 58 80',
+        'Уксусов Петр Петрович',
+        '620100б Россия, г.Екатеринбург, прсп.Автоматизаторов, д. 3, корп. \"А\"',
+        '+7 911 234 56 78',
         'Индивидуальный предприниматель Нарольский Анатолий Евгеньевич',
         '680009, Россия, г.Хабаровск, ул.Промышленная, д.20, литера \"Б\"',
         '(4212)450-411, 8-914-197-57-19',

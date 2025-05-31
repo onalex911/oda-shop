@@ -17,10 +17,16 @@
         <div class="container">
             <div class="row top-panel"><h3>ОФОРМЛЕНИЕ ЗАКАЗА</h3></div>
             <div class="row">
+                <div class="ui-state-error" th:if="${errorMessage != null and !errorMessage.isEmpty()}">
+                    <div class="ui-state-error" th:text="${errorMessage}"/>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <form th:action="@{/customer/order}"
                           th:object="${orderRequest}"
                           th:with="type=${T(ru.onalex.odashop.models.OrderRequest)}" method="post">
+                        <input type="hidden" th:field="*{recvisitId}">
 
                     <div class="row">
                             <!-- Billing-&-Shipping-Details -->
@@ -79,6 +85,10 @@
                                           th:errors="*{comment}" class="error-message"></span>
 
                                 </div>
+                                <div class="u-s-m-b-30" >
+                                    <input th:field="*{saveRecvisits}" type="checkbox" th:class="'check-box'" id="save-rtecvisits">
+                                    <label class="label-text no-color" for="accept">Сохранить введенные данные в Профиль</label>
+                                </div>
                             </div>
                             <!-- Billing-&-Shipping-Details /- -->
                             <!-- Checkout -->
@@ -106,11 +116,11 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-right">Сумма, руб.:</td>
+                                            <td class="text-right">Сумма, ₽:</td>
                                             <td class="text-right"><span th:text="${totalSum}"/></td>
                                         </tr>
                                         <tr>
-                                            <td class="text-right">Сумма с учетом скидки (<span th:text="${discount}"/>%), руб.:</td>
+                                            <td class="text-right">Сумма с учетом скидки (<span th:text="${discount}"/>%), ₽:</td>
                                             <td class="text-right"><span th:text="${totalSumDisc}"/></td>
                                         </tr>
                                         </tbody>
@@ -119,7 +129,7 @@
                                         <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('termsAccepted')} ? 'error'">
                                             <input th:field="*{termsAccepted}" type="checkbox" th:class="'check-box'" id="accept">
                                             <label class="label-text no-color" for="accept">Я ознакомился(-лась) и соглашаюсь с
-                                                <a href="terms-and-conditions.html" class="u-c-brand">правилами и условиями</a>
+                                                <a href="/pravila" class="u-c-brand">правилами и условиями</a>
                                             </label>
                                         </div>
                                     </div>

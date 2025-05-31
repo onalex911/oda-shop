@@ -2,6 +2,7 @@ package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
@@ -26,7 +27,7 @@ public class GrupTov {
     private int flpurl;
     //    code1 varchar(250),
     @Column(name = "code1")
-    private String code1s; //id в 1С
+    private String code1s;  //id в 1С
     //    nomer integer DEFAULT NULL,
     @Column(name = "nomer")
     private int nomer;
@@ -35,63 +36,64 @@ public class GrupTov {
     private int vid;
     //    cena numeric(10,2) DEFAULT NULL,
     @Column(name = "cena", columnDefinition = "numeric(10,2)")
-    private double cena; //
+    private double cena;    // ?
     //    skidka numeric(10,2) DEFAULT NULL,
     @Column(name = "skidka", columnDefinition = "numeric(10,2)")
-    private double skidka; //
+    private double skidka;  // постоянная скидка на группу (?)
 
     @Column(name="zakaz")
-    private int zakaz;
+    private int zakaz;      // ?
 
     @Column(name="ost")
     @NotNull
-    private int ost;
+	@Positive
+    private int ost;        // ?
     //    blok integer DEFAULT NULL,
     @Column(name = "blok")
-    private int blok;
+    private int blok;       // 0 - должно показываться, 1 - заблокировано для вывода
 
     @Column(name = "rod", columnDefinition = "varchar(250)")
     private String rod = "1413"; //Legacy id группы "Бижутерия"
     //    name varchar(250),
     @Column(name = "name")
-    private String grupName;
+    private String grupName;    // наименование группы
     //    pic varchar(250),
-    @Column(name = "pic")
-    private String picPreview;
+    @Column(name = "pic")  
+    private String picPreview;	// изображение на Главной
 
     @Column(name = "menu1")
-    private int menu1;
+    private int menu1;      // ?
 
     @Column(name = "menu2")
-    private int menu2;
+    private int menu2;      // ?
 
     @Column(name = "flmenu", columnDefinition = "varchar(250)")
-    private String flmenu;
+    private String flmenu;  // ?
     //    top varchar(250),
     @Column(name = "top", columnDefinition = "varchar(250)")
-    private String top;
+    private String top;     // ?
     //    maingrup varchar(250),
     @Column(name = "maingrup", columnDefinition = "varchar(250)")
-    private String maingrup;
+    private String maingrup;    // ?
 
     @Column(name = "razmerpic", columnDefinition = "varchar(250)")
-    private String razmerpic;
+    private String razmerpic;   // ?
 
     //    comment text,
     @Column(name = "comment", columnDefinition = "text")
-    private String comment;
+    private String comment;     // комментарий
 
     @Column(name = "keywords", columnDefinition = "varchar(250)")
-    private String keywords;
+    private String keywords;    // ключевые слова (для SEO)
 
     @Column(name = "description", columnDefinition = "text")
-    private String description;
+    private String description; // описание (для SEO)
 
     //    dop varchar(250),
     @Column(name = "dop", columnDefinition = "varchar(250)")
-    private String dop;
+    private String dop;     // ?
 
 //    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER )
-    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "grupTov", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
     private Set<Tovar> tovarGrupSet = new HashSet<>();
 }

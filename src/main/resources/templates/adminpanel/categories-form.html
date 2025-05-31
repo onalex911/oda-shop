@@ -58,12 +58,15 @@
             integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4="
             crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="/assets-admin/css/oda-shop-admin.css">
+    <script src="/assets-admin/js/script.js" defer></script>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 <!--begin::App Wrapper-->
 <div class="app-wrapper">
+    <div id="notification" class="notification" style="display: none;"></div>
     <!--begin::Header-->
     <nav class="app-header navbar navbar-expand bg-body">
         <!--begin::Container-->
@@ -113,8 +116,8 @@
                                     class="rounded-circle shadow"
                                     alt="User Image"
                             />
-                            <p th:text="${userData.getRecvisits().get(0).getCustomerName()}">
-                                <small th:text="${userData.getRecvisits().get(0).getRukovoditel()}"></small>
+                            <p th:text="${userData.getCustomer().getContactName()}">
+                                <small th:text="${userData.getCustomer().getUsername()}"></small>
                             </p>
                         </li>
                         <!--end::User Image-->
@@ -122,7 +125,7 @@
                         <!--begin::Menu Footer-->
                         <li class="user-footer">
                             <!-- <a href="#" class="btn btn-default btn-flat">Профиль</a> -->
-                            <a  th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
+                            <a href="/logout" class="btn btn-default btn-flat float-end">Выйти</a>
                         </li>
                         <!--end::Menu Footer-->
                     </ul>
@@ -193,12 +196,12 @@
                                     Товары
                                 </p>
                             </a>
-                            <a  th:href="@{${mainAdminPage}+'/customers'}" class="nav-link">
-                                <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Пользователи
-                                </p>
-                            </a>
+<!--                            <a  th:href="@{${mainAdminPage}+'/customers'}" class="nav-link">-->
+<!--                                <i class="nav-icon bi bi-box-arrow-in-right"></i>-->
+<!--                                <p>-->
+<!--                                    Пользователи-->
+<!--                                </p>-->
+<!--                            </a>-->
                         </ul>
                     </li>
                 </ul>
@@ -216,7 +219,14 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-                    <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->
+                    <div th:if="${error_message}" class="alert alert-danger" role="alert">
+                        <span th:text="${error_message}"/>
+                    </div>
+                    <div th:if="${success}" class="alert alert-success" role="alert">
+                        <span th:text="${success}"/>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>
                     <div class="col-sm-6">
                         <!-- <ol class="breadcrumb float-sm-end">

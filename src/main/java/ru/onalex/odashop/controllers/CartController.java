@@ -1,33 +1,40 @@
 package ru.onalex.odashop.controllers;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.onalex.odashop.dtos.CartItemDTO;
-import ru.onalex.odashop.dtos.TovarDTO;
-import ru.onalex.odashop.entities.CartItem;
-import ru.onalex.odashop.entities.Tovar;
 import ru.onalex.odashop.models.CartInfo;
-import ru.onalex.odashop.repositories.TovarRepository;
+import ru.onalex.odashop.models.CustomerData;
 import ru.onalex.odashop.services.CartService;
-import ru.onalex.odashop.services.ImageService;
+import ru.onalex.odashop.services.CustomerService;
 
-import java.util.List;
+import java.security.Principal;
+
+import static ru.onalex.odashop.controllers.GlobalControllerAdvice.isAuthenticated;
 
 @Controller
 @RequestMapping("/cart")
+@RequiredArgsConstructor
 public class CartController {
 
     private final CartService cartService;
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+    private final CustomerService customerService;
+
+//    public CartController(CartService cartService, CustomerService customerService) {
+//        this.cartService = cartService;
+//        this.customerService = customerService;
+//    }
 
     @GetMapping
-    public String viewCart(Model model, HttpSession session) {
-        return cartService.vewCart(model,session);
+    public String viewCart(Model model, HttpSession session,Principal principal) {
+        return cartService.vewCart(model,session,principal);
+    }
+    @GetMapping("/empty")
+    public String viewCartEmpty() {
+        return "cart-empty";
     }
 
     @PostMapping("/add")
@@ -41,21 +48,27 @@ public class CartController {
     @ResponseBody
     public CartInfo addToCartQuiet(@PathVariable Long id,
                                    @PathVariable int quantity,
-                                   HttpSession session) {
-        return cartService.addToCartQuiet(id,quantity,session);
+                                   HttpSession session, Principal principal) {
+        return cartService.addToCartQuiet(id,quantity,session,principal);
     }
 
+    @ResponseBody
     @PostMapping("/refresh/{id}/{quantity}")
-    public void refreshCart(@PathVariable Long id,
+    public CartInfo refreshCart(@PathVariable Long id,
                             @PathVariable int quantity,
-                            HttpSession session) {
-       cartService.refreshCartContr(id,quantity,session);
+                            HttpSession session, Principal principal) {
+
+       return cartService.refreshCartContr(id,quantity,session,principal);
     }
 
     @DeleteMapping("/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, HttpSession session) {
+    public ResponseEntity<?> removeFromCart(@PathVariable Long id, HttpSession session, Principal principal) {
 //        System.out.println("removing: "+id);
-        return cartService.removeFromCartContr(id,session);
+        if(cartService.removeFromCartContr(id,session,principal)){
+            return ResponseEntity.ok().body("RELOAD"); // Сигнал для перезагрузки
+        }else {
+            return ResponseEntity.ok().body("REDIRECT_EMPTY"); // Сигнал для перенаправления
+        }
     }
 
     @PostMapping("/clear")

@@ -21,8 +21,22 @@ public class HomeController {
     @GetMapping("/account")
     public String getAccount(Model model) {
         model.addAttribute("grupTov", grupTovRepository.findAll());
-        model.addAttribute("title","Вход/Регистрация. ");
+        model.addAttribute("title","Вход/Регистрация");
         return "account";
+    }
+
+    @GetMapping("/contacts")
+    public String getContacts(Model model) {
+        model.addAttribute("grupTov", grupTovRepository.findAll());
+        model.addAttribute("title","Контакты");
+        return "contacts";
+    }
+
+    @GetMapping("/pravila")
+    public String getPravila(Model model) {
+        model.addAttribute("grupTov", grupTovRepository.findAll());
+        model.addAttribute("title","Правила пользования настоящим сайтом");
+        return "pravila";
     }
 
 //    @GetMapping("/ping")

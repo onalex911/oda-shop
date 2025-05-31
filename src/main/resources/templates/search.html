@@ -10,7 +10,7 @@
 <div id="app">
 
     <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated -->
-    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+    <div th:replace="~{fragments/header-search :: header(${isAuthenticated},${cartInfo},${textToSearch},${fieldToSearch})}"></div>
 
     <!-- Custom-Deal-Page -->
     <div class="page-deal u-s-p-t-80">
@@ -19,6 +19,14 @@
             <!-- Cart-Page -->
             <div class="page-cart u-s-p-t-80">
                 <div class="container">
+                    <div class="row">
+                        <div class="page-bar clearfix">
+                            <div class="total-items col-12">
+                                <h6 th:text="'По вашему запросу «'+${textToSearch}+'» найдено позиций: '+${totalItems}"/>
+<!--                                <h6 th:text="'Всего позиций: '+${totalItems}+', from='+${pgFrom}+', until='+${pgUntil}"/>-->
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
                                 <!-- Products-List-Wrapper -->
@@ -31,7 +39,6 @@
                                             <th>Наименование</th>
                                             <th>Цена</th>
                                             <th>Остаток</th>
-                                            <th>&nbsp;</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -53,13 +60,12 @@
                                                     <h6 th:text="${p.normalTovName}"></h6>
                                                 </a>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <div class="cart-price" th:text="${p.cena}"></div>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <div class="cart-price" th:text="${p.ostatok}"></div>
                                             </td>
-                                            <td>?</td>
 
                                         </tr>
 
@@ -68,21 +74,46 @@
                                 </div>
                             <!-- Shop-Pagination -->
                             <div class="pagination-area">
+<!--                                <div class="pagination-number">-->
+<!--                                    <ul th:if="${totalPages > 1}">-->
+<!--                                        <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}"-->
+<!--                                               title="Предыдущая">-->
+<!--                                                <i class="fa fa-angle-left"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}"-->
+<!--                                               th:text="${i + 1}"></a>-->
+<!--                                        </li>-->
+<!--                                        <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">-->
+<!--                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}"-->
+<!--                                               title="Следующая">-->
+<!--                                                <i class="fa fa-angle-right"></i>-->
+<!--                                            </a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
                                 <div class="pagination-number">
-                                    <ul th:if="${totalPages > 1}">
+                                    <ul class="pagination-list" th:if="${totalPages > 1}">
                                         <li th:style="${currentPage == 0} ? 'display:none' : 'display:inline'">
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}"
-                                               title="Предыдущая">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage - 1}, size=${pageSize})}" title="Предыдущая">
                                                 <i class="fa fa-angle-left"></i>
                                             </a>
                                         </li>
-                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'" >
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}"
-                                               th:text="${i + 1}"></a>
+                                        <li th:style="${currentPage > 2 or totalPages > 2} ? 'display:inline' : 'display:none'" th:class="${currentPage == 0} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=0, size=${pageSize})}">1</a>
+                                        </li>
+                                        <li th:if="${currentPage > 3}"><span>...</span></li>
+                                        <li th:each="i : ${#numbers.sequence(pgFrom, pgUntil)}" th:class="${i == currentPage} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${i}, size=${pageSize})}" th:text="${i + 1}"></a>
+                                        </li>
+                                        <li th:if="${currentPage < totalPages - 3}"><span>...</span></li>
+                                        <li th:style="${totalPages > 1} ? 'display:inline' : 'display:none'" th:class="${currentPage == (totalPages - 1)} ? 'active'">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${totalPages - 1}, size=${pageSize})}" th:text="${totalPages}"></a>
                                         </li>
                                         <li th:style="${currentPage == totalPages - 1} ? 'display:none' : 'display:inline'">
-                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}"
-                                               title="Следующая">
+                                            <a th:href="@{{mainpage}/search(mainpage=${mainPage}, textToSearch=${textToSearch}, fieldToSearch=${fieldToSearch}, page=${currentPage + 1}, size=${pageSize})}" title="Следующая">
                                                 <i class="fa fa-angle-right"></i>
                                             </a>
                                         </li>
@@ -101,6 +132,6 @@
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->
 <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
-<script src="/assets/js/cart.js"></script>
+<script src="/assets/js/oda-cart.js"></script>
 </body>
 </html>

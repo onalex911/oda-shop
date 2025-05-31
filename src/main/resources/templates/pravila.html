@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}"></head>
+<body>
+<!-- app -->
+<div id="app">
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated и данные Корзины -->
+
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, ${title}, ${totalItems})}"></div>
+            <p><strong><u>Основные положения:</u></strong></p>
+            <p>Текст соглашения...&nbsp;</p>
+
+
+            <p style="margin-left:36.0pt;">Наши <a href="/contacts">контактные реквизиты</a>.</p>
+
+            <a href="javascript:history.back()"><i class="ion ion-md-arrow-round-back"></i> Назад</a>
+
+        </div>
+    </div>
+
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+
+<script src="/assets/js/oda-cart.js"></script>
+</body>
+</html>

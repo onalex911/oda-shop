@@ -1,6 +1,7 @@
 package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -21,27 +22,25 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name="username")
     private String username;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     @Column(name="contact_name")
     private String contactName;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank
     private String password;
     private double discount;
 
 //   у клиента может быть несколько реквизитов
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY) // Или EAGER
     private Set<Recvisit> recvisitSet = new HashSet<>();
 
     //у клиента (пользователя) м.б. много ролей; роль, в свою очередь м.б. назначена множеству пользователей
-    @ManyToMany
+//    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "customers_roles",
     joinColumns = @JoinColumn(name="customer_id"),
     inverseJoinColumns = @JoinColumn(name="role_id"))

@@ -1,6 +1,8 @@
 package ru.onalex.odashop.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.NaturalId;
 
@@ -14,8 +16,9 @@ public class Tovar {
     @Column(name = "code")
     private int id;
 
-    //    purl varchar(250),
-    @Column(name = "purl")
+    //    purl varchar(250)
+    @NotBlank
+    @Column(name = "purl")  // url товара
     private String purl;
     //    flpurl integer DEFAULT NULL,
     @Column(name = "flpurl")
@@ -23,64 +26,67 @@ public class Tovar {
     //    code1 varchar(250),
     @Column(name = "code1")
     @NaturalId
-    private String code1s; //id в 1С
+    private String code1s;  // id в 1С
     //    nomer integer DEFAULT NULL,
     @Column(name = "nomer")
-    private int nomer;
+    private int nomer;      // порядковый номер при выводе по-умолчанию
     //    gruptov integer DEFAULT NULL,
+    @NotNull
     @Column(name = "gruptov")
-    private int grupTov;
+    private int grupTov;    // id группы, которой принадлежит товар
     //    name varchar(250),
+    @NotBlank
     @Column(name = "name")
-    private String tovName;
+    private String tovName; // наименование товара
     //    pic varchar(250),
-    @Column(name = "pic")
+    @Column(name = "pic")   // превьюшка
     private String picPreview;
     //    bpic varchar(250),
     @Column(name = "bpic")
-    private String picBig;
+    private String picBig;  // фото товара
     //    ostatok integer DEFAULT NULL,
     @Column(name = "ostatok")
-    private int ostatok;
+    private int ostatok;    // остаток на складе
     //    cena numeric(10,2) DEFAULT NULL,
     @Column(name = "cena", columnDefinition = "numeric(10,2)")
-    private double cena; //
+    private double cena;    // цена
     //    cena1 numeric(10,2) DEFAULT NULL,
     @Column(name = "cena1", columnDefinition = "numeric(10,2)")
-    private double cena1; //
+    private double cena1;   // спеццена (?)
     //    ves numeric(10,3) DEFAULT NULL,
     @Column(name = "ves", columnDefinition = "numeric(10,3)")
-    private double ves; //
+    private double ves;     // вес
     //    blok integer DEFAULT NULL,
     @Column(name = "blok")
-    private int blok;
+    private int blok;       // 0 - должно показываться, 1 - заблокировано для вывода
     //    data varchar(10),
     @Column(name = "data", columnDefinition = "varchar(10)")
-    private String data;
+    private String data;    // дата добавления
     //    data_red varchar(250),
     @Column(name = "data_red", columnDefinition = "varchar(250)")
-    private String dataRed;
+    private String dataRed; // дата редактирования
     //    top varchar(250),
     @Column(name = "top", columnDefinition = "varchar(250)")
-    private String top;
+    private String top;     // ?
     //    dop_parametru varchar(250),
     @Column(name = "dop_parametru", columnDefinition = "varchar(250)")
-    private String dopParametru;
+    private String dopParametru;    // ?
     //    link varchar(250),
     @Column(name = "link", columnDefinition = "varchar(250)")
-    private String link;
+    private String link;    // ?
     //    prosmotru integer DEFAULT NULL,
     @Column(name = "prosmotru")
-    private int prosmotru;
+    private int prosmotru;  // кол-во просмотров (пока не используется)
     //    comment text,
     @Column(name = "comment", columnDefinition = "text")
-    private String comment;
+    private String comment; // комментарий
     //    comment1 text,
     @Column(name = "comment1", columnDefinition = "text")
-    private String comment1;
-    //    dop varchar(250),
+    private String comment1;// еще комментарий
+    //    dop varchar(250)
+    @NotNull
     @Column(name = "dop", columnDefinition = "varchar(250)")
-    private String dop;
+    private String dop;     // артикул
 
 //    @ManyToOne
 //    @JoinColumn(name="gruptov")

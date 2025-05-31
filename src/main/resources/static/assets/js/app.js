@@ -1,4 +1,5 @@
 /**
+/**
  * This is main script file that contains JS code.
  */
 
@@ -245,6 +246,7 @@ $(function () {
             $(this).on('click', function () {
                 let $currentTextField = $(this).prev();
                 let currentVal = parseInt($currentTextField.val());
+                let newVal = 1;
                 /*
                  * Format values
                  * In JS if variable is not converted to number then by default variable is NaN.
@@ -252,20 +254,28 @@ $(function () {
                  * By default NaN (e.g. the result of 1/0) is false so its convert to true and expression
                  * becomes true.
                  */
-                if (!currentVal || currentVal === '' || currentVal === 'NaN' || currentVal === 0) {
-                    // if value is NaN
-                    $currentTextField.val(1);
+                // if (!currentVal || currentVal === '' || currentVal === 'NaN' || currentVal === 0) {
+                //     // if value is NaN
+                //     $currentTextField.val(1);
+                // }
+                // // Compare and add 1 if the condition is satisfy
+                // else
+                if (currentVal < $(this).data('max')) {
+                    newVal = currentVal + 1;
                 }
-                // Compare and add 1 if the condition is satisfy
-                else if (currentVal < $(this).data('max')) {
-                    $currentTextField.val(currentVal + 1);
-                }
+                console.log("quantity after +: " + newVal);
+                $currentTextField.val(newVal);
+                /*--------- oda-shop ---------------*/
+                let id = $(this).prev().attr('id').split('_')[1];
+                let cena = $(this).prev().data('cena');
+                refreshTovar(id,cena);
             });
         });
         $('.minus-a').each(function () {
             $(this).on('click', function () {
                 $currentTextField = $(this).closest('div').find('input');
                 currentVal = parseInt($currentTextField.val());
+                let newVal = 1;
                 /*
                  * Format values
                  * In JS if variable is not convert to number then by default variable is NaN.
@@ -273,14 +283,21 @@ $(function () {
                  * By default NaN (e.g. the result of 1/0) is false so its convert to true and expression
                  * becomes true.
                  */
-                if (!currentVal || currentVal === '' || currentVal === 'NaN' || currentVal === 0) {
-                    // if value is NaN
-                    $currentTextField.val(1);
-                }
-                // Compare and minus 1 if the condition is satisfy
-                else if (currentVal > $(this).data('min')) {
-                    $currentTextField.val(currentVal - 1);
-                }
+                // if (!currentVal || currentVal === '' || currentVal === 'NaN' || currentVal === 0) {
+                //     // if value is NaN
+                //     $currentTextField.val(1);
+                // }
+                // // Compare and minus 1 if the condition is satisfy
+                // else
+                    if (currentVal > $(this).data('min')) {
+                        newVal = currentVal - 1;
+                    }
+                    console.log("quantity after -: " + newVal);
+                    $currentTextField.val(newVal);
+                /*--------- oda-shop ---------------*/
+                let id = $(this).closest('div').find('input').attr('id').split('_')[1];
+                let cena = $(this).closest('div').find('input').data('cena');
+                refreshTovar(id,cena);
             });
         });
     };

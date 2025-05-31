@@ -29,7 +29,8 @@ document.querySelectorAll('.quantity-text-field').forEach(quantityElement => {
         // Получаем введенное количество
         let quantity = parseInt(this.value);
         if(isNaN(quantity)){
-            alert("Введено нечисловое значение!");
+            // alert("Введено нечисловое значение!");
+            showNotification("Введено нечисловое значение!");
             this.value = 1;
             return;
         }
@@ -43,9 +44,11 @@ document.querySelectorAll('.quantity-text-field').forEach(quantityElement => {
 
         console.log(`Уст. кол-во: ${quantity}`);
         if (quantity < 1 || quantity > maxVal) {
-            alert(`Количество должно быть от 1 до ${maxVal}!`);
+            showNotification(`Количество должно быть от 1 до ${maxVal}!`);
+            // alert(`Количество должно быть от 1 до ${maxVal}!`);
             this.value = 1; // Устанавливаем значение по умолчанию
         }
+        refreshTovar(id,this.dataset.cena);
     });
 });
 
@@ -58,12 +61,14 @@ async function addTovar(id) {
 
     maxVal = parseInt(maxVal);
     if(isNaN(quantity)){
-        alert("Введено нечисловое значение!");
+        showNotification("Введено нечисловое значение!");
+        // alert("Введено нечисловое значение!");
         quantityEl.value = 1;
         return;
     }
     if(quantity < 1 || quantity > maxVal){
-        alert("Количество должно быть от 1 до ("+maxVal+")");
+        showNotification(`Количество должно быть от 1 до ${maxVal}!`);
+        // alert("Количество должно быть от 1 до ("+maxVal+")");
         quantityEl.value = 1;
         return;
     }
@@ -92,57 +97,64 @@ async function addTovar(id) {
     }
 }
 
-async function refreshTovar(id,price) {
+function refreshTovar(id, price) {
     let newQuantity = parseInt(document.getElementById(`q_${id}`).value);
 
-    let response = await fetch(`/cart/refresh/${id}/${newQuantity}`,{
-        method:'POST'
-    });
-
-    if (response.ok){
-        // alert("Обновлен " + id);
-        console.log(await response.text())
-        document.querySelector(`#s_${id}`).textContent = formatMoneyValue(newQuantity * parseMoneyValue(price));
-    }else{
-        console.log("error")
-    }
+    fetch(`/cart/refresh/${id}/${newQuantity}`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // Парсим JSON, если ответ успешный
+            } else {
+                throw new Error('Ошибка при обновлении товара'); // Генерируем ошибку, если ответ не успешный
+            }
+        })
+        .then(result => {
+            // console.log(result);
+            document.querySelector(`#s_${id}`).textContent = formatMoneyValue(result.sumPos);
+            document.querySelector(`#total-quantity`).textContent = result.totalQuantity;
+            document.querySelector(`#total-sum`).textContent = formatMoneyValue(result.totalSum);
+            document.querySelector(`#total-sum-disc`).textContent = formatMoneyValue(result.totalSumDisc);
+            document.querySelector(`#total-counter`).textContent = result.amountPos;
+            document.querySelector(`#total-price`).textContent = formatMoneyValue(result.totalSum);
+        })
+        .catch(error => {
+            console.log(error.message); // Обработка ошибок, если что-то пошло не так
+        });
 }
-async function delTovar(id) {
-    //сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
+
+function delTovar(id) {
+    /* на случай включения CSRF
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;*/
+    // Сумма товара, который будет удален. На эту сумму нужно уменьшить сумму заказа.
     let sum = parseMoneyValue(document.getElementById(`s_${id}`).textContent);
 
-    let response = await fetch(`/cart/remove/${id}`,{
-        method:'DELETE'
-    });
+    fetch(`/cart/remove/${id}`, {
+        method: 'DELETE'
+        /* на случай включения CSRF
+        ,
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }*/
+    })
+        .then(response => response.text())
+        .then(data => {
+            if (data === "RELOAD") {
+                window.location.href = "/cart"; // Перезагрузить корзину
+            } else if (data === "REDIRECT_EMPTY") {
+                window.location.href = "/cart/empty"; // Перенаправить на пустую корзину
+            }
+        });
 
-    if (response.ok){
-        // console.log(`Удален ${id} на сумму ${sum}`);
-        console.log(await response.text())
-        //удаляем строку товара в таблице Корзины
-        document.querySelector(`tr[data-id='${id}']`).remove();
-        //уменьшаем кол-во позиций в Корзине
-        let amount = document.querySelector('.item-counter');
-        amount.innerText = parseInt(amount.textContent) - 1;
-        //получаем общую сумму
-        let totalSumEl = document.querySelector('.item-price');
-        let totalSum = parseMoneyValue(totalSumEl.textContent);
-
-        // Проверяем, что оба значения - числа
-        if (!isNaN(totalSum) && !isNaN(sum)) {
-            //корректируем общую сумму
-            totlalSum.textContent = formatMoneyValue(totalSum - sum);
-        } else {
-            console.error('Один из элементов содержит нечисловое значение');
-        }
-    }else{
-        console.log("error")
-    }
 }
 
 // Функция для преобразования строки в денежное значение (учитывает возможные разделители)
 function parseMoneyValue(value) {
     // Удаляем все пробелы, заменяем запятые на точки
+    console.log(value);
     const cleanValue = value.replace(/[а-яА-Я\s\.]+/g, '').replace(',', '.');
+    console.log(parseFloat(cleanValue));
     return parseFloat(cleanValue);
 }
 
@@ -160,4 +172,18 @@ function goBackAndReload() {
     setTimeout(() => {
         location.reload();
     }, 100); // небольшая задержка для гарантии возврата
+}
+
+function showNotification(message) {
+    let notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.display = 'block';
+    notification.style.opacity = 1;
+
+    setTimeout(() => {
+        notification.style.opacity = 0;
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 300); // время для исчезновения
+    }, 3000); // время отображения уведомления
 }

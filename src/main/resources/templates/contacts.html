@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/header :: head(${title})}"></head>
+<body>
+<!-- app -->
+<div id="app">
+    <!-- Вставляем фрагмент шапки, передавая параметр isAuthenticated и данные Корзины -->
+
+    <div th:replace="~{fragments/header :: header(${isAuthenticated},${cartInfo})}"></div>
+
+    <!-- Custom-Deal-Page -->
+    <div class="page-deal u-s-p-t-80">
+        <div class="container">
+            <div th:replace="~{fragments/top-menu :: top-panel(${menuGroups}, ${title}, ${totalItems})}"></div>
+            <p><strong><u>Наши адреса и контакты:</u></strong></p>
+            <p>&nbsp;</p>
+
+            <ul>
+                <li><strong><u>Хабаровск</u></strong></li>
+            </ul>
+
+            <p style="margin-left:36.0pt;">ул. Промышленная, д.20 литера &laquo;Б&raquo;, первый этаж.</p>
+
+            <p style="margin-left:36.0pt;">Ближайшая к нам остановка общественного транспорта &laquo;Большая&raquo;.</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;"><em>Мы находимся во дворе офиса &laquo;Рэдком&raquo;, поэтому вам можно
+                ориентироваться именно на &laquo;Рэдком&raquo;, а еще можно ориентироваться&nbsp; на&nbsp; Инспекцию
+                Пробирного надзора.</em> &nbsp;</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">Мы работаем 5 дней в неделю (с понедельника по пятницу) с 10-00 утра до 18-00
+                вечера, без обеда. В выходные и праздничные дни отдыхаем, и вам советуем.</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">Проконсультироваться о наличии товара, сроков изготовления выставочного&nbsp;
+                оборудования, о тех или иных особенностях товара вы можете по телефонам:</p>
+
+            <p style="margin-left:36.0pt;">- 8 (4212) 450-411 (городской номер)</p>
+
+            <p style="margin-left:36.0pt;">- 8 9141975719 (МТС),</p>
+
+            <p style="margin-left:36.0pt;">- 8 9243019250 (Мегафон)</p>
+
+            <p style="margin-left:36.0pt;">- 8 9098056017 (Билайн)</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">e-mail: <a href="mailto:v_narolskaya@mail.ru">v_narolskaya@mail.ru</a></p>
+
+            <p style="margin-left:36.0pt;">сайт: <a href="http://www.odadv.ru/">www.odadv.ru</a></p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <ul>
+                <li><strong><u>Владивосток</u></strong></li>
+            </ul>
+
+            <p style="margin-left:36.0pt;">ул. Чкалова д.8, первый этаж.</p>
+
+            <p style="margin-left:36.0pt;">Ближайшие остановки общественного транспорта &laquo;Чкалова&raquo; и &laquo;Магнитогорская&raquo;.</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">Мы работаем 5 дней в неделю (с понедельника по пятницу) с 9-00 утра до 18-00
+                вечера, без обеда. В выходные и праздничные дни отдыхаем, и вам советуем.</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">Проконсультироваться о наличии товара, сроков изготовления выставочного&nbsp;
+                оборудования, о тех или иных особенностях товара вы можете по телефонам:</p>
+
+            <p style="margin-left:36.0pt;">- 8 9147933176 (Теле2),</p>
+
+            <p style="margin-left:36.0pt;">- 8 9940115989 (Теле 2)</p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p>
+
+            <p style="margin-left:36.0pt;">e-mail: <a href="mailto:natazav@mail.ru">natazav@mail.ru</a></p>
+
+            <p style="margin-left:36.0pt;">сайт: <a href="http://www.odadv.ru/">www.odadv.ru</a></p>
+
+            <p style="margin-left:36.0pt;">&nbsp;</p></div>
+        </div>
+    </div>
+
+<!-- Custom-Deal-Page -->
+<!-- Вставляем фрагмент футера -->
+<div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+
+<script src="/assets/js/oda-cart.js"></script>
+</body>
+</html>
