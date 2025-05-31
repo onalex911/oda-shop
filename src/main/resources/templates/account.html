@@ -95,7 +95,7 @@
 										<span th:if="${#fields.hasErrors('contactName')}"
                                               th:errors="*{contactName}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30 password-container"  th:classappend="${#fields.hasErrors('password')} ? 'error'">
+                                    <div class="u-s-m-b-30"  th:classappend="${#fields.hasErrors('password')} ? 'error'">
                                         <label for="reg-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
@@ -106,7 +106,7 @@
 										<span th:if="${#fields.hasErrors('password')}"
                                               th:errors="*{password}" class="error-message"></span>
                                     </div>
-                                    <div class="u-s-m-b-30 password-container" th:classappend="${#fields.hasErrors('password2')} ? 'error'">
+                                    <div class="u-s-m-b-30" th:classappend="${#fields.hasErrors('password2')} ? 'error'">
                                         <label for="reg-password">Введите пароль еще раз
                                             <span class="astk">*</span>
                                         </label>
