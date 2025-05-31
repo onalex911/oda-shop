@@ -22,7 +22,7 @@ public interface TovarRepository extends JpaRepository<Tovar, Integer>, JpaSpeci
 //    @Query(value="SELECT t.* FROM tovar t RIGHT JOIN bj_groups bg " +
 //            "ON bg.group_id = t.gruptov " +
 //            "WHERE bg.group_name_lat LIKE :alias AND t.ostatok > 0",nativeQuery = true)
-    @Query(value="SELECT * FROM tovar t WHERE t.ostatok > 0 AND t.purl LIKE CONCAT('%/',:alias,'/%')",nativeQuery = true)
+    @Query(value="SELECT * FROM tovar t WHERE t.blok = 0 AND t.ostatok > 0 AND t.purl LIKE CONCAT('%/',:alias,'/%')",nativeQuery = true)
     Page<Tovar> findTovarByAlias(String alias, Pageable pageable);
 
     @Query(value="SELECT * FROM tovar t WHERE t.code=:code AND t.ostatok > 0 ORDER BY t.nomer",nativeQuery = true)

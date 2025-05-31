@@ -14,17 +14,17 @@ public interface GrupTovRepository extends JpaRepository<GrupTov, Integer> {
     List<GrupTov> findAll();
 
     //Legacy: в "общей" БД бижутерия хранится в поле rod под номером 1413
-    @Query(value="SELECT * FROM gruptov WHERE rod='1413' ORDER BY nomer",nativeQuery = true)
+    @Query(value="SELECT g.* FROM gruptov g WHERE g.rod='1413' ORDER BY g.nomer",nativeQuery = true)
     List<GrupTov> findBijou();
     //для фронта - выводим только активные
-    @Query(value="SELECT * FROM gruptov WHERE blok=0 AND rod='1413' ORDER BY nomer",nativeQuery = true)
+    @Query(value="SELECT g.* FROM gruptov g WHERE g.blok=0 AND g.rod='1413' ORDER BY g.nomer",nativeQuery = true)
     List<GrupTov> findBijouActive();
 
     //Legacy: алиас хранится в последнем сегменте пути в поле purl
-    @Query(value="SELECT * FROM gruptov WHERE blok=0 AND purl LIKE CONCAT('%/',:alias)",nativeQuery = true)
+    @Query(value="SELECT g.* FROM gruptov g WHERE g.blok=0 AND g.purl LIKE CONCAT('%/',:alias)",nativeQuery = true)
     GrupTov findByAlias(String alias);
 
-    @Query(value="SELECT * FROM gruptov WHERE code=:id",nativeQuery = true)
+    @Query(value="SELECT g.* FROM gruptov g WHERE g.code=:id",nativeQuery = true)
     GrupTov findById(int id);
 
     @Modifying
