@@ -64,12 +64,12 @@
                                         </label>
                                         <input name="username" type="text" id="user-name-email" class="text-field" placeholder="E-mail">
                                     </div>
-                                    <div class="u-s-m-b-30"><!-- password-container -->
+                                    <div class="u-s-m-b-30 password-container">
                                         <label for="login-password">Пароль
                                             <span class="astk">*</span>
                                         </label>
                                         <input name="password" type="password" id="login-password" class="text-field" placeholder="Пароль">
-<!--                                        <button type="button" id="togglePassword"><i class="ion ion-md-eye-off"></i></button>-->
+                                        <button type="button" id="togglePassword"><i class="ion ion-md-eye-off"></i></button>
                                     </div>
 <!--                                    <div class="group-inline u-s-m-b-30">-->
 <!--                                        <div class="group-1">-->
@@ -163,5 +163,6 @@
 <!-- Custom-Deal-Page -->
 <!-- Вставляем фрагмент футера -->
 <div th:replace="~{fragments/footer :: footer(${currentYear})}"></div>
+<script src="/assets/js/oda-shop.js"></script>
 </body>
 </html>
