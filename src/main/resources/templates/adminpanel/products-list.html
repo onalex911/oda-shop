@@ -125,7 +125,7 @@
                         <!--begin::Menu Footer-->
                         <li class="user-footer">
                             <!-- <a href="#" class="btn btn-default btn-flat">Профиль</a> -->
-                            <a th:href="@{${mainAdminPage}/logout}" class="btn btn-default btn-flat float-end">Выйти</a>
+                            <a href="/logout" class="btn btn-default btn-flat float-end">Выйти</a>
                         </li>
                         <!--end::Menu Footer-->
                     </ul>
@@ -217,6 +217,14 @@
         <div class="app-content-header">
             <!--begin::Container-->
             <div class="container-fluid">
+                <div class="row">
+                    <div th:if="${error_message}" class="alert alert-danger" role="alert">
+                        <span th:text="${error_message}"/>
+                    </div>
+                    <div th:if="${success}" class="alert alert-success" role="alert">
+                        <span th:text="${success}"/>
+                    </div>
+                </div>
                 <!--begin::Row-->
                 <div class="row">
                     <!--              <div class="col-sm-6"><h3 class="mb-0" th:text="${title}"></h3></div>-->

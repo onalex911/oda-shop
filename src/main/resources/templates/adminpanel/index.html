@@ -240,10 +240,14 @@
             <div class="container-fluid">
                 <!--begin::Row-->
                 <div class="row">
-<!--                    <div class="alert alert-danger visually-hidden" role="alert">-->
-                    <div class="alert alert-danger" role="alert">
+                    <div th:if="${error_message}" class="alert alert-danger" role="alert">
                         <span th:text="${error_message}"/>
                     </div>
+                    <div th:if="${success}" class="alert alert-success" role="alert">
+                        <span th:text="${success}"/>
+                    </div>
+                </div>
+                <div class="row">
                     <h4>Для редактирования информации на сайте <a href="/catalog/bizhuteriya">odadv.ru</a> используйте
                         меню слева</h4>
                     <div class="mb-3">

@@ -40,7 +40,7 @@ public class AdminController {
 //        if (!isAdmin) {
 //            return "redirect:/account";
 //        }
-        model.addAttribute("error_message", "It's ok!");
+        model.addAttribute("success", "It's ok!");
         return "adminpanel/index";
     }
 
